@@ -1,14 +1,12 @@
 #pragma once
 
+#include "targetver.h" // 最新に
+// Windowsヘッダーからほとんど使用されていない部分を除外する
+#define WIN32_LEAN_AND_MEAN
 // Windows ヘッダーファイル
 #include <windows.h>
-
-
-// DirectX12 ヘッダーファイル
-#include <d3d12.h>
-#include <dxgi1_6.h>
-
-// ライブラリをリンク
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-
+// Cランタイムヘッダーファイル
+#include <stdlib.h>
+#include <malloc.h>
+#include <memory.h>
+#include <tchar.h>

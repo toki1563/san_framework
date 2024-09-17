@@ -1,11 +1,10 @@
-#include <windows.h>
 #include "framework.h"
 #include "framework/san_environment.h"
 #ifdef _DEBUG
 #include <iostream>
 #endif
 
-using namespace std;
+HWND hWnd = NULL; // ウィンドウハンドル
 
 // @brief コンソール画面にフォーマット付き文字列を表示
 // @param formatフォーマット(%dとか%fとかの)

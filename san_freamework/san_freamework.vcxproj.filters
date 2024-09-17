@@ -24,7 +24,7 @@
     <ClCompile Include="san_framework.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="framework\directX\san_DirectX3D.cpp">
+    <ClCompile Include="framework\directX\san_Direct3D.cpp">
       <Filter>framework\directX</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,8 +35,11 @@
     <ClInclude Include="framework.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="framework\directX\san_DirectX3D.h">
+    <ClInclude Include="framework\directX\san_Direct3D.h">
       <Filter>framework\directX</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

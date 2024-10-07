@@ -19,6 +19,12 @@
     <Filter Include="framework\directX">
       <UniqueIdentifier>{fdc6d090-aa4d-4ca9-8b40-261ca794c269}</UniqueIdentifier>
     </Filter>
+    <Filter Include="public">
+      <UniqueIdentifier>{208c440e-10e6-4a64-9447-1df717b8b3bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\scene">
+      <UniqueIdentifier>{97786ad8-0b80-4243-9ce0-248d5e9fd2cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="san_framework.cpp">
@@ -26,6 +32,12 @@
     </ClCompile>
     <ClCompile Include="framework\directX\san_Direct3D.cpp">
       <Filter>framework\directX</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\san_mainframe.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\san_scene.cpp">
+      <Filter>public\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +52,12 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_mainframe.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\san_scene.h">
+      <Filter>public\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

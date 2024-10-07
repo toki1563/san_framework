@@ -1,10 +1,9 @@
+// フレームワーク共通環境ヘッダー
+#pragma once
+
 // ライブラリ
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
-
-
-// フレームワークヘッダー
-#include "directX/san_Direct3D.h"
 
 // 共通ヘッダファイルのインクルード
 #include <stdio.h>
@@ -23,3 +22,6 @@
 
 // フレームワークヘッダー
 #include "directX/san_Direct3D.h"
+#include "../public/scene/san_scene.h"
+
+#include "san_mainframe.h"

@@ -1,2 +1,6 @@
-﻿  san_framework.cpp
+﻿  san_Direct3D.cpp
+  san_mainframe.cpp
+  san_scene.cpp
+  san_framework.cpp
+  コードを生成中...
   san_freamework.vcxproj -> C:\Users\sanda\source\repos\san_framework\x64\Debug\san_freamework.exe

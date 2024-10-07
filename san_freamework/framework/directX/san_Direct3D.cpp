@@ -8,8 +8,13 @@ IDXGIAdapter3* sanDirect3D::pAdapter = NULL; // アダプター
 ID3D12Device* sanDirect3D::pDevice = NULL; // D3D12デバイス
 IDXGISwapChain4* sanDirect3D::pSwapChain = NULL; // スワップチェイン
 ID3D12CommandQueue* sanDirect3D::pCmdQueue = NULL; // コマンドキュー
+HANDLE              sanDirect3D::hFenceEvent = NULL; // フェンスイベント
+
+ID3D12Fence* sanDirect3D::pQueueFence = NULL; // コマんドキュー用フェンス
 ID3D12CommandAllocator* sanDirect3D::pCmdAllocator = NULL; // コマンドアロケーター
 ID3D12GraphicsCommandList* sanDirect3D::pCmdList = NULL; // コマンドリスト
+
+UINT sanDirect3D::fenceValue = 0;
 
 int sanDirect3D::initialize()
 {
@@ -18,12 +23,14 @@ int sanDirect3D::initialize()
 
 
 	createCommandList();
+	return 1;
 }
 
-// DXGIファクトリの作成
+// DXGIファクトリ作成
+// 主にディスプレイやスワップチェインを管理するために使用
 void sanDirect3D::createFactory()
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_OK; // 初期化
 	UINT dxgiFactoryFlag = 0;
 
 	// デバッグモードの場合はデバッグレイヤーを有効にする
@@ -46,9 +53,11 @@ void sanDirect3D::createFactory()
 	// hr = pFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
 }
 
+// デバイス生成
+// GPUやディスプレイアダプタを使ってグラフィックスリソースを管理・操作するためのインターフェース
 void sanDirect3D::createDevice()
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_OK; // 初期化
 
 	// アダプターを列挙し、最初に見つかったアダプターを使用する
 	hr = pFactory->EnumAdapters(0, (IDXGIAdapter**)&pAdapter);
@@ -106,9 +115,11 @@ void sanDirect3D::createDevice()
 	assert(pDevice != NULL);
 }
 
+// コマンドキュー生成
+// GPUに対して描画や計算の命令(コマンド)を送るためのキュー(列)
 void sanDirect3D::createCommandQueue()
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_OK; // 初期化
 
 	// コマンドキューの設定
 	D3D12_COMMAND_QUEUE_DESC command_queue_desc = {};
@@ -117,12 +128,37 @@ void sanDirect3D::createCommandQueue()
 	command_queue_desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE; // タイムアウトなし
 	command_queue_desc.NodeMask = 0;
 
-	//============================================================================================================================
-	// まだ記入できてない
+	// コマンドキューの作成
+	hr = pDevice->CreateCommandQueue(&command_queue_desc, IID_PPV_ARGS(&pCmdQueue));
+	assert(hr == S_OK);
+	pCmdQueue->SetName(L"sanDirect3D::pCmdQueue");
 
+	// フェンスイベントの作成
+	hFenceEvent = CreateEventEx(NULL, FALSE, FALSE, EVENT_ALL_ACCESS);
+	assert(hFenceEvent != NULL);
+	// コマンドキュー用のフェンスの生成
+	hr = pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&pQueueFence));
+	assert(hr == S_OK);
+	pQueueFence->SetName(L"sanDirect3D::pQueueFence");
+
+	fenceValue = 1; // フェンスの初期値を1に設定
 }
 
+// スワップチェイン作成
+// フロントバッファとバックバッファを入れ替える機能
+// バックバッファは描画中のフレーム(ユーザーに見えていない)
+// フロントバッファは画面に表示されているフレーム(ユーザーに見えている)
+void sanDirect3D::createSwapChain()
+{
+	HRESULT hr = S_OK;
 
+	// スワップチェインの設定
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+	//swapchaindesc.width = (uint)
+}
+
+// コマンドリスト作成
+// DirectX12の描画や計算の指示の一連の命令としてまとめる
 void sanDirect3D::createCommandList()
 {
 	HRESULT hr = S_OK;

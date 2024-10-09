@@ -1,3 +1,4 @@
+// san_framework.cpp : アプリケーションのエントリ ポイントを定義します。
 #include "framework.h"
 #include "framework/san_environment.h"
 #ifdef _DEBUG

@@ -24,4 +24,7 @@
 #include "directX/san_Direct3D.h"
 #include "../public/scene/san_scene.h"
 
+#include "../public/scene/san_scene.h"
+#include "../public/scene/scene_table.h"
+
 #include "san_mainframe.h"

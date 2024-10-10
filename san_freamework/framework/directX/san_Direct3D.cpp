@@ -21,7 +21,7 @@ int sanDirect3D::initialize()
 {
 	createFactory();
 	createDevice();
-
+	createCommandQueue();
 
 	createCommandList();
 	return 1;
@@ -174,4 +174,12 @@ void sanDirect3D::createCommandList()
 		0, D3D12_COMMAND_LIST_TYPE_DIRECT, pCmdAllocator, NULL, IID_PPV_ARGS(&pCmdList));
 	assert(hr == S_OK);
 	pCmdList->SetName(L"sanDirect3D::pCmdList");
+}
+
+void sanDirect3D::terminate()
+{
+	// 安全に解放するためのマクロ
+	//SAFE_RELEASE()
+
+	// 安全のため最後に宣言していく
 }

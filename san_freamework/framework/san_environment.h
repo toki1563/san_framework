@@ -20,6 +20,9 @@
 #define SCREEN_WIDTH (1280) 
 #define SCREEN_HEIGHT (720)
 
+// リリース
+#define SAFE_RELEASE(p) {if(p){(p)->Release();(p)=NULL;}}
+
 // フレームワークヘッダー
 #include "directX/san_Direct3D.h"
 #include "../public/scene/san_scene.h"

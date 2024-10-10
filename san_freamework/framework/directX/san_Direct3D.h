@@ -29,4 +29,5 @@ private:
 public:
 	// フレームワーク管理
 	static int initialize(void);
+	static void terminate(void);
 };

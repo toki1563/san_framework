@@ -4,24 +4,42 @@
 
 extern HWND hWnd; // ウィンドウハンドル
 
+UINT sanDirect3D::rtvIndex = 0;
+
 IDXGIFactory4* sanDirect3D::pFactory = NULL; // DXGIファクトリー
 IDXGIAdapter3* sanDirect3D::pAdapter = NULL; // アダプター
 ID3D12Device* sanDirect3D::pDevice = NULL; // D3D12デバイス
 IDXGISwapChain4* sanDirect3D::pSwapChain = NULL; // スワップチェイン
 ID3D12CommandQueue* sanDirect3D::pCmdQueue = NULL; // コマンドキュー
 HANDLE              sanDirect3D::hFenceEvent = NULL; // フェンスイベント
-
-ID3D12Fence* sanDirect3D::pQueueFence = NULL; // コマんドキュー用フェンス
+ID3D12Fence* sanDirect3D::pQueueFence = NULL; // コマンドキュー用フェンス
+ID3D12DescriptorHeap* sanDirect3D::pDH_RTV = NULL;	// ディスクリプタヒープ(RenderTargetView)
+ID3D12DescriptorHeap* sanDirect3D::pDH_DSV = NULL;	// ディスクリプタヒープ(DepthStencilView)
+D3D12_CPU_DESCRIPTOR_HANDLE	sanDirect3D::hRTV[frameCount];	// ディスクリプタハンドル(RenderTargetView)
+D3D12_CPU_DESCRIPTOR_HANDLE	sanDirect3D::hDSV;				// ディスクリプタハンドル(DepthStencilView)
+ID3D12Resource* sanDirect3D::pRenderTarget[frameCount];	// レンダーターゲット
+ID3D12Resource* sanDirect3D::pDepthBuffer = NULL;
 ID3D12CommandAllocator* sanDirect3D::pCmdAllocator = NULL; // コマンドアロケーター
-ID3D12GraphicsCommandList* sanDirect3D::pCmdList = NULL; // コマンドリスト
+ID3D12GraphicsCommandList* sanDirect3D::pCmdList = NULL;   // コマンドリスト
+ID3D12RootSignature* sanDirect3D::pRootSignature = NULL;   // ルートシグネチャ
 
 UINT sanDirect3D::fenceValue = 0;
+
+ID3D12Resource* sanDirect3D::pWhiteTex = NULL;
+D3D12_SHADER_RESOURCE_VIEW_DESC sanDirect3D::srvDesc = {};
 
 int sanDirect3D::initialize()
 {
 	createFactory();
+
 	createDevice();
+
 	createCommandQueue();
+
+	createSwapChain();
+
+	createRenderTargetView();
+
 
 	createCommandList();
 	return 1;
@@ -87,9 +105,9 @@ void sanDirect3D::createDevice()
 		// アダプターの情報をデバッグ
 		DXGI_ADAPTER_DESC1 adesc = {};
 		pAdapter->GetDesc1(&adesc);
-		OutputDebugString(L"Selected Adapter : ");
-		OutputDebugString(adesc.Description);
-		OutputDebugString(L"\n");
+		OutputDebugStringW(L"Selected Adapter : ");
+		OutputDebugStringW(adesc.Description);
+		OutputDebugStringW(L"\n");
 	}
 #endif
 	// フューチャーレベル列挙
@@ -155,8 +173,142 @@ void sanDirect3D::createSwapChain()
 
 	// スワップチェインの設定
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
-	//swapchaindesc.width = (uint)
+	swapChainDesc.Width = (UINT)sanMainFrame::screenWidth;   // 画面解像度[幅]
+	swapChainDesc.Height = (UINT)sanMainFrame::screenHeight; // 画面解像度[高]
+	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;       // ピクセルフォーマット
+	swapChainDesc.Stereo = false;                            // ステレオ表示フラグ
+	swapChainDesc.SampleDesc.Count = 1;                      // マルチサンプルの指定
+	swapChainDesc.SampleDesc.Quality = 0;
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // ダブルバッファーなので2
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	swapChainDesc.BufferCount = frameCount;
+	swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+	swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+
+	// スワップチェインの作成
+	hr = pFactory->CreateSwapChainForHwnd(
+		pCmdQueue,
+		hWnd,
+		&swapChainDesc,
+		NULL,
+		NULL,
+		(IDXGISwapChain1**)&pSwapChain
+	);
+	assert(hr == S_OK);
+
+	// カレントのバックバッファのインデックスを取得する
+	rtvIndex = pSwapChain->GetCurrentBackBufferIndex();
+
+	// フルスクリーンへの遷移をサポートしない
+	// スワップチェインの作成後
+	hr = pFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
 }
+
+// レンダーターゲットの生成
+// ディスクリプタヒープはリソースを参照するためのディスクリプタの集合体
+// ディスクリプタハンドルはディスクリプタヒープ内の特定のリソースを指し示すポインタ
+// レンダーターゲットはGPUが描画結果を出力するバッファのこと
+void sanDirect3D::createRenderTargetView()
+{
+	HRESULT hr = S_OK;
+
+	// RTV用デスクリプタヒープの設定
+	D3D12_DESCRIPTOR_HEAP_DESC heap_desc = {};
+	heap_desc.NumDescriptors = frameCount;
+	heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	heap_desc.NodeMask = 0;
+
+	// RTV用のデスクリプタヒープの作成
+	hr = pDevice->CreateDescriptorHeap(&heap_desc, IID_PPV_ARGS(&pDH_RTV));
+	assert(hr == S_OK);
+	pDH_RTV->SetName(L"sanDirect3D::pDH_RTV");
+
+	// ディスクリプタのサイズ取得
+	UINT size = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+	// レンダーターゲット
+	for (UINT i = 0; i < frameCount; i++)
+	{
+		// スワップチェインからバッファを受け取る
+		hr = pSwapChain->GetBuffer(i, IID_PPV_ARGS(&pRenderTarget[i]));
+		assert(hr == S_OK);
+		pRenderTarget[i]->SetName(L"sanDirect3D::pRenderTarget");
+		// RenderTargetViewを作成してヒープデスクリプタに登録
+		hRTV[i] = pDH_RTV->GetCPUDescriptorHandleForHeapStart();
+		hRTV[i].ptr += size * i;
+		pDevice->CreateRenderTargetView(pRenderTarget[i], NULL, hRTV[i]);
+	}
+}
+
+// 深度シテンシルバッファ作成
+// 3Dレンダリングの際にピクセルの奥行情報を記録し、物体の前後関係を判断
+void sanDirect3D::createDepthStencilBuffer()
+{
+	HRESULT hr = S_OK;
+
+	// 深度バッファ作成
+	D3D12_RESOURCE_DESC depthResDesc = {};
+	depthResDesc.Alignment = 0;
+	depthResDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D; // 2Dテクスチャデータ
+	depthResDesc.Width = sanMainFrame::screenWidth;   // レンダーダーゲットと同じ
+	depthResDesc.Height = sanMainFrame::screenHeight;
+	depthResDesc.DepthOrArraySize = 1;
+	depthResDesc.Format = DXGI_FORMAT_D32_FLOAT; // 深度値書き込み用フォーマット
+	depthResDesc.SampleDesc.Count = 1;
+	depthResDesc.SampleDesc.Quality = 0;
+	depthResDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL; // 深度ステンシルとして使用
+	depthResDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+	depthResDesc.MipLevels = 0;
+
+	// ピーププロパティ設定
+	D3D12_HEAP_PROPERTIES depthHeapProp = {};
+	depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT; // デフォルトを使用
+	depthHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	depthHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	depthHeapProp.CreationNodeMask = 0;
+	depthHeapProp.VisibleNodeMask = 0;
+
+	// クリアバリュー
+	D3D12_CLEAR_VALUE _depthClearValue = {};
+	_depthClearValue.DepthStencil.Depth = 1.0f; // 深度バッファの最大値を(1.0)でクリア
+	_depthClearValue.DepthStencil.Stencil = 0;
+	_depthClearValue.Format = DXGI_FORMAT_D32_FLOAT; // 32bit深度値としてクリア
+
+	// 深度バッファリソース作成
+	hr = pDevice->CreateCommittedResource(
+		&depthHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&depthResDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE, // 深度書き込みとして使用
+		&_depthClearValue,
+		IID_PPV_ARGS(&pDepthBuffer));
+	assert(hr == S_OK);
+	pDepthBuffer->SetName(L"sanDirect3D::pDepthBuffer");
+
+	// 深度用ディスクリプタヒープ作成
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
+	dsvHeapDesc.NumDescriptors = 1; // 深度ビュー1つのみ
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV; // 深度ステンシルビュータイプ使用
+	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	dsvHeapDesc.NodeMask = 0;
+	hr = pDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&pDH_DSV));
+	assert(hr == S_OK);
+	pDH_DSV->SetName(L"sanDirect3D::pDH_DSV");
+
+	// 深度ビュー作成
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
+	pDevice->CreateDepthStencilView(pDepthBuffer, &dsvDesc, pDH_DSV->GetCPUDescriptorHandleForHeapStart());
+
+	// ハンドルの取得
+	hDSV = pDH_DSV->GetCPUDescriptorHandleForHeapStart();
+}
+
 
 // コマンドリスト作成
 // DirectX12の描画や計算の指示の一連の命令としてまとめる

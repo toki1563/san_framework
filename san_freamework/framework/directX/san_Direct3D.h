@@ -41,7 +41,7 @@ private:
 	static void createCommandList();
 	static void createRootSignature();
 
-	static void createWhiteTextuer();
+	static void createWhiteTexture();
 
 public:
 	// フレームワーク管理
@@ -66,5 +66,5 @@ public:
 	static UINT getIndex(void);
 
 	static ID3D12Resource* getWhiteTexture();
-	static D3D12_SHADER_RESOURCE_VIEW_DESC* getWhiteTextueViewDesc();
+	static D3D12_SHADER_RESOURCE_VIEW_DESC* getWhiteTextureViewDesc();
 };

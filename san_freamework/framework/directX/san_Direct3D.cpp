@@ -30,6 +30,8 @@ D3D12_SHADER_RESOURCE_VIEW_DESC sanDirect3D::srvDesc = {};
 
 int sanDirect3D::initialize()
 {
+	HRESULT hr = S_OK;
+
 	createFactory();
 
 	createDevice();
@@ -40,8 +42,16 @@ int sanDirect3D::initialize()
 
 	createRenderTargetView();
 
+	createDepthStencilBuffer();
 
 	createCommandList();
+
+	createRootSignature();
+
+	createWhiteTexture();
+
+	hr = pCmdList->Close();
+
 	return 1;
 }
 
@@ -328,10 +338,137 @@ void sanDirect3D::createCommandList()
 	pCmdList->SetName(L"sanDirect3D::pCmdList");
 }
 
+// ルートシグネチャ作成
+void sanDirect3D::createRootSignature()
+{
+	HRESULT hr = S_OK;
+
+	// ルートシグネチャの設定
+	D3D12_DESCRIPTOR_RANGE descTblRange[2] = {}; // テクスチャと定数の2つ
+
+	// テクスチャ
+	descTblRange[0].NumDescriptors = 1;
+	descTblRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // 種別はテクスチャ
+	descTblRange[0].BaseShaderRegister = 0;                      // 0番スロットから
+	descTblRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	// 定数バッファ
+	descTblRange[1].NumDescriptors = 1;	         // 定数一つ
+	descTblRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV; // 種別は定数
+	descTblRange[1].BaseShaderRegister = 0;                      // 0番スロットから
+	descTblRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	// ルートパラメーターの設定
+	D3D12_ROOT_PARAMETER rootparam = {};
+	rootparam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootparam.DescriptorTable.pDescriptorRanges = &descTblRange[0];         // デスクリプタレンジのアドレス
+	rootparam.DescriptorTable.NumDescriptorRanges = _countof(descTblRange); // デスクリプタレンジ数
+	rootparam.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;               // 全てのシェーダーから見える
+
+	// サンプラーステートの設定
+	D3D12_STATIC_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
+	samplerDesc.MinLOD = 0.0f;
+	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+	// ルートシグネチャを設定
+	D3D12_ROOT_SIGNATURE_DESC root_signature_desc = {};
+	root_signature_desc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	root_signature_desc.NumParameters = 1;
+	root_signature_desc.pParameters = &rootparam;
+	root_signature_desc.NumStaticSamplers = 1;
+	root_signature_desc.pStaticSamplers = &samplerDesc;
+
+	// ルートシグネチャのバイナリコードを作成
+	ID3D10Blob* rSigBlob = NULL;
+	ID3D10Blob* rSigBlobErr = NULL;
+	hr = D3D12SerializeRootSignature(&root_signature_desc, D3D_ROOT_SIGNATURE_VERSION_1, &rSigBlob, &rSigBlobErr);
+	assert(hr == S_OK);
+
+	// ルートシグネチャの作成
+	hr = pDevice->CreateRootSignature(0, rSigBlob->GetBufferPointer(), rSigBlob->GetBufferSize(), IID_PPV_ARGS(&pRootSignature));
+	assert(hr == S_OK);
+	pRootSignature->SetName(L"sanDirect3D::pRootSignature");
+
+	SAFE_RELEASE(rSigBlob);
+	SAFE_RELEASE(rSigBlobErr);
+}
+
+void sanDirect3D::createWhiteTexture()
+{
+
+}
+
 void sanDirect3D::terminate()
 {
 	// 安全に解放するためのマクロ
 	//SAFE_RELEASE()
 
 	// 安全のため最後に宣言していく
+}
+
+void sanDirect3D::beginRender(void)
+{
+
+}
+
+void sanDirect3D::beginRender2(void)
+{
+
+}
+
+void sanDirect3D::finishRender(void)
+{
+
+}
+
+void sanDirect3D::present(void)
+{
+
+}
+
+ID3D12Device* sanDirect3D::getDevice(void)
+{
+	return pDevice;
+}
+
+ID3D12CommandQueue* sanDirect3D::getCommandQueue(void)
+{
+	return pCmdQueue;
+}
+
+ID3D12RootSignature* sanDirect3D::getRootSignature(void)
+{
+	return pRootSignature;
+}
+
+ID3D12GraphicsCommandList* sanDirect3D::getCommandList(void)
+{
+	return pCmdList;
+}
+
+ID3D12Resource* sanDirect3D::getRenderTarget(int id)
+{
+	return pRenderTarget[id];
+}
+
+UINT sanDirect3D::getIndex(void)
+{
+	return rtvIndex;
+}
+
+ID3D12Resource* sanDirect3D::getWhiteTexture()
+{
+	return pWhiteTex;
+}
+
+D3D12_SHADER_RESOURCE_VIEW_DESC* sanDirect3D::getWhiteTextureViewDesc()
+{
+	return &srvDesc;
 }

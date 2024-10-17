@@ -1,6 +1,10 @@
 ﻿  san_Direct3D.cpp
   san_mainframe.cpp
   san_scene.cpp
+  scene_table.cpp
   san_framework.cpp
   コードを生成中...
-  san_freamework.vcxproj -> C:\Users\sanda\source\repos\san_framework\x64\Debug\san_freamework.exe
+san_mainframe.obj : error LNK2019: 未解決の外部シンボル __imp_timeBeginPeriod が関数 "public: static void __cdecl sanMainFrame::execute(void)" (?execute@sanMainFrame@@SAXXZ) で参照されました
+san_mainframe.obj : error LNK2019: 未解決の外部シンボル __imp_timeEndPeriod が関数 "public: static void __cdecl sanMainFrame::execute(void)" (?execute@sanMainFrame@@SAXXZ) で参照されました
+san_mainframe.obj : error LNK2019: 未解決の外部シンボル "void __cdecl swichScene(void)" (?swichScene@@YAXXZ) が関数 "public: static void __cdecl sanMainFrame::execute(void)" (?execute@sanMainFrame@@SAXXZ) で参照されました
+C:\Users\sanda\source\repos\san_framework\x64\Debug\san_freamework.exe : fatal error LNK1120: 3 件の未解決の外部参照

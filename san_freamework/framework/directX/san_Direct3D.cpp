@@ -400,37 +400,181 @@ void sanDirect3D::createRootSignature()
 	SAFE_RELEASE(rSigBlobErr);
 }
 
+// テクスチャの作成
+// テクスチャを作成しピクセルシェーダーで使用できるように設定
 void sanDirect3D::createWhiteTexture()
 {
+	HRESULT hr = S_OK;
 
+	// テクスチャのサイズ
+	UINT32 texWidth = 32;
+	UINT32 texHeight = 32;
+
+	// ヒーププロパティの設定
+	D3D12_HEAP_PROPERTIES texHeapProp = {};
+	texHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM; // 特殊な設定
+	texHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // ライトバック
+	texHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // 転送はLO(CPU側)から直接行う
+	texHeapProp.CreationNodeMask = 0;
+	texHeapProp.VisibleNodeMask = 0;
+
+	// テクスチャリソースの設定
+	D3D12_RESOURCE_DESC texResDesc = {};
+	texResDesc.Alignment = 0;
+	texResDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	texResDesc.Width = texWidth;
+	texResDesc.Height = texHeight;
+	texResDesc.DepthOrArraySize = 1;
+	texResDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // RGBAフォーマット
+	texResDesc.SampleDesc.Count = 1;
+	texResDesc.SampleDesc.Quality = 0;
+	texResDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	texResDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+	texResDesc.MipLevels = 1;
+
+	// テクスチャの作成
+	hr = pDevice->CreateCommittedResource(
+		&texHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&texResDesc,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		NULL,
+		IID_PPV_ARGS(&pWhiteTex)
+	);
+	assert(hr == S_OK);
+	pWhiteTex->SetName(L"sanDirect3D::pWhiteTex");
+
+	// ピクセルデータ(作成と書き込み)
+	UINT32* pixelData = new UINT32[texWidth * texHeight];
+	memset(pixelData, 0xff, sizeof(UINT32) * texWidth * texHeight);
+
+	hr = pWhiteTex->WriteToSubresource(
+		0,
+		NULL,
+		pixelData,
+		sizeof(UINT32) * texWidth, // 1ラインサイズ
+		sizeof(UINT32) * texWidth * texHeight // 全サイズ
+	);
+	delete[] pixelData;
+
+	// シェーダーリソースビューデスクリプション
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
 }
 
+// 安全に解放するためのマクロ
 void sanDirect3D::terminate()
 {
-	// 安全に解放するためのマクロ
-	//SAFE_RELEASE()
-
-	// 安全のため最後に宣言していく
+	// 依存関係のため逆順で開放
+	SAFE_RELEASE(pWhiteTex);
+	SAFE_RELEASE(pRootSignature);
+	SAFE_RELEASE(pCmdList);
+	SAFE_RELEASE(pCmdAllocator);
+	for (int i = 0; i < frameCount; i++)
+	{
+		SAFE_RELEASE(pRenderTarget[i]);
+	}
+	SAFE_RELEASE(pDepthBuffer);
+	SAFE_RELEASE(pDH_RTV);
+	SAFE_RELEASE(pDH_DSV);
+	SAFE_RELEASE(pQueueFence);
+	CloseHandle(hFenceEvent);
+	SAFE_RELEASE(pCmdQueue);
+	SAFE_RELEASE(pSwapChain);
+	SAFE_RELEASE(pDevice);
+	SAFE_RELEASE(pAdapter);
+	SAFE_RELEASE(pFactory);
 }
 
+// 描画準備
 void sanDirect3D::beginRender(void)
 {
+	HRESULT hr = S_OK;
 
+	// ビューポートとシザー矩形の設定
+	static D3D12_VIEWPORT viewport = { 0.0f, 0.0f, (float)sanMainFrame::screenWidth, (float)sanMainFrame::screenHeight, 0.0f, 1.0f };
+	static D3D12_RECT scissorRect = { 0, 0, static_cast<LONG>(sanMainFrame::screenWidth), static_cast<LONG>(sanMainFrame::screenHeight) };
+
+	// コマンドアロケータとコマンドリストをリセット
+	hr = pCmdAllocator->Reset();
+	assert(hr == S_OK);
+	hr = pCmdList->Reset(pCmdAllocator, NULL);
+	assert(hr == S_OK);
+
+	// ルートシグネチャ/ビューポート/シザー矩形の設定
+	pCmdList->SetGraphicsRootSignature(pRootSignature);
+	pCmdList->RSSetViewports(1, &viewport);
+	pCmdList->RSSetScissorRects(1, &scissorRect);
+
+	// レンダーターゲットへのリソースバリア
+	D3D12_RESOURCE_BARRIER BarrierDesc = {};
+	BarrierDesc.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	BarrierDesc.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	BarrierDesc.Transition.pResource = pRenderTarget[rtvIndex];
+	BarrierDesc.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	BarrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+	BarrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	pCmdList->ResourceBarrier(1, &BarrierDesc);
+
+	// レンダーターゲットと深度バッファの設定
+	pCmdList->OMSetRenderTargets(1, &hRTV[rtvIndex], true, &hDSV);
+
+	// レンダーターゲットと深度バッファのクリア
+	pCmdList->ClearRenderTargetView(hRTV[rtvIndex], sanMainFrame::clearColor, 0, NULL);
+	pCmdList->ClearDepthStencilView(hDSV, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, NULL);
 }
 
-void sanDirect3D::beginRender2(void)
-{
-
-}
-
+// 描画終了
 void sanDirect3D::finishRender(void)
 {
+	HRESULT hr = S_OK;
 
+#if 0 // この後Direct2Dの描画がある場合はここでプレゼンテーション移行しない
+
+	// プレゼンテーションへのリソースバリア
+	D3D12_RESOURCE_BARRIER BarrierDesc = {};
+	BarrierDesc.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	BarrierDesc.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	BarrierDesc.Transition.pResource = pRenderTarget[rtvIndex];
+	BarrierDesc.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	BarrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	BarrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+	pCmdList->ResourceBarrier(1, &BarrierDesc);
+
+#endif
+
+	// コマンドリストのクローズ
+	hr = pCmdList->Close();
+	assert(hr == S_OK);
+
+	// コマンドリストの実行
+	ID3D12CommandList* ppCommandLists[] = { pCmdList };
+	pCmdQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 }
 
+// 描画表示(プレゼンテーション)し、次のフレームに進むための処理
 void sanDirect3D::present(void)
 {
+	HRESULT hr = S_OK;
 
+	// スワップチェインのプレゼンテーション
+	// 1フレームごとに表示を更新
+	hr = pSwapChain->Present(1, 0);
+
+	// 描画の終了待ち
+	const UINT64 fence = fenceValue;
+	hr = pCmdQueue->Signal(pQueueFence, fence);
+	fenceValue++;
+	if (pQueueFence->GetCompletedValue() < fence)
+	{
+		hr = pQueueFence->SetEventOnCompletion(fence, hFenceEvent);
+		WaitForSingleObject(hFenceEvent, INFINITE); // 指定したイベントが終わるまで無制限に待つ
+	}
+
+	// バックバッファのインデックス取得
+	rtvIndex = pSwapChain->GetCurrentBackBufferIndex();
 }
 
 ID3D12Device* sanDirect3D::getDevice(void)

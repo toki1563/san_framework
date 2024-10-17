@@ -50,7 +50,6 @@ public:
 
 	// 描画システムコール
 	static void beginRender(void);
-	static void beginRender2(void);
 	static void finishRender(void);
 	static void present(void);
 

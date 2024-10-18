@@ -1,16 +1,12 @@
 // san_framework.cpp : アプリケーションのエントリ ポイントを定義します。
 #include "framework.h"
+#include "resource.h"
 #include "framework/san_environment.h"
 #ifdef _DEBUG
 #include <iostream>
 #endif
 
 HWND hWnd = NULL; // ウィンドウハンドル
-
-// @brief コンソール画面にフォーマット付き文字列を表示
-// @param formatフォーマット(%dとか%fとかの)
-// @parma 可変長引数
-// @remarks この関数はデバッグ用です。デバッグ時にしか動作しません。
 
 void DebugOutputFormatString(const char* format, ...)
 {

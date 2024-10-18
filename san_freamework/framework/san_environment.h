@@ -2,8 +2,15 @@
 #pragma once
 
 // ライブラリ
+#pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dwrite.lib")
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "xinput.lib")
+#pragma comment(lib, "winmm.lib")
 
 // 共通ヘッダファイルのインクルード
 #include <stdio.h>
@@ -13,8 +20,23 @@
 #include <time.h>
 
 // DirectXヘッダー
+#include <d2d1_3.h>
+#include <dwrite.h>
+#include <d3d11on12.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
+
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+#include <Xinput.h>
+#include <xaudio2.h>
+
+#include <DirectXMath.h>
+
+#include "../DirectXTex/DirectXTex.h"
+
+// ネームスペース
+using namespace DirectX;
 
 // 画面の大きさ
 #define SCREEN_WIDTH (1280) 

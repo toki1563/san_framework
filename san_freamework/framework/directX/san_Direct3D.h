@@ -5,7 +5,7 @@ class sanDirect3D
 {
 public:
 	static constexpr UINT frameCount = 2;
-
+	
 private:
 	static UINT rtvIndex;
 

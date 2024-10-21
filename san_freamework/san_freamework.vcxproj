@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="framework\directX\san_Direct3D.h" />
+    <ClInclude Include="framework\directX\san_DirectInput.h" />
     <ClInclude Include="framework\san_environment.h" />
     <ClInclude Include="framework\san_mainframe.h" />
     <ClInclude Include="public\scene\san_scene.h" />
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework\directX\san_Direct3D.cpp" />
+    <ClCompile Include="framework\directX\san_DirectInput.cpp" />
     <ClCompile Include="framework\san_mainframe.cpp" />
     <ClCompile Include="public\scene\san_scene.cpp" />
     <ClCompile Include="public\scene\scene_table.cpp" />

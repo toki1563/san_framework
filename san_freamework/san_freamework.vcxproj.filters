@@ -42,6 +42,9 @@
     <ClCompile Include="public\scene\scene_table.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
+    <ClCompile Include="framework\directX\san_DirectInput.cpp">
+      <Filter>framework\directX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\directX\san_DirectInput.h">
+      <Filter>framework\directX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -47,7 +47,7 @@ using namespace DirectX;
 
 // フレームワークヘッダー
 #include "directX/san_Direct3D.h"
-#include "../public/scene/san_scene.h"
+#include "directX/san_DirectInput.h"
 
 #include "../public/scene/san_scene.h"
 #include "../public/scene/scene_table.h"

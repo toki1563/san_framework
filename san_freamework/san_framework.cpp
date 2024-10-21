@@ -2,95 +2,107 @@
 #include "framework.h"
 #include "resource.h"
 #include "framework/san_environment.h"
-#ifdef _DEBUG
-#include <iostream>
-#endif
 
-HWND hWnd = NULL; // ウィンドウハンドル
+#define MAX_LOADSTRING 100
 
-void DebugOutputFormatString(const char* format, ...)
+// グローバル変数
+HINSTANCE hInst;                     // 現在のインターフェース
+WCHAR szTitle[MAX_LOADSTRING];       // タイトルバーのテキスト
+WCHAR szWindowClass[MAX_LOADSTRING]; // メインウィンドウクラス名
+HWND hWnd = NULL;					 // ウィンドウハンドル
+
+// クライアント領域のサイズ
+int screen_width = SCREEN_WIDTH;
+int screen_height = SCREEN_HEIGHT;
+
+// このコードモジュールに含まれる関数の宣言を転送します
+ATOM				MyRegisterClass(HINSTANCE hInstance);
+BOOL				InitInstance(HINSTANCE, int);
+LRESULT CALLBACK	WindowProcedure(HWND, UINT, WPARAM, LPARAM);
+
+// エントリーポイント
+int APIENTRY wWinMain(_In_ HINSTANCE hInsrance,
+	_In_opt_ HINSTANCE hPrevInstance, // このアプリケーションが既に実行中かどうかを示す
+	_In_ LPWSTR lpCmdLine,			  // コマンドライン引数
+	_In_ int nCmdShow)				  // ウィンドウ表示状態(最大化・最小化など)
 {
-#ifdef _DEBUG
-	va_list valist;
-	va_start(valist, format);
-	printf(format, valist);
-	va_end(valist);
-#endif
+	//=============================================================================================
+}
+
+// ウィンドウクラスを登録(設定)
+ATOM MyMegisterClass(HINSTANCE hInstance)
+{
+	//=============================================================================================
+}
+
+// ウィンドウの初期化
+// インスタンスハンドルを保存して、メインウィンドウを作成
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
+{
+	//=============================================================================================
 }
 
 // ウィンドウプロシージャ
-LRESULT WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	// ウィンドウが破棄されたら呼ばれる
-	if (msg == WM_DESTROY)
+	switch (message)
 	{
-		PostQuitMessage(0); // OSに終わりと伝える
-		return 0;
-	}
-	if (wParam == VK_ESCAPE)	//ESCキー
+#if 0 // メッセージ確認用
+	case WM_COMMAND:
 	{
-		PostQuitMessage(0);		//アプリケーションを終了する
-	}
-	return DefWindowProc(hwnd, msg, wParam, lParam); // 既定の処理を行う
-}
-
-
-#ifdef _DEBUG
-int main()
-{
-#else
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-{
-#endif
-	DebugOutputFormatString("Show window test.");
-	getchar();
-
-	// ウィンドクラスの生成&登録
-	WNDCLASSEX w = {};
-
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProcedure; // コールバック関数の指定
-	w.lpszClassName = (L"san_framework"); // アプリケーション名
-	w.hInstance = GetModuleHandle(nullptr); // ハンドルの取得
-	RegisterClassEx(&w); // アプリケーションクラス(ウィンドウクラスの指定をOSに伝える)
-	RECT wrc = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }; // ウィンドウサイズ
-	// 関数を使ってウィンドウサイズを補正する
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-
-	// ウィンドウオブジェクト生成
-	HWND hwnd = CreateWindow(w.lpszClassName, // クラス名指定
-		(L"san_framework"), // タイトルバー文字
-		WS_OVERLAPPEDWINDOW, // タイトルバーと境界線があるウィンドウ
-		CW_USEDEFAULT, // 表示ｘ座標はOSにお任せ
-		CW_USEDEFAULT, // 表示ｘ座標はOSにお任せ
-		wrc.right - wrc.left, // ウィンドウ幅
-		wrc.bottom - wrc.top, // ウィンドウ高
-		nullptr, // 親ウィンドウハンドル
-		nullptr, // メニューハンドル
-		w.hInstance, // 呼び出しアプリケーションハンドル
-		nullptr); // 追加パラメーター
-
-	// ウィンドウ表示
-	ShowWindow(hwnd, SW_SHOW);
-
-	MSG msg = {};
-	while (true)
-	{
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		int wmId = LOWORD(wParam);
+		// 選択されたメニューの解析
+		switch (wmId)
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		// アプリケーションが終わるときにmessageがWM_QUITになる
-		if (msg.message == WM_QUIT)
-		{
+		case IDM_ABOUT:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
+		case ISM_EXIT:
+			DestroyWindow(hWnd);
+			break;
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 	}
-
-	// もう使わないので登録解除
-	UnregisterClass(w.lpszClassName, w.hInstance);
-
+	break;
+#endif
+	case WM_MOUSEMOVE: // マウスの座標の設定
+		//========================================================================================
+		break;
+	case WM_KEYDOWN:   // キーが押された
+		// ウィンドウが破棄されたら呼ばれる
+		if (wParam == VK_ESCAPE)	//ESCキー
+		{
+			PostQuitMessage(0);		//アプリケーションを終了する
+		}
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0); // OSに終わりと伝える
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam); // 既定の処理を行う
+	}
 	return 0;
 }
+
+#if 0
+// バージョン情報ボックスのメッセージ ハンドラー
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
+}
+#endif

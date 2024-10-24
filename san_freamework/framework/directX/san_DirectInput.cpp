@@ -1,36 +1,36 @@
-// DirectInputŠÇ—
+// DirectInputç®¡ç†
 #include "../../framework.h"
 #include "../san_environment.h"
 
-LPDIRECTINPUT8			sanDirectInput::pDI = NULL;				 // DirectInputƒIƒuƒWƒFƒNƒg
+LPDIRECTINPUT8			sanDirectInput::pDI = NULL;				 // DirectInputã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 LPDIRECTINPUTDEVICE8	sanDirectInput::pDIKeyboard = NULL;		 // Keyboard
 LPDIRECTINPUTDEVICE8	sanDirectInput::pDIMouse = NULL;		 // mouse
 LPDIRECTINPUTDEVICE8	sanDirectInput::pDIDev[sanJOYSTICK_MAX]; // joystick
 
-DIMOUSESTATE2	sanDirectInput::diMoue;  // ƒ}ƒEƒX‚Ìó‘Ô
-int				sanDirectInput::mouse_x; // ƒ}ƒEƒX‚ÌÀ•WX
-int				sanDirectInput::mouse_y; // ƒ}ƒEƒX‚ÌÀ•WY
-BYTE			sanDirectInput::diKeyboard[256];  // ƒL[ƒ{[ƒh—p
-BYTE			sanDirectInput::oldKeyboard[256]; // 1ƒtƒŒ[ƒ€‘O‚ÌƒL[ƒ{[ƒh‚Ìó‘Ô
+DIMOUSESTATE2	sanDirectInput::diMoue;  // ãƒã‚¦ã‚¹ã®çŠ¶æ…‹
+int				sanDirectInput::mouse_x; // ãƒã‚¦ã‚¹ã®åº§æ¨™X
+int				sanDirectInput::mouse_y; // ãƒã‚¦ã‚¹ã®åº§æ¨™Y
+BYTE			sanDirectInput::diKeyboard[256];  // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ç”¨
+BYTE			sanDirectInput::oldKeyboard[256]; // 1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹
 DIJOYSTATE		sanDirectInput::diJoystick[sanJOYSTICK_MAX];
 DIJOYSTATE		sanDirectInput::oldJoystick[sanJOYSTICK_MAX];
 
 int				sanDirectInput::joystickButtonNum = sizeof(diJoystick[0].rgbButtons) / sizeof(BYTE);
-int				sanDirectInput::joystickAxisRange = 1000; // ƒXƒeƒBƒbƒN‚Ì²‚Ì”ÍˆÍ
+int				sanDirectInput::joystickAxisRange = 1000; // ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®è»¸ã®ç¯„å›²
 float			sanDirectInput::joystickAxisRangeF = 1.0f / (float)joystickAxisRange;
 
 HRESULT sanDirectInput::initialize(void *hinst)
 {
 	HRESULT hr;
 
-	// IDirectInput8ƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìæ“¾
+	// IDirectInput8ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å–å¾—
 	hr = DirectInput8Create((HINSTANCE)hinst, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&pDI, NULL);
 	if (FAILED(hr))
 	{
 		return hr;
 	}
 
-	// ƒWƒ‡ƒCƒXƒeƒBƒbƒNî•ñ‚Ì‰Šú‰»
+	// ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®åˆæœŸåŒ–
 	for (int i = 0; i < sanJOYSTICK_MAX; i++)
 	{
 		pDIDev[i] = NULL;
@@ -38,22 +38,22 @@ HRESULT sanDirectInput::initialize(void *hinst)
 		ZeroMemory(&oldJoystick[i], sizeof(DIJOYSTATE));
 	}
 
-	// IDirectInputDevice8ƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìæ“¾
-	// ƒ}ƒEƒX
+	// IDirectInputDevice8ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å–å¾—
+	// ãƒã‚¦ã‚¹
 	hr = pDI->CreateDevice(GUID_SysMouse, &pDIMouse, NULL);
 	if (FAILED(hr))
 	{
 		terminate();
 		return E_FAIL;
 	}
-	hr = pDIMouse->SetDataFormat(&c_dfDIMouse2); // ƒf[ƒ^ƒtƒH[ƒ}ƒbƒg‚Ìİ’è
+	hr = pDIMouse->SetDataFormat(&c_dfDIMouse2); // ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
 	if (FAILED(hr))
 	{
 		terminate();
 		return E_FAIL;
 	}
 
-	// ƒL[ƒ{[ƒh
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
 	hr = pDI->CreateDevice(GUID_SysKeyboard, &pDIKeyboard, NULL);
 	if (FAILED(hr))
 	{
@@ -67,15 +67,15 @@ HRESULT sanDirectInput::initialize(void *hinst)
 		return E_FAIL;
 	}
 
-	// ƒWƒ‡ƒCƒXƒeƒBƒbƒN
-	// ƒfƒoƒCƒX‚Ì—ñ‹“
+	// ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯
+	// ãƒ‡ãƒã‚¤ã‚¹ã®åˆ—æŒ™
 	hr = pDI->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoystickCallback, NULL, DIEDFL_ATTACHEDONLY);
 	if (FAILED(hr))
 	{
 		terminate();
 		return E_FAIL;
 	}
-	// ƒf[ƒ^Œ`®‚Ìİ’è
+	// ãƒ‡ãƒ¼ã‚¿å½¢å¼ã®è¨­å®š
 	for (int i = 0; i < sanJOYSTICK_MAX; i++)
 	{
 		if (pDIDev[i] == NULL) continue;
@@ -86,19 +86,19 @@ HRESULT sanDirectInput::initialize(void *hinst)
 			terminate();
 			return E_FAIL;
 		}
-		// ƒtƒHƒAƒOƒ‰ƒEƒ“ƒh&”ñ”r‘¼ƒ‚[ƒh‚Ìİ’è
+		// ãƒ•ã‚©ã‚¢ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰&æ’ä»–ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
 		// hr = pDIDev[2]->SetCooperativeLevel(hwndApp,DISCL_NONEEXCLUSIVE | DISCL_FOREGROUND);
 		// if(FAILED(hr))
 		// {
 		// 	  return E_FAIL;
 		// }
-		// ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğg‚Á‚ÄŠe²‚Ìƒ‚[ƒh‚Ìİ’è
+		// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’ä½¿ç”¨ã—ã¦è»¸ã®è¨­å®š
 		hr = pDIDev[i]->EnumObjects(EnumAxisCallback, &i, DIDFT_AXIS);
 		if (FAILED(hr))
 		{
 			return E_FAIL;
 		}
-		// ²ƒ‚[ƒh‚ğâ‘Î’lƒ‚[ƒh‚Éİ’è
+		// è»¸ãƒ¢ãƒ¼ãƒ‰ã‚’çµ¶å¯¾å€¤ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
 		DIPROPDWORD diprop;
 		diprop.diph.dwSize = sizeof(diprop);
 		diprop.diph.dwHeaderSize = sizeof(diprop.diph);
@@ -110,14 +110,14 @@ HRESULT sanDirectInput::initialize(void *hinst)
 		{
 			return E_FAIL;
 		}
-		// ƒoƒbƒtƒ@ƒŠƒ“ƒOƒf[ƒ^‚ğæ“¾‚·‚é‚½‚ßƒoƒbƒtƒ@ƒTƒCƒY‚ğİ’è
+		// ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’è¨­å®š
 		diprop.dwData = 100; // DIDEVICE_BUFFERSIZE
 		hr = pDIDev[i]->SetProperty(DIPROP_BUFFERSIZE, &diprop.diph);
 		if (FAILED(hr))
 		{
 			return E_FAIL;
 		}
-		// “ü—Í§ŒäŠJn
+		// å…¥åŠ›å—ä»˜é–‹å§‹
 		pDIDev[i]->Acquire();
 	}
 

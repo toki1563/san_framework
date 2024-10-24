@@ -1,21 +1,21 @@
-// DirectInputŠÇ—
+// DirectInputç®¡ç†
 #pragma once
 
-#define sanJOYSTICK_MAX (4) // g—p‚Å‚«‚é¼Ş®²½Ã¨¯¸‚Ì”
+#define sanJOYSTICK_MAX (4) // ä½¿ç”¨ã§ãã‚‹ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®æœ€å¤§æ•°
 
 class sanDirectInput
 {
 private:
-	static LPDIRECTINPUT8		pDI;					  // DirectInputƒIƒuƒWƒFƒNƒg
-	static LPDIRECTINPUTDEVICE8	pDIKeyboard;			  // ƒfƒoƒCƒX:keyboard
-	static LPDIRECTINPUTDEVICE8	pDIMouse;				  // ƒfƒoƒCƒX:mouse
-	static LPDIRECTINPUTDEVICE8	pDIDev[sanJOYSTICK_MAX];  // ƒfƒoƒCƒX:joystick
+	static LPDIRECTINPUT8		pDI;					  // DirectInputã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	static LPDIRECTINPUTDEVICE8	pDIKeyboard;			  // ãƒ‡ãƒã‚¤ã‚¹:keyboard
+	static LPDIRECTINPUTDEVICE8	pDIMouse;				  // ãƒ‡ãƒã‚¤ã‚¹:mouse
+	static LPDIRECTINPUTDEVICE8	pDIDev[sanJOYSTICK_MAX];  // ãƒ‡ãƒã‚¤ã‚¹:joystick
 
-	static DIMOUSESTATE2 diMoue;		   // ƒ}ƒEƒX—p
-	static int           mouse_x;		   // ƒ}ƒEƒX•ëÀ•W
-	static int           mouse_y;		   // ƒ}ƒEƒX‚ÌÀ•W
-	static BYTE			 diKeyboard[256];  // ƒL[ƒ{[ƒh—p
-	static BYTE          oldKeyboard[256]; // 1ƒtƒŒ[ƒ€‘O‚ÌƒL[ƒ{[ƒh‚Ìó‘Ô
+	static DIMOUSESTATE2 diMoue;		   // ãƒã‚¦ã‚¹ç”¨
+	static int           mouse_x;		   // ãƒã‚¦ã‚¹åº§æ¨™X
+	static int           mouse_y;		   // ãƒã‚¦ã‚¹åº§æ¨™ï½™
+	static BYTE			 diKeyboard[256];  // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ç”¨
+	static BYTE          oldKeyboard[256]; // 1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹
 	static DIJOYSTATE    diJoystick[sanJOYSTICK_MAX];
 	static DIJOYSTATE    oldJoystick[sanJOYSTICK_MAX];
 

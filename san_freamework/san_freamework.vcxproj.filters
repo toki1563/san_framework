@@ -45,6 +45,12 @@
     <ClCompile Include="framework\directX\san_DirectInput.cpp">
       <Filter>framework\directX</Filter>
     </ClCompile>
+    <ClCompile Include="framework\san_mouse.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\directX\san_Direct2D.cpp">
+      <Filter>framework\directX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -72,6 +78,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="framework\directX\san_DirectInput.h">
+      <Filter>framework\directX</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_mouse.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\directX\san_Direct2D.h">
       <Filter>framework\directX</Filter>
     </ClInclude>
   </ItemGroup>

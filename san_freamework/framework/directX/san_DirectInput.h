@@ -11,7 +11,7 @@ private:
 	static LPDIRECTINPUTDEVICE8	pDIMouse;				  // デバイス:mouse
 	static LPDIRECTINPUTDEVICE8	pDIDev[sanJOYSTICK_MAX];  // デバイス:joystick
 
-	static DIMOUSESTATE2 diMoue;		   // マウス用
+	static DIMOUSESTATE2 diMouse;		   // マウス用
 	static int           mouse_x;		   // マウス座標X
 	static int           mouse_y;		   // マウス座標ｙ
 	static BYTE			 diKeyboard[256];  // キーボード用

@@ -51,6 +51,15 @@
     <ClCompile Include="framework\directX\san_Direct2D.cpp">
       <Filter>framework\directX</Filter>
     </ClCompile>
+    <ClCompile Include="framework\directX\san_XAudio2.cpp">
+      <Filter>framework\directX</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\directX\san_XInput.cpp">
+      <Filter>framework\directX</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\san_camera.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -85,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="framework\directX\san_Direct2D.h">
       <Filter>framework\directX</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\directX\san_XAudio2.h">
+      <Filter>framework\directX</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\directX\san_XInput.h">
+      <Filter>framework\directX</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_camera.h">
+      <Filter>framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,1 +1,1 @@
-// Direct2Dkanri
+// Direct2D管理

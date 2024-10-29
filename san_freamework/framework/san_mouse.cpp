@@ -1,4 +1,4 @@
-// ƒ}ƒEƒXnyuuryoku
+// ãƒã‚¦ã‚¹å…¥åŠ›
 #include "../framework.h"
 #include "san_environment.h"
 

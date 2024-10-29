@@ -1,27 +1,27 @@
-// ƒ}ƒEƒXnyuuryoku
+// ãƒã‚¦ã‚¹å…¥åŠ›
 #pragma once
 
 class sanMouse
 {
 public:
-	// ƒ}ƒEƒXƒ{ƒ^ƒ“
+	// ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³
 	enum eButton
 	{
-		LT = 0x01, // ¶ƒ{ƒ^ƒ“
-		MD = 0x02, // ’†ƒ{ƒ^ƒ“
-		RT = 0x04, // ‰Eƒ{ƒ^ƒ“
+		LT = 0x01, // å·¦ãƒœã‚¿ãƒ³
+		MD = 0x02, // ä¸­ãƒœã‚¿ãƒ³
+		RT = 0x04, // å³ãƒœã‚¿ãƒ³
 	};
 
-	static int getX(void);   // À•WX
-	static int getY(void);	 // À•WY
-	static int getR(void);	 // ƒ[ƒ‹
-	static int getDX(void);  // ˆÚ‘——ÊX
-	static int getDY(void);  // ˆÚ“®—ÊY
-	static bool on(eButton btn = LT);   // ƒIƒ“ó‘Ô(‰Ÿ‚µ‚Ä‚¢‚éŠÔ)æ“¾
-	static bool trg(eButton btn = LT);  // ƒgƒŠƒK[(‰Ÿ‚µ‚½uŠÔ)‚Ìæ“¾
-	static bool rel(eButton btn = LT);  // ƒŠƒŠ[ƒX(—£‚µ‚½uŠÔ)‚Ìæ“¾
+	static int getX(void);   // åº§æ¨™X
+	static int getY(void);	 // åº§æ¨™Y
+	static int getR(void);	 // ãƒ­ãƒ¼ãƒ«
+	static int getDX(void);  // ç§»é€é‡X
+	static int getDY(void);  // ç§»å‹•é‡Y
+	static bool on(eButton btn = LT);   // ã‚ªãƒ³çŠ¶æ…‹(æŠ¼ã—ã¦ã„ã‚‹é–“)å–å¾—
+	static bool trg(eButton btn = LT);  // ãƒˆãƒªã‚¬ãƒ¼(æŠ¼ã—ãŸç¬é–“)ã®å–å¾—
+	static bool rel(eButton btn = LT);  // ãƒªãƒªãƒ¼ã‚¹(é›¢ã—ãŸç¬é–“)ã®å–å¾—
 
-	// Œ»İ‚Ìó‘Ô‚ğæ“¾
+	// ç¾åœ¨ã®çŠ¶æ…‹ã‚’å–å¾—
 	static bool onL() { return on(LT); }
 	static bool onM() { return on(MD); }
 	static bool onR() { return on(RT); }
@@ -45,6 +45,6 @@ private:
 	static int Rel;
 
 public:
-	// ƒ}ƒEƒX‚Ìó‘Ô‚ğİ’è
+	// ãƒã‚¦ã‚¹ã®çŠ¶æ…‹ã‚’è¨­å®š
 	static void setMouseStatus(void);
 };

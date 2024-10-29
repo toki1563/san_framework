@@ -155,7 +155,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 	break;
 #endif
 	case WM_MOUSEMOVE: // マウスの座標の設定
-		//========================================================================================
+		sanDirectInput::setMousePosition(LOWORD(lParam), HIWORD(lParam));
 		break;
 	case WM_KEYDOWN:   // キーが押された
 		// ウィンドウが破棄されたら呼ばれる

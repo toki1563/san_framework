@@ -297,7 +297,7 @@ bool sanDirectInput::useJoystick(int id)
 }
 
 // ジョイスティックのボタン数を返す
-int sanDirectInput::getJoystickButtomNum()
+int sanDirectInput::getJoystickButtonNum()
 {
 	return joystickButtonNum;
 }

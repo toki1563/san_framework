@@ -60,6 +60,9 @@
     <ClCompile Include="framework\san_camera.cpp">
       <Filter>framework</Filter>
     </ClCompile>
+    <ClCompile Include="framework\san_font.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -102,6 +105,9 @@
       <Filter>framework\directX</Filter>
     </ClInclude>
     <ClInclude Include="framework\san_camera.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_font.h">
       <Filter>framework</Filter>
     </ClInclude>
   </ItemGroup>

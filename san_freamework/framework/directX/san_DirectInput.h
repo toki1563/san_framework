@@ -42,6 +42,6 @@ public :
 	static DIJOYSTATE     *getOldJoystick(int id = 0);
 	static bool           useJoystick(int id = 0);
 
-	static int      getJoystickButtomNum();
+	static int      getJoystickButtonNum();
 	static float	getJoystickAxisRangeF();
 };

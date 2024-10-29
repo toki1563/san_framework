@@ -20,6 +20,7 @@ ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 
+
 // エントリーポイント
 int APIENTRY wWinMain(_In_ HINSTANCE hInsrance,
 	_In_opt_ HINSTANCE hPrevInstance, // このアプリケーションが既に実行中かどうかを示す
@@ -30,7 +31,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInsrance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// アプリケーション起動前に必要な初期設定
-
+	
 	// グローバル文字列を初期化する
 	LoadStringW(hInsrance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadStringW(hInsrance, IDC_SANFRAMEWORK, szWindowClass, MAX_LOADSTRING);
@@ -75,7 +76,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInsrance,
 }
 
 // ウィンドウクラスを登録(設定)
-ATOM MyMegisterClass(HINSTANCE hInstance)
+ATOM MyRegisterClass(HINSTANCE hInstance)
 {
 	WNDCLASSEXW wcex;
 	wcex.cbSize = sizeof(WNDCLASSEX);

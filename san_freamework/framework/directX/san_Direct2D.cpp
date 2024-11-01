@@ -1,4 +1,9 @@
-// Direct2D管理
+//--------------------------------------------------------------//
+//	"san_Direct2D.cpp"											//
+//	     Direct2D管理											//
+//													2024/11/01	//
+//														sanda	//
+//--------------------------------------------------------------//
 #include "../../framework.h"
 #include "../san_environment.h"
 
@@ -162,7 +167,7 @@ void sanDirect2D::render()
 	pD2dDeviceContext->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	//フォントの描画
-	//===========================================================================まだ
+	sanFont::renderString();
 
 	// 描画終了
 	hr = pD2dDeviceContext->EndDraw();

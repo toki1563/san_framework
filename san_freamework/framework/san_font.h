@@ -1,10 +1,15 @@
-// ƒtƒHƒ“ƒg•`‰æ
+//--------------------------------------------------------------//
+//	"san_font.h"												//
+//	     ãƒ•ã‚©ãƒ³ãƒˆæç”»												//
+//													2024/11/01	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
 
-#define sanFontSTRING_MAX	  (0x0400)	// 1ƒtƒŒ[ƒ€‚ÅÀs‚Å‚«‚érender‚Ì”
-#define sanFontCHARACTOR_MAX  (0X2000)	// 1ƒtƒŒ[ƒ€•`‰æ‚Å‚«‚é•¶š‚Ì”
+#define sanFontSTRING_MAX	  (0x0400)	// 1ãƒ•ãƒ¬ãƒ¼ãƒ ã§å®Ÿè¡Œã§ãã‚‹renderã®æ•°
+#define sanFontCHARACTOR_MAX  (0X2000)	// 1ãƒ•ãƒ¬ãƒ¼ãƒ æç”»ã§ãã‚‹æ–‡å­—ã®æ•°
 
-#define sanFontNUM_MAX		  (256)     // Šm•Û‚µ‚Ä‚¨‚¯‚ég—p‰Â”\ƒtƒHƒ“ƒg–¼‚ÌÅ‘å”
+#define sanFontNUM_MAX		  (256)     // ç¢ºä¿ã—ã¦ãŠã‘ã‚‹ä½¿ç”¨å¯èƒ½ãƒ•ã‚©ãƒ³ãƒˆåã®æœ€å¤§æ•°
 
 class sanFont
 {
@@ -12,8 +17,8 @@ private:
 	static WCHAR  fontName[sanFontNUM_MAX][64];
 	static int	  fontNum;
 
-	static ID2D1SolidColorBrush  *pBruch;
-	static IDWriteTextFormat     *pTextFormat;
+	static ID2D1SolidColorBrush* pBruch;
+	static IDWriteTextFormat* pTextFormat;
 	static D2D1_RECT_F			 rect;
 
 	static float	Size;
@@ -26,57 +31,57 @@ private:
 		float x;
 		float y;
 		DWORD color;
-		WCHAR *ptr;
+		WCHAR* ptr;
 		UINT32 count;
 		IDWriteTextFormat* textFormat;
 	};
 	static stStringInfo strInfo[sanFontSTRING_MAX];
 	static int			registerNum;
 	static int			registerCount;
-	static WCHAR		*allocPtr;
-	static WCHAR		*currentPtr;
+	static WCHAR* allocPtr;
+	static WCHAR* currentPtr;
 
-	static IDWriteTextFormat  *currentTextFormat;
+	static IDWriteTextFormat* currentTextFormat;
 
-	static void registerString(const WCHAR *string, UINT32 count);
+	static void registerString(const WCHAR* string, UINT32 count);
 
 public:
-	// ƒVƒXƒeƒ€ŠÇ—
+	// ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†
 	static bool initialize();
 	static void terminate();
 	static void renderString();
 
-	// g—p‚Å‚«‚éƒtƒHƒ“ƒg”‚Ìæ“¾
+	// ä½¿ç”¨ã§ãã‚‹ãƒ•ã‚©ãƒ³ãƒˆæ•°ã®å–å¾—
 	static int getFontNum(void);
 
-	// g—p‚Å‚«‚éƒtƒHƒ“ƒg–¼‚Ìæ“¾
-	static WCHAR *getFontName(int id);
+	// ä½¿ç”¨ã§ãã‚‹ãƒ•ã‚©ãƒ³ãƒˆåã®å–å¾—
+	static WCHAR* getFontName(int id);
 
-	// ƒtƒHƒ“ƒg‚Ìì¬
-	static IDWriteTextFormat *create(const WCHAR *fontName, int size);
+	// ãƒ•ã‚©ãƒ³ãƒˆã®ä½œæˆ
+	static IDWriteTextFormat* create(const WCHAR* fontName, int size);
 
-	// Šeíİ’è
+	// å„ç¨®è¨­å®š
 	static void setPos(float x, float y);
 	static void setPosX(float x);
 	static void setPosY(float y);
 	static void setColor(DWORD color);
 
-	// Šeíæ“¾
+	// å„ç¨®å–å¾—
 	static float getPosX();
 	static float getPosY();
 	static DWORD getColor();
 	static void setTextFormat(IDWriteTextFormat* tf = NULL);
 
-	// •¶š—ñ‚Ì•`‰æ(ƒƒCƒh•¶š)
+	// æ–‡å­—åˆ—ã®æç”»(ãƒ¯ã‚¤ãƒ‰æ–‡å­—)
 	static void print(float x, float y, DWORD color, const WCHAR* string, ...);
 	static void print(float x, float y, const WCHAR* string, ...);
 	static void print(const WCHAR* string, ...);
 
-	// •¶š—ñ‚Ì•`‰æ(ƒƒCƒh•¶š/•¶š”w’è•t‚«)
+	// æ–‡å­—åˆ—ã®æç”»(ãƒ¯ã‚¤ãƒ‰æ–‡å­—/æ–‡å­—æ•°æŒ‡å®šä»˜ã)
 	static void printCount(float x, float y, DWORD color, int count, const WCHAR* string, ...);
 	static void printCount(float x, float y, int count, const WCHAR* string, ...);
 	static void printCount(int count, const WCHAR* string, ...);
 
-	// •W€o—Í‚Ö‚Ì•¶š—ñ•`‰æ(ƒƒCƒh•¶š)
-	static void output(const WCHAR *string, ...);
+	// æ¨™æº–å‡ºåŠ›ã¸ã®æ–‡å­—åˆ—æç”»(ãƒ¯ã‚¤ãƒ‰æ–‡å­—)
+	static void output(const WCHAR* string, ...);
 };

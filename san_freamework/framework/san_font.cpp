@@ -61,7 +61,7 @@ bool sanFont::initialize()
 			hr = names->FindLocaleName(locale, &nameIndex, &exists);
 			if (hr == S_OK && exists == TRUE)
 			{
-				hr == names->GetString(nameIndex, fontName[fontNum], _countof(fontName[fontNum]));
+				hr = names->GetString(nameIndex, fontName[fontNum], _countof(fontName[fontNum]));
 				fontNum++;
 			}
 			family->Release();

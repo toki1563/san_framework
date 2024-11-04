@@ -1,1 +1,2 @@
+// Xインプット
 #pragma once

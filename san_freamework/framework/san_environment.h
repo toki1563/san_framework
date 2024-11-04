@@ -49,6 +49,7 @@ using namespace DirectX;
 #include "directX/san_Direct3D.h"
 #include "directX/san_Direct2D.h"
 #include "directX/san_DirectInput.h"
+#include "directX/san_XAudio2.h" 
 
 #include "san_mouse.h"
 

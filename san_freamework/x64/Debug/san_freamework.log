@@ -1,0 +1,577 @@
+﻿  san_Direct2D.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct2D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(20,30): error C2369: 'pWrappedBackBuffers': 再定義されています。異なる添字です。
+      C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,25):
+      'pWrappedBackBuffers' の宣言を確認してください
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(21,28): error C2369: 'pD2dRenderTargets': 再定義されています。異なる添字です。
+      C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,23):
+      'pD2dRenderTargets' の宣言を確認してください
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(122,4): error C2672: 'IID_PPV_ARGS_Helper': 一致するオーバーロードされた関数が見つかりませんでした。
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\combaseapi.h(201,84):
+      'void **IID_PPV_ARGS_Helper(T **)' の可能性があります
+          C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(122,4):
+          'void **IID_PPV_ARGS_Helper(T **)': 'T **' の テンプレート 引数を 'ID3D11Resource *[0]' から推測できませんでした
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(117,23): error C2660: 'ID3D11On12Device::CreateWrappedResource': 関数に 5 個の引数を指定できません。
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\d3d11on12.h(186,43):
+      'ID3D11On12Device::CreateWrappedResource' の宣言を確認してください
+      C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(117,23):
+      引数リスト '(ID3D12Resource *, D3D11_RESOURCE_FLAGS *, D3D12_RESOURCE_STATES, D3D12_RESOURCE_STATES, const _GUID)' を一致させようとしているとき
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(149,3): error C3863: 配列型 'ID2D1Bitmap1 *[0]' を割り当てることはできません。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.cpp(150,3): error C3863: 配列型 'ID3D11Resource *[0]' を割り当てることはできません。
+  san_Direct3D.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_Direct3D.cpp' をコンパイルしています)
+  
+  san_DirectInput.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_DirectInput.cpp' をコンパイルしています)
+  
+  san_shader.cpp
+  san_XAudio2.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XAudio2.cpp' をコンパイルしています)
+  
+  san_XInput.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/directX/san_XInput.cpp' をコンパイルしています)
+  
+  san_font.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_font.cpp' をコンパイルしています)
+  
+  san_mainframe.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mainframe.cpp' をコンパイルしています)
+  
+  san_mouse.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'framework/san_mouse.cpp' をコンパイルしています)
+  
+  san_scene.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\san_scene.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/san_scene.cpp' をコンパイルしています)
+  
+  scene_table.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'public/scene/scene_table.cpp' をコンパイルしています)
+  
+  san_framework.cpp
+C:\Users\sanda\source\repos\san_framework\san_freamework\san_framework.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\resource.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(21,45): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2065: 'sanDirect3D': 定義されていない識別子です。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct2D.h(22,41): error C2653: 'sanDirect3D': 識別子がクラス名でも名前空間名でもありません。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\san_framework\san_freamework\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+  コードを生成中...

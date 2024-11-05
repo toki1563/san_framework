@@ -133,6 +133,7 @@
     <ClInclude Include="framework\directX\san_Direct2D.h" />
     <ClInclude Include="framework\directX\san_Direct3D.h" />
     <ClInclude Include="framework\directX\san_DirectInput.h" />
+    <ClInclude Include="framework\directX\san_shader.h" />
     <ClInclude Include="framework\directX\san_XAudio2.h" />
     <ClInclude Include="framework\directX\san_XInput.h" />
     <ClInclude Include="framework\san_camera.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="framework\directX\san_Direct2D.cpp" />
     <ClCompile Include="framework\directX\san_Direct3D.cpp" />
     <ClCompile Include="framework\directX\san_DirectInput.cpp" />
+    <ClCompile Include="framework\directX\san_shader.cpp" />
     <ClCompile Include="framework\directX\san_XAudio2.cpp" />
     <ClCompile Include="framework\directX\san_XInput.cpp" />
     <ClCompile Include="framework\san_camera.cpp" />

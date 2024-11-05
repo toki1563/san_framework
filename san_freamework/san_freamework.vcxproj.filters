@@ -66,6 +66,9 @@
     <ClCompile Include="framework\san_debugDraw.cpp">
       <Filter>framework</Filter>
     </ClCompile>
+    <ClCompile Include="framework\directX\san_shader.cpp">
+      <Filter>framework\directX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="framework\san_debugDraw.h">
       <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\directX\san_shader.h">
+      <Filter>framework\directX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

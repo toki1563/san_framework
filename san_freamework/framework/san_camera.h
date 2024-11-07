@@ -1,23 +1,28 @@
- // カメラ
+//--------------------------------------------------------------//
+//	"san_camera.h"												//
+//	     カメラ													//
+//													2024/11/07	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
 
 class sanCamera
 {
 private:
-	static XMVECTOR Position; // カメラ座標
-	static XMVECTOR Target;   // カメラの注視点
-	static XMVECTOR Up;	      // カメラの上方向
+	static XMVECTOR		   Position; // カメラ座標
+	static XMVECTOR		   Target;   // カメラの注視点
+	static XMVECTOR		   Up;	      // カメラの上方向
 
-	static float FovY;   // 視野角
-	static float Aspect; // アスペクト比
-	static float zNear;  // 前方クリッピング面の距離
-	static float zFar;   // 後方クリッピングの距離
+	static float		   FovY;   // 視野角
+	static float		   Aspect; // アスペクト比
+	static float		   zNear;  // 前方クリッピング面の距離
+	static float		   zFar;   // 後方クリッピングの距離
 
-	static XMMATRIX View;   // ビュー行列
-	static XMMATRIX Proj;   // プロジェクション行列
-	static XMMATRIX Screen; // View*Proj
+	static XMMATRIX		   View;   // ビュー行列
+	static XMMATRIX		   Proj;   // プロジェクション行列
+	static XMMATRIX		   Screen; // View*Proj
 
-	static D3D11_VIEWPORT Viewport; // ビューポート
+	static D3D11_VIEWPORT  Viewport; // ビューポート
 
 public:
 	static bool initialize();

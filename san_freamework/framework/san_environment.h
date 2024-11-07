@@ -46,17 +46,22 @@ using namespace DirectX;
 #define SAFE_RELEASE(p) {if(p){(p)->Release();(p)=NULL;}}
 
 // フレームワークヘッダー
-#include "directX/san_Direct2D.h"
 #include "directX/san_Direct3D.h"
+#include "directX/san_Direct2D.h"
 #include "directX/san_DirectInput.h"
 #include "directX/san_shader.h"
 #include "directX/san_XAudio2.h" 
 #include "directX/san_XInput.h"
 
 #include "san_camera.h"
-#include "san_mouse.h"
-
+#include "san_debugDraw.h"
 #include "san_font.h"
+#include "san_joystick.h"
+#include "san_keyboard.h"
+#include "san_light.h"
+#include "san_mouse.h"
+#include "san_sound.h"
+
 
 #include "../public/scene/san_scene.h"
 #include "../public/scene/scene_table.h"

@@ -69,6 +69,18 @@
     <ClCompile Include="framework\directX\san_shader.cpp">
       <Filter>framework\directX</Filter>
     </ClCompile>
+    <ClCompile Include="framework\san_joystick.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\san_keyboard.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\san_light.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\san_sound.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -121,6 +133,18 @@
     </ClInclude>
     <ClInclude Include="framework\directX\san_shader.h">
       <Filter>framework\directX</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_joystick.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_keyboard.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_light.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_sound.h">
+      <Filter>framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,2 @@
+// ライト
+#pragma once

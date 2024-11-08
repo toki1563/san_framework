@@ -1,3 +1,9 @@
+//--------------------------------------------------------------//
+//	"san_shader.cpp"											//
+//	     ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç®¡ç†											//
+//													2024/11/07	//
+//														sanda	//
+//--------------------------------------------------------------//
 #include "../../framework.h"
 #include "../san_environment.h"
 
@@ -8,7 +14,7 @@ sanShader::sanShaderObject **sanShader::pshader = NULL;
 
 bool sanShader::initialize()
 {
-	// ’¸“_ƒVƒF[ƒ_[‚Ìì¬
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ä½œæˆ
 	vshader = new sanShaderObject * [(unsigned int)eVertexShader::VS_MAX];
 	if (vshader)
 	{
@@ -19,7 +25,7 @@ bool sanShader::initialize()
 		vshader[(unsigned int)eVertexShader::VS_2D] = new sanShaderObject(L"shader/vs_2d.cso");
 	}
 
-	//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚Ìì¬
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ä½œæˆ
 	pshader = new sanShaderObject * [(unsigned int)ePixelShader::PS_MAX];
 	if (pshader)
 	{
@@ -57,7 +63,7 @@ sanShader::sanShaderObject::sanShaderObject(const WCHAR* path)
 	length = 0;
 
 	FILE *fp = NULL;
-	// ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ğƒoƒCƒiƒŠ“Ç‚İ‚İƒ‚[ƒh‚ÅŠJ‚­
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰ã§é–‹ã
 	if ((_wfopen_s(&fp, path, L"rb")) != 0)
 	{
 		WCHAR text[256];
@@ -66,12 +72,12 @@ sanShader::sanShaderObject::sanShaderObject(const WCHAR* path)
 		assert(false);
 		return;
 	}
-	// ƒtƒ@ƒCƒ‹‚ÌƒTƒCƒY‚ğæ“¾
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã‚’å–å¾—
 	fseek(fp, 0, SEEK_END);
 	length = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-	// ƒoƒbƒtƒ@‚ğŠm•Û‚µAƒtƒ@ƒCƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	// ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿ã—ã€ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	code = new BYTE[length];
 	fread((void*)code, length, 1, fp);
 

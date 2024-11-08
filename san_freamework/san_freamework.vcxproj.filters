@@ -25,6 +25,9 @@
     <Filter Include="public\scene">
       <UniqueIdentifier>{97786ad8-0b80-4243-9ce0-248d5e9fd2cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{d9c60c83-9f00-4f26-ad3b-5ac6c84c0920}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="san_framework.cpp">
@@ -159,5 +162,37 @@
     <ResourceCompile Include="san_framework.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="shader\ps_2d.psh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ps_3d.psh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ps_3d_cube.psh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ps_3d_line.psh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ps_3d_nolight.psh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vs_2d.vsh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vs_3d.vsh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vs_3d_cube.vsh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vs_3d_line.vsh">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vs_3d_nolight.vsh">
+      <Filter>shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

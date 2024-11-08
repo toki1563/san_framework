@@ -139,17 +139,143 @@ bool sanDebugDraw::initialize()
 	// 頂点バッファのマッピング
 	hr = vertBuff->Map(0, NULL, reinterpret_cast<void**>(&vtx));
 
+	vertexBufferView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vertexBufferView.StrideInBytes = sizeof(sanVertex3D_Line);
+	vertexBufferView.SizeInBytes = vertexBufferSize;
 
 	// 定数バッファの作成
+	D3D12_HEAP_PROPERTIES constHeapProp = {};
+	constHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	constHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	constHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	constHeapProp.CreationNodeMask = 1;
+	constHeapProp.VisibleNodeMask = 1;
+	D3D12_RESOURCE_DESC constDesc = {};
+	constDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	constDesc.Width = ((sizeof(XMFLOAT4X4) + 0xff) & ~0xff);
+	constDesc.Height = 1;
+	constDesc.DepthOrArraySize = 1;
+	constDesc.MipLevels = 1;
+	constDesc.Format = DXGI_FORMAT_UNKNOWN;
+	constDesc.SampleDesc.Count = 1;
+	constDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	constDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 定数バッファリソースの作成
-	
+	hr = sanDirect3D::getDevice()->CreateCommittedResource(
+		&constHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&constDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuff)
+	);
+	if (hr != S_OK)
+	{
+		assert(hr == S_OK);
+	}
+	constBuff->SetName(L"sanDebugDraw::constBuff");
+
 	// 定数バッファのマッピング
+	hr = constBuff->Map(0, NULL, (void**)&VP);
 
 	// ディスクリプタヒープの設定と作成
+	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
+	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	descHeapDesc.NodeMask = 0;
+	descHeapDesc.NumDescriptors = 2;
+	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	hr = sanDirect3D::getDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&basicDescHeap));
+	basicDescHeap->SetName(L"sanDebugDraw::basicDescHeap");
 
+	D3D12_CPU_DESCRIPTOR_HANDLE basicHeapHandle = basicDescHeap->GetCPUDescriptorHandleForHeapStart();
 	// SRVの作成
+	sanDirect3D::getDevice()->CreateShaderResourceView(sanDirect3D::getWhiteTexture(),
+		sanDirect3D::getWhiteTextureViewDesc(),
+		basicHeapHandle);
+	basicHeapHandle.ptr += sanDirect3D::getDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
+	cbvDesc.BufferLocation = constBuff->GetGPUVirtualAddress();
+	cbvDesc.SizeInBytes = (UINT)constBuff->GetDesc().Width;
 
 	// 定数バッファビュー(CBV)の作成
+	sanDirect3D::getDevice()->CreateConstantBufferView(&cbvDesc, basicHeapHandle);
+
+	return true;
 }
 
+void sanDebugDraw::terminate()
+{
+	SAFE_RELEASE(basicDescHeap);
+	SAFE_RELEASE(constBuff);
+	SAFE_RELEASE(vertBuff);
+	SAFE_RELEASE(pPipelineState);
+}
+
+void sanDebugDraw::render()
+{
+	if (VertexNum == 0) return;
+
+	// コンスタントバッファ
+	XMStoreFloat4x4(VP, XMMatrixTranspose(*sanCamera::getScreen()));
+
+	sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+
+	sanDirect3D::getCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+	sanDirect3D::getCommandList()->SetDescriptorHeaps(1, &basicDescHeap);
+	sanDirect3D::getCommandList()->SetGraphicsRootDescriptorTable(0, basicDescHeap->GetGPUDescriptorHandleForHeapStart());
+	sanDirect3D::getCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);
+	sanDirect3D::getCommandList()->DrawInstanced(VertexNum, 1, 0, 0);
+
+	VertexNum = 0;
+}
+
+void sanDebugDraw::Line(const XMVECTOR* start, const XMVECTOR* end, DWORD color)
+{
+	if (VertexNum >= sanDebugDraw_VertexMax - 2) return;
+
+	vtx[VertexNum].x = XMVectorGetX(*start);	vtx[VertexNum].y = XMVectorGetY(*start);	vtx[VertexNum].z = XMVectorGetZ(*start);	vtx[VertexNum].color = color; VertexNum++;
+	vtx[VertexNum].x = XMVectorGetX(*end);		vtx[VertexNum].y = XMVectorGetY(*end);		vtx[VertexNum].z = XMVectorGetZ(*end);		vtx[VertexNum].color = color; VertexNum++;
+}
+
+void sanDebugDraw::Line(float start_x, float start_y, float start_z, float end_x, float end_y, float end_z, DWORD color)
+{
+	if (VertexNum >= sanDebugDraw_VertexMax - 2) return;
+
+	vtx[VertexNum].x = start_x;		vtx[VertexNum].y = start_y;		vtx[VertexNum].z = start_z;		vtx[VertexNum].color = color;	VertexNum++;
+	vtx[VertexNum].x = end_x;		vtx[VertexNum].y = end_y;		vtx[VertexNum].z = end_z;		vtx[VertexNum].color = color;	VertexNum++;
+}
+
+void sanDebugDraw::Grid(int num, float interval, DWORD color, bool gridActive)
+{
+	if (gridActive)
+	{
+		for (interval = -num; interval <= num; interval++)
+		{
+			// X軸
+			vtx[VertexNum].x = -5.0f;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = interval;	vtx[VertexNum].color = 0xffffffff;	VertexNum++;
+			vtx[VertexNum].x = 5.0f;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = interval;	vtx[VertexNum].color = 0xffffffff;	VertexNum++;
+
+			// Y軸
+			vtx[VertexNum].x = interval;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = -5.0f;	vtx[VertexNum].color = 0xffffffff;	VertexNum++;
+			vtx[VertexNum].x = interval;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = 5.0f;	vtx[VertexNum].color = 0xffffffff;	VertexNum++;
+		}
+	}
+}
+
+void sanDebugDraw::Axis(float length, bool axisActive)
+{
+	if (axisActive)
+	{
+		//X軸
+		vtx[VertexNum].x = 0.0f;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = 0.0f;	vtx[VertexNum].color = 0xff0000ff;	VertexNum++;
+		vtx[VertexNum].x = length;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = 0.0f;	vtx[VertexNum].color = 0xff0000ff;	VertexNum++;
+		//Y軸
+		vtx[VertexNum].x = 0.0f;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = 0.0f;	vtx[VertexNum].color = 0xff00ff00;	VertexNum++;
+		vtx[VertexNum].x = 0.0f;	vtx[VertexNum].y = length;	vtx[VertexNum].z = 0.0f;	vtx[VertexNum].color = 0xff00ff00;	VertexNum++;
+		//Z軸
+		vtx[VertexNum].x = 0.0f;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = 0.0f;	vtx[VertexNum].color = 0xffff0000;	VertexNum++;
+		vtx[VertexNum].x = 0.0f;	vtx[VertexNum].y = 0.0f;	vtx[VertexNum].z = length;	vtx[VertexNum].color = 0xffff0000;	VertexNum++;
+	}
+}

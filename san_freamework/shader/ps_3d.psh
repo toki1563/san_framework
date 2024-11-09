@@ -2,7 +2,8 @@ struct pixelIn
 {
     float4 pos : SV_POSITION;
     float4 col : COLOR0;
-    float2 tx0 : TEXCOORD0; // 法線ベクトル
+    float2 tx0 : TEXCOORD0;
+    float3 nor : TEXCOORD1; // 法線ベクトル
     float3 eye : TEXCOORD2; // 視線ベクトル
 };
 

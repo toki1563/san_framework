@@ -1,7 +1,7 @@
 //--------------------------------------------------------------//
 //	"san_light.cpp"												//
 //	     ライト													//
-//													2024/11/09	//
+//													2024/11/11	//
 //														sanda	//
 //--------------------------------------------------------------//
 #include "../framework.h"
@@ -47,3 +47,169 @@ XMVECTOR *sanLight::getAmbient()
 }
 
 // 取得
+float sanLight::getLightDirX()
+{
+	return XMVectorGetX(Direction);
+}
+
+float sanLight::getLightDirY()
+{
+	return XMVectorGetY(Direction);
+}
+
+float sanLight::getLightDirZ()
+{
+	return XMVectorGetZ(Direction);
+}
+
+float sanLight::getLightColR()
+{
+	return XMVectorGetX(LightColor);
+}
+
+float sanLight::getLightColG()
+{
+	return XMVectorGetY(LightColor);
+}
+
+float sanLight::getLightColB()
+{
+	return XMVectorGetZ(LightColor);
+}
+
+float sanLight::getAmbientR()
+{
+	return XMVectorGetX(Ambient);
+}
+
+float sanLight::getAmbientG()
+{
+	return XMVectorGetY(Ambient);
+}
+
+float sanLight::getAmbientB()
+{
+	return XMVectorGetZ(Ambient);
+}
+
+// 設定
+void sanLight::setLightDir(float x, float y, float z)
+{
+	Direction = XMVectorSet(x, y, z, 0.0f);
+}
+
+void sanLight::setLightDirX(float value)
+{
+	Direction = XMVectorSetX(Direction, value);
+}
+
+void sanLight::setLightDirY(float value)
+{
+	Direction = XMVectorSetY(Direction, value);
+}
+
+void sanLight::setLightDirZ(float value)
+{
+	Direction = XMVectorSetZ(Direction, value);
+}
+
+void sanLight::setLightCol(float r, float g, float b)
+{
+	LightColor = XMVectorSet(r, g, b, 1.0f);
+}
+
+void sanLight::setLightColR(float value)
+{
+	LightColor = XMVectorSetX(LightColor, value);
+}
+
+void sanLight::setLightColG(float value)
+{
+	LightColor = XMVectorSetY(LightColor, value);
+}
+
+void sanLight::setLightColB(float value)
+{
+	LightColor = XMVectorSetZ(LightColor, value);
+}
+
+void sanLight::setAmbient(float r, float g, float b)
+{
+	Ambient = XMVectorSet(r, g, b, 0.0f);
+}
+
+void sanLight::setAmbientR(float value)
+{
+	Ambient = XMVectorSetX(Ambient, value);
+}
+
+void sanLight::setAmbientG(float value)
+{
+	Ambient = XMVectorSetY(Ambient, value);
+}
+
+void sanLight::setAmbientB(float value)
+{
+	Ambient = XMVectorSetZ(Ambient, value);
+}
+
+// 加算
+void sanLight::addLightDir(float x, float y, float z)
+{
+	Direction = XMVectorAdd(Direction, XMVectorSet(x, y, z, 0.0f));
+}
+
+void sanLight::addLightDirX(float value)
+{
+	Direction = XMVectorAdd(Direction, XMVectorSet(value, 0.0f, 0.0f, 0.0f));
+}
+
+void sanLight::addLightDirY(float value)
+{
+	Direction = XMVectorAdd(Direction, XMVectorSet(0.0f, value, 0.0f, 0.0f));
+}
+
+void sanLight::addLightDirZ(float value)
+{
+	Direction = XMVectorAdd(Direction, XMVectorSet(0.0f, 0.0f, value, 0.0f));
+}
+
+void sanLight::addLightCol(float r, float g, float b)
+{
+	LightColor = XMVectorAdd(LightColor, XMVectorSet(r, g, b, 0.0f));
+}
+
+void sanLight::addLightColR(float value)
+{
+	LightColor = XMVectorAdd(LightColor, XMVectorSet(value, 0.0f, 0.0f, 0.0f));
+}
+
+void sanLight::addLightColG(float value)
+{
+	LightColor = XMVectorAdd(LightColor, XMVectorSet(0.0f, value, 0.0f, 0.0f));
+}
+
+void sanLight::addLightColB(float value)
+{
+	LightColor = XMVectorAdd(LightColor, XMVectorSet(0.0f, 0.0f, value, 0.0f));
+}
+
+void sanLight::addAmbient(float r, float g, float b)
+{
+	Ambient = XMVectorAdd(Ambient, XMVectorSet(r, g, b, 0.0f));
+}
+
+void sanLight::addAmbientR(float value)
+{
+	Ambient = XMVectorAdd(Ambient, XMVectorSet(value, 0.0f, 0.0f, 0.0f));
+}
+
+void sanLight::addAmbientG(float value)
+{
+	Ambient = XMVectorAdd(Ambient, XMVectorSet(0.0f, value, 0.0f, 0.0f));
+}
+
+void sanLight::addAmbientB(float value)
+{
+	Ambient = XMVectorAdd(Ambient, XMVectorSet(0.0f, 0.0f, value, 0.0f));
+}

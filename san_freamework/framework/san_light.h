@@ -1,7 +1,7 @@
 //--------------------------------------------------------------//
 //	"san_light.h"												//
 //	     ライト													//
-//													2024/11/09	//
+//													2024/11/11	//
 //														sanda	//
 //--------------------------------------------------------------//
 #pragma once
@@ -45,8 +45,6 @@ public:
 	static void setLightColR(float value);
 	static void setLightColG(float value);
 	static void setLightColB(float value);
-
-	static void setLightColChange(bool isLightColorNormal);
 
 	static void setAmbient(float r, float g, float b);
 	static void setAmbientR(float value);

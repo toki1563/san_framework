@@ -64,6 +64,10 @@ using namespace DirectX;
 #include "san_light.h"
 #include "san_debugDraw.h"
 
+#include "../public/san_object.h"
+#include "../public/san_model.h"
+#include "../public/san_sprite.h"
+#include "../public/san_collide.h"
 
 
 #include "../public/scene/san_scene.h"

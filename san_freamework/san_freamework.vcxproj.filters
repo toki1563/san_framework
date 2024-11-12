@@ -84,6 +84,18 @@
     <ClCompile Include="framework\san_sound.cpp">
       <Filter>framework</Filter>
     </ClCompile>
+    <ClCompile Include="public\san_collide.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="public\san_model.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="public\san_object.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="public\san_sprite.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -147,6 +159,21 @@
       <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="framework\san_sound.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="public\san_collide.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\san_model.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\san_object.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\san_sprite.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\san_modelData.h">
       <Filter>framework</Filter>
     </ClInclude>
   </ItemGroup>

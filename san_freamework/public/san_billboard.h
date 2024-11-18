@@ -1,4 +1,9 @@
-// ビルボードポリゴン
+//--------------------------------------------------------------//
+//	"san_billboard.h"											//
+//	     ビルボードポリゴン										//
+//													2024/11/18	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
 
 class sanBillboard : public sanObject
@@ -18,7 +23,7 @@ private:
 	ID3D12Resource* texBuff;
 
 	// 定数バッファ
-	ID3D12Resource* constbuff;
+	ID3D12Resource* constBuff;
 	ID3D12DescriptorHeap* basicDescHeap;
 	stConstantBuffer* pConstBuffer;
 

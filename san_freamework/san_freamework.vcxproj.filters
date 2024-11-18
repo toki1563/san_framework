@@ -28,6 +28,9 @@
     <Filter Include="shader">
       <UniqueIdentifier>{d9c60c83-9f00-4f26-ad3b-5ac6c84c0920}</UniqueIdentifier>
     </Filter>
+    <Filter Include="public\object">
+      <UniqueIdentifier>{7388065e-6edf-40b5-bda3-fe627515dd3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="san_framework.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="public\san_billboard.cpp">
       <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="public\object\cube.cpp">
+      <Filter>public\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="public\san_billboard.h">
       <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\object\cube.h">
+      <Filter>public\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

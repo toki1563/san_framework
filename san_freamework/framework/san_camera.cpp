@@ -233,7 +233,7 @@ void sanCamera::addPosition(float x, float y, float z)
 	Position = XMVectorAdd(Position, XMVectorSet(x, y, z, 0.0f));
 }
 
-void sanCamera::addPosition(const XMVECTOR* v)
+void sanCamera::addPosition(const XMVECTOR *v)
 {
 	Position += *v;
 }

@@ -1,6 +1,7 @@
-﻿C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d.psh(31,26-31): error X3018: invalid subscript 'nor'
-C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d.psh(31,16-32): error X3013: 'normalize': no matching 1 parameter intrinsic function
-C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d.psh(31,16-32): error X3013: Possible intrinsic functions are:
-C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d.psh(31,16-32): error X3013: normalize(floatM|halfM|min10floatM|min16floatM)
+﻿  compilation object save succeeded; see C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d.cso
+  compilation object save succeeded; see C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d_cube.cso
+  compilation object save succeeded; see C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d_line.cso
+  compilation object save succeeded; see C:\Users\sanda\source\repos\san_framework\san_freamework\shader\ps_3d_nolight.cso
+C:\Users\sanda\source\repos\san_framework\san_freamework\shader\vs_2d.vsh(28,35-40): error X3004: undeclared identifier 'screen'
   
   compilation failed; no code produced

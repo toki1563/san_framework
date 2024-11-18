@@ -25,3 +25,8 @@ void sanScene::render()
 {
 
 }
+
+void sanScene::setUpdateRenderPriority()
+{
+	UpdateRenderPriority = true;
+}

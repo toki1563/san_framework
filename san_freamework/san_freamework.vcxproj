@@ -147,6 +147,7 @@
     <ClInclude Include="framework\san_modelData.h" />
     <ClInclude Include="framework\san_mouse.h" />
     <ClInclude Include="framework\san_sound.h" />
+    <ClInclude Include="public\san_billboard.h" />
     <ClInclude Include="public\san_collide.h" />
     <ClInclude Include="public\san_model.h" />
     <ClInclude Include="public\san_object.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="framework\san_mainframe.cpp" />
     <ClCompile Include="framework\san_mouse.cpp" />
     <ClCompile Include="framework\san_sound.cpp" />
+    <ClCompile Include="public\san_billboard.cpp" />
     <ClCompile Include="public\san_collide.cpp" />
     <ClCompile Include="public\san_model.cpp" />
     <ClCompile Include="public\san_object.cpp" />

@@ -8,6 +8,8 @@ class sanScene
 {
 private:
 
+	static bool UpdateRenderPriority;
+
 public:
 	sanScene();
 	virtual ~sanScene();
@@ -17,4 +19,6 @@ public:
 
 	virtual void execute();
 	virtual void render();
+
+	static void setUpdateRenderPriority();
 }; 

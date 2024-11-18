@@ -183,7 +183,7 @@ WCHAR* sanFont::getFontName(int id)
 }
 
 // フォントの作成
-IDWriteTextFormat* sanFont::create(const WCHAR* fontname, int size)
+IDWriteTextFormat* sanFont::create(const WCHAR *fontname, int size)
 {
 	HRESULT hr;
 	IDWriteTextFormat* ret = NULL;

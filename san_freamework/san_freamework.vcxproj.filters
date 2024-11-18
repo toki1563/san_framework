@@ -96,6 +96,9 @@
     <ClCompile Include="public\san_sprite.cpp">
       <Filter>public</Filter>
     </ClCompile>
+    <ClCompile Include="public\san_billboard.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\san_environment.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="framework\san_modelData.h">
       <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="public\san_billboard.h">
+      <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

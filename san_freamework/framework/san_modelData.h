@@ -1,12 +1,12 @@
 //--------------------------------------------------------------//
 //	"san_modelData.h"											//
-//	     ���f���f�[�^��`(*.vnm / �o�C�i���t�@�C��)				//
+//	     モデルデータ構造(*.vnm/バイナリファイル)					//
 //													2024/11/12	//
 //														sanda	//
 //--------------------------------------------------------------//
 #pragma once
 
-// �o�[�W��������
+// バージョン定義
 #define sanMODEL_DATA_LATEST_VER (0x20240101)
 
 struct sanModelData
@@ -21,42 +21,43 @@ struct sanModelData
 	UINT VertexNum;
 	UINT IndexNum;
 
+	// 各データへのアクセス
 	UINT MaterialAccess;
 	UINT MeshAccess;
 	UINT VertexAccess;
 	UINT IndexAccess;
 
-	UINT Align[4];
+	UINT Align[4]; // アライメント(4つのUINTでバディング)
 };
 
 struct sanModel_MaterialData
 {
-	UINT StructSize;
-	UINT TextureNum;
-	UINT FloatNum;
-	UINT Flag;
-	char Texture[32];
-	float Diffuse[4];
-	float Ambient[4];
-	float Specular[4];
+	UINT StructSize;   // 構造体サイズ
+	UINT TextureNum;   // テクスチャの数
+	UINT FloatNum;	   // 浮動店小数点の数
+	UINT Flag;         // フラグ
+	char Texture[32];  // テクスチャ名
+	float Diffuse[4];  // ディフューズカラー(RGBA)
+	float Ambient[4];  // アンビエントカラー(RGBA)
+	float Specular[4]; // スペキュラーカラー(RGBA)
 };
 
 struct sanModel_MeshData
 {
-	UINT MaterialID;
-	UINT IndexNum;
-	UINT StartIndex;
-	UINT StartVertex;
+	UINT MaterialID;  // 使用するマテリアルのID
+	UINT IndexNum;    // インデックス番号
+	UINT StartIndex;  // 開始インデックス
+	UINT StartVertex; // 開始頂点
 };
 
-// .bone�t�@�C���̒��g
+// .boneファイルの構造
 struct sanModel_BoneData
 {
-	char Name[32];	// �{�[���̖��O
-	int ParentID;	// �e�̔ԍ�(-�͐e���Ȃ�)
-	int Generation; // ����
-	int StructSize; // �q�̍\���̂̃T�C�Y(Byte)
-	float pos[3];	// �W����Ԃł�Position(x, y, z)
-	float rot[3];	// �W����Ԃł�Rotation(x, y, z)
-	float scl[3];	// �W����Ԃł�Scale(x, y, z)
+	char Name[32];	// ボーン名
+	int ParentID;	// 親の番号(-1は親なし)
+	int Generation; // 世代
+	int StructSize; // 構造体サイズ(Byte)
+	float pos[3];	// 位置(Position : x, y, z)
+	float rot[3];	// 回転(Rotation : x, y, z)
+	float scl[3];	// スケール(Scale : x, y, z)
 };

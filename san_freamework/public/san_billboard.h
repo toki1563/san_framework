@@ -37,7 +37,7 @@ private:
 
 public:
 	// コンストラクタ
-	sanBillboard() {}
+	sanBillboard() {} // デフォルトを使用
 	sanBillboard(float width, float height, const WCHAR* textuer_file, float left_u = 0.0f, float right_u = 1.0f, float top_v = 0.0f, float bottom_v = 1.0f);
 
 	// デストラクタ

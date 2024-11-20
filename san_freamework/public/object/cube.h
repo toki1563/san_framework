@@ -1,84 +1,89 @@
+//--------------------------------------------------------------//
+//	"san_cube.cpp"												//
+//	     ã‚­ãƒ¥ãƒ¼ãƒ–												//
+//													2024/11/20	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
-// ƒLƒ…[ƒu
 
-// ƒ|ƒŠƒSƒ“’¸“_\‘¢‘Ì
+// ãƒãƒªã‚´ãƒ³é ‚ç‚¹æ§‹é€ ä½“
 struct stCubeVertex3D
 {
-	float x, y, z;    // À•W
-	float nx, ny, nz; // –@üƒxƒNƒgƒ‹
-	float u, v;		  // uv‚Æ‚Íƒ|ƒŠƒSƒ“‚Æ‰æ‘œ‚ÌˆÊ’uî•ñ‚ğ‚Á‚Ä‚¢‚é
+	float x, y, z;    // åº§æ¨™
+	float nx, ny, nz; // æ–¹å‰ãƒ™ã‚¯ãƒˆãƒ«
+	float u, v;		  // UVã¨ã¯ãƒãƒªã‚´ãƒ³ã¨ç”»åƒã®ä½ç½®æƒ…å ±ã‚’æŒã£ã¦ã„ã‚‹
 };
 
-// ƒLƒ…[ƒuƒNƒ‰ƒX
+// ã‚­ãƒ¥ãƒ¼ãƒ–ã‚¯ãƒ©ã‚¹
 class cCube
 {
 private:
-	// ’¸“_”
+	// é ‚ç‚¹æ•°
 	int VertexNum;
-	// ’¸“_ƒf[ƒ^
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 	stCubeVertex3D *vtx;
 
-	// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@\‘¢‘Ì
+	// ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ§‹é€ ä½“
 	struct stConstantBuffer
 	{
 		XMFLOAT4X4 WVP;		 // World * View * Proj
-		XMFLOAT4X4 World;    // Worldƒ}ƒgƒŠƒNƒX
-		XMFLOAT4   LightDir; // •½sŒõŒ¹‚Ì(‹t)•ûŒü
-		XMFLOAT4   LightCol; // •½sŒõŒ¹‚ÌF
-		XMFLOAT4   LightAmb; // ŠÂ‹«Œõ‚ÌF
+		XMFLOAT4X4 World;    // Worldãƒãƒˆãƒªã‚¯ã‚¹
+		XMFLOAT4   LightDir; // å¹³è¡Œå…‰æºã®(é€†)æ–¹å‘
+		XMFLOAT4   LightCol; // å¹³è¡Œå…‰æºã®è‰²
+		XMFLOAT4   LightAmb; // ç’°å¢ƒå…‰ã®è‰²
 	};
 
-	// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 	ID3D12Resource* vertBuff;
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
 
-	// ƒeƒNƒXƒ`ƒƒ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	ID3D12Resource* texbuff;
 
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ID3D12Resource* constBuff;
 	ID3D12DescriptorHeap* basicDescHeap;
 	stConstantBuffer* pConstBuffer;
 
-	// ˆÚ“®’l
+	// ç§»å‹•å€¤
 	XMVECTOR Position;
 
-	// ‰ñ“]’l
+	// å›è»¢å€¤
 	XMVECTOR Rotation;
 
-	// Šg‘å’l
+	// æ‹¡å¤§å€¤
 	XMVECTOR Scale;
 
-	// p¨•ÏŒ`—pƒ}ƒgƒŠƒNƒX
+	// å§¿å‹¢å¤‰å½¢ç”¨ãƒãƒˆãƒªã‚¯ã‚¹
 	XMMATRIX trans;
 	XMMATRIX rotate;
 	XMMATRIX scale;
 	XMMATRIX world;
 
-	// Ã“I‹¤’Êƒf[ƒ^
-	static int					    initCommon;			 // ‰Šú‰»—p
-	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[]; // ’¸“_—v‘f
-	static ID3D12PipelineState*		pPipelineState;      // ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg
+	// ï¿½Ã“Iï¿½ï¿½ï¿½Êƒfï¿½[ï¿½^
+	static int					    initCommon;			 // åˆæœŸåŒ–ç”¨
+	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[]; // é ‚ç‚¹è¦ç´ 
+	static ID3D12PipelineState*		pPipelineState;      // ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
 
 public:
-	// Ã“I‹¤’Êƒf[ƒ^‰Šú‰»
+	// é™çš„å…±é€šãƒ‡ãƒ¼ã‚¿åˆæœŸåŒ–
 	static bool initializeCommon();
 
-	// Ã“I‹¤’Êƒf[ƒ^íœ
+	// é™çš„å…±é€šãƒ‡ãƒ¼ã‚¿å‰Šé™¤
 	static void terminateCommon();
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	cCube();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~cCube();
 
-	// ˆ—
+	// å‡¦ç†
 	void execute();
 
-	// •`‰æ
+	// æç”»
 	void render();
 
-	// ˆÚ“®’l‚Ìİ’è
+	// ç§»å‹•å€¤ã®è¨­å®š
 	void setPositionX(float value);
 	void setPositionY(float value);
 	void setPositionZ(float value);
@@ -86,12 +91,12 @@ public:
 	void addPositionY(float value);
 	void addPositionZ(float value);
 
-	// ˆÚ“®’l‚Ìæ“¾
+	// ç§»å‹•å€¤ã®å–å¾—
 	float getPositionX(void);
 	float getPositionY(void);
 	float getPositionZ(void);
 
-	// ‰ñ“]’l‚Ìİ’è
+	// å›è»¢å€¤ã®è¨­å®š
 	void setRotationX(float radian);
 	void setRotationY(float radian);
 	void setRotationZ(float radian);
@@ -99,13 +104,12 @@ public:
 	void addRotationY(float radian);
 	void addRotationZ(float radian);
 
-
-	// ‰ñ“]’l‚Ìæ“¾
+	//å›è»¢å€¤ã®å–å¾—
 	float getRotationX(void);
 	float getRotationY(void);
 	float getRotationZ(void);
 
-	// Šg‘å’l‚Ìİ’è
+	// æ‹¡å¤§å€¤ã®è¨­å®š
 	void setScaleX(float value);
 	void setScaleY(float value);
 	void setScaleZ(float value);
@@ -113,11 +117,11 @@ public:
 	void addScaleY(float value);
 	void addScaleZ(float value);
 
-	// Šg‘å’l‚Ìæ“¾
+	// æ‹¡å¤§å€¤ã®å–å¾—
 	float getScaleX(void);
 	float getScaleY(void);
 	float getScaleZ(void);
 
-	// ƒ[ƒ‹ƒhs—ñ‚Ìæ“¾
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®å–å¾—
 	XMMATRIX *getWorld();
 };

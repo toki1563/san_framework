@@ -197,7 +197,7 @@ sanBillboard::sanBillboard(float width, float height, const WCHAR* texture_file,
 	vertexBufferView.SizeInBytes = vertexBufferSize;
 
 	// 頂点メモリの初期化
-	memset(vtx, 0, sizeof(sanVertex3D)* vnum);
+	memset(vtx, 0, sizeof(sanVertex3D) * vnum);
 
 	// 頂点座標を設定
 	setVertexPosition();
@@ -223,7 +223,7 @@ sanBillboard::sanBillboard(float width, float height, const WCHAR* texture_file,
 	setLighting(false);
 }
 
-sanBillboard::sanBillboard()
+sanBillboard::~sanBillboard()
 {
 	SAFE_RELEASE(basicDescHeap);
 	SAFE_RELEASE(texBuff);

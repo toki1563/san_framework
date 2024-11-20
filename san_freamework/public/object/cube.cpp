@@ -1,10 +1,15 @@
-// �L���[�u
+//--------------------------------------------------------------//
+//	"san_cube.cpp"												//
+//	     キューブ												//
+//													2024/11/20	//
+//														sanda	//
+//--------------------------------------------------------------//
 #include "../../framework.h"
 #include "../../framework/san_environment.h"
 
 #include "cube.h"
 
-// ���_�v�f(�����ō�������_�v�f��DirectX�ɋ�����)
+// 頂点座標(自分で作った頂点座標をDirectXに教える)
 D3D12_INPUT_ELEMENT_DESC cCube::inputElementDescs[] =
 {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
@@ -12,11 +17,11 @@ D3D12_INPUT_ELEMENT_DESC cCube::inputElementDescs[] =
 	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 };
 
-// �ÓI���ʃf�[�^
+// 静的共通データ
 int					 cCube::initCommon = 0;
-ID3D12PipelineState* cCube::pPipelineState = NULL; // �p�C�v���C���X�e�[�g
+ID3D12PipelineState* cCube::pPipelineState = NULL; // パイプラインステート
 
-// �ÓI���ʃf�[�^������
+// 静的共通データ初期化
 bool cCube::initializeCommon()
 {
 	if(initCommon++ > 0) return true;
@@ -28,9 +33,9 @@ bool cCube::initializeCommon()
 	psoDesc.pRootSignature = sanDirect3D::getRootSignature();
 
 	psoDesc.VS.pShaderBytecode = sanShader::getVShader(sanShader::eVertexShader::VS_3D_Cube)->getCode();
-	psoDesc.VS.BytecodeLength = sanShader::getVShader(sanShader::eVertexShader::VS_3D_Cube)->getLength();
+	psoDesc.VS.BytecodeLength  = sanShader::getVShader(sanShader::eVertexShader::VS_3D_Cube)->getLength();
 	psoDesc.PS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D_Cube)->getCode();
-	psoDesc.PS.BytecodeLength = sanShader::getPShader(sanShader::ePixelShader::PS_3D_Cube)->getLength();
+	psoDesc.PS.BytecodeLength  = sanShader::getPShader(sanShader::ePixelShader::PS_3D_Cube)->getLength();
 
 	psoDesc.RasterizerState.MultisampleEnable = false;
 	psoDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
@@ -86,3 +91,453 @@ bool cCube::initializeCommon()
 	return true;
 }
 
+// 静的共有データ削除
+void cCube::terminateCommon()
+{
+	if(--initCommon > 0) return;
+
+	SAFE_RELEASE(pPipelineState);
+}
+
+cCube::cCube()
+{
+	initializeCommon();
+
+	// 辺の長さ
+	float size = 1.0f;
+
+	// 面の数
+	int FaceNum = 6;
+
+	// 頂点の数
+	VertexNum = FaceNum * 2 * 3;
+
+	// オブジェクト自身の位置
+	Position = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+
+	// オブジェクト自身の回転
+	Rotation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+
+	// オブジェクト自身の拡大
+	Scale = XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
+
+	// 姿勢変形用マトリクスの初期化
+	trans  = XMMatrixIdentity();
+	rotate = XMMatrixIdentity();
+	scale  = XMMatrixIdentity();
+	world  = XMMatrixIdentity();
+
+	HRESULT hr;
+	// テクスチャの読み込み
+	TexMetadata metadata = {};
+	ScratchImage scratchImg = {};
+	hr = LoadFromWICFile(L"data/image/checker.png", WIC_FLAGS_NONE, &metadata, scratchImg);
+	if (hr == S_OK)
+	{
+		const Image* img = scratchImg.GetImage(0, 0, 0);
+
+		D3D12_HEAP_PROPERTIES texHeapProp = {};
+		texHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+		texHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+		texHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+		texHeapProp.CreationNodeMask = 0;
+		texHeapProp.VisibleNodeMask = 0;
+
+		D3D12_RESOURCE_DESC resDesc = {};
+		resDesc.Format = metadata.format;
+		resDesc.Width = metadata.width;
+		resDesc.Height = (UINT)metadata.height;
+		resDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+		resDesc.SampleDesc.Count = 1;
+		resDesc.SampleDesc.Quality = 0;
+		resDesc.MipLevels = (UINT16)metadata.mipLevels;
+		resDesc.Dimension = static_cast<D3D12_RESOURCE_DIMENSION>(metadata.dimension);
+		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+
+		hr = sanDirect3D::getDevice()->CreateCommittedResource(
+			&texHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&resDesc,
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+			NULL,
+			IID_PPV_ARGS(&texbuff)
+		);
+		texbuff->SetName(L"cCube::texbuff");
+
+		hr = texbuff->WriteToSubresource(0,
+			NULL,
+			img->pixels,
+			(UINT)img->rowPitch,
+			(UINT)img->slicePitch
+		);
+	}
+
+	{
+		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
+		descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		descHeapDesc.NodeMask = 0;
+		descHeapDesc.NumDescriptors = 2;
+		descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+		hr = sanDirect3D::getDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&basicDescHeap));
+
+		// 定数バッファ
+		D3D12_HEAP_PROPERTIES constHeapProp = {};
+		constHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+		constHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+		constHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+		constHeapProp.CreationNodeMask = 1;
+		constHeapProp.VisibleNodeMask = 1;
+
+		D3D12_RESOURCE_DESC constDesc = {};
+		constDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		constDesc.Width = ((sizeof(stConstantBuffer) + 0xff) & ~0xff);
+		constDesc.Height = 1;
+		constDesc.DepthOrArraySize = 1;
+		constDesc.MipLevels = 1;
+		constDesc.Format = DXGI_FORMAT_UNKNOWN;
+		constDesc.SampleDesc.Count = 1;
+		constDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+		constDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		hr = sanDirect3D::getDevice()->CreateCommittedResource(
+			&constHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&constDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuff)
+		);
+		if (hr != S_OK)
+		{
+			assert(hr == S_OK);
+		}
+		constBuff->SetName(L"cCube::constBuff");
+
+		D3D12_CPU_DESCRIPTOR_HANDLE basicHeapHandle = basicDescHeap->GetCPUDescriptorHandleForHeapStart();
+		// シェーダーリソースビューの作成
+		if (texbuff != NULL)
+		{
+			// テクスチャビュー作成
+			D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+			srvDesc.Format = metadata.format;
+			srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+			srvDesc.Texture2D.MipLevels = 1;
+
+			sanDirect3D::getDevice()->CreateShaderResourceView(texbuff,
+				&srvDesc,
+				basicHeapHandle
+			);
+		}
+		else
+		{
+			sanDirect3D::getDevice()->CreateShaderResourceView(sanDirect3D::getWhiteTexture(),
+				sanDirect3D::getWhiteTextureViewDesc(),
+				basicHeapHandle
+			);
+		}
+		basicHeapHandle.ptr += sanDirect3D::getDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
+		cbvDesc.BufferLocation = constBuff->GetGPUVirtualAddress();
+		cbvDesc.SizeInBytes = (UINT)constBuff->GetDesc().Width;
+		// 定数バッファビューの作成
+		sanDirect3D::getDevice()->CreateConstantBufferView(&cbvDesc, basicHeapHandle);
+
+		hr = constBuff->Map(0, NULL, (void**)&pConstBuffer);
+	}
+
+	// 頂点バッファ
+	const UINT vertexBufferSize = sizeof(stCubeVertex3D) * VertexNum;
+
+	D3D12_HEAP_PROPERTIES heapprop = {};
+	heapprop.Type = D3D12_HEAP_TYPE_UPLOAD;
+	heapprop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	heapprop.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	heapprop.CreationNodeMask = 1;
+	heapprop.VisibleNodeMask = 1;
+
+	D3D12_RESOURCE_DESC resdesc = {};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = vertexBufferSize;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.Format = DXGI_FORMAT_UNKNOWN;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	hr = sanDirect3D::getDevice()->CreateCommittedResource(
+		&heapprop,
+		D3D12_HEAP_FLAG_NONE,
+		&resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		NULL,
+		IID_PPV_ARGS(&vertBuff)
+	);
+	if (hr != S_OK)
+	{
+		assert(hr == S_OK);
+	}
+	vertBuff->SetName(L"cCube::vertBuff");
+
+	hr = vertBuff->Map(0, NULL, reinterpret_cast<void**>(&vtx));
+
+	vertexBufferView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vertexBufferView.StrideInBytes = sizeof(stCubeVertex3D);
+	vertexBufferView.SizeInBytes = vertexBufferSize;
+
+	// 頂点メモリの初期化
+	memset(vtx, 0, vertexBufferSize);
+
+	// 頂点要素の初期化
+	int v = 0;
+	// +Z面
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 1.0f;	vtx[v].u = 0.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 1.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 1.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 1.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 1.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 1.0f;	vtx[v].u = 1.0f;	vtx[v].v = 1.0f;	v++;
+
+	// -Z面
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = -size;	vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = -1.0f;	vtx[v].u = 0.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = -size;	vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = -1.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = -size;	vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = -1.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = -size;	vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = -1.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = -size;	vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = -1.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = -size;	vtx[v].nx = 0.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = -1.0f;	vtx[v].u = 1.0f;	vtx[v].v = 1.0f;	v++;
+
+	// +X面
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = -size;	vtx[v].nx = 1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = -size;	vtx[v].nx = 1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = -size;	vtx[v].nx = 1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 1.0f;	v++;
+
+	// -X面
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = -1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = -size;   vtx[v].nx = -1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = -1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = -1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = -size;   vtx[v].nx = -1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = -size;   vtx[v].nx = -1.0f;	vtx[v].ny = 0.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 1.0f;	v++;
+
+	// +Y面
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = -size;   vtx[v].nx = 0.0f;	vtx[v].ny = 1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+
+	vtx[v].x = -size;	vtx[v].y = size;	vtx[v].z = -size;   vtx[v].nx = 0.0f;	vtx[v].ny = 1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = 1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = size;	vtx[v].z = -size;   vtx[v].nx = 0.0f;	vtx[v].ny = 1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 1.0f;	v++;
+
+	// -Y面
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = -size;   vtx[v].nx = 0.0f;	vtx[v].ny = -1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = -size;   vtx[v].nx = 0.0f;	vtx[v].ny = -1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = -1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+
+	vtx[v].x = -size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = -1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 0.0f;	vtx[v].v = 1.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = -size;   vtx[v].nx = 0.0f;	vtx[v].ny = -1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 0.0f;	v++;
+	vtx[v].x = size;	vtx[v].y = -size;	vtx[v].z = size;    vtx[v].nx = 0.0f;	vtx[v].ny = -1.0f;	vtx[v].nz = 0.0f;	vtx[v].u = 1.0f;	vtx[v].v = 1.0f;	v++;
+
+	// 頂点数のチェック(作成した数と配列の数)
+	// assert(V == VertexNum);
+}
+
+cCube::~cCube()
+{
+	SAFE_RELEASE(basicDescHeap);
+	SAFE_RELEASE(constBuff);
+	SAFE_RELEASE(texbuff);
+	SAFE_RELEASE(vertBuff);
+	texbuff = NULL;
+
+	terminateCommon();
+}
+
+void cCube::execute()
+{
+}
+
+void cCube::render()
+{
+	XMMATRIX trans = XMMatrixTranslation(getPositionX(), getPositionY(), getPositionZ());
+	XMMATRIX rotate = XMMatrixRotationRollPitchYaw(getRotationX(), getRotationY(), getRotationZ());
+	XMMATRIX scale = XMMatrixScaling(getScaleX(), getScaleY(), getScaleZ());
+	XMMATRIX World = scale * rotate * trans;
+
+	XMMATRIX WVP = World * (*sanCamera::getScreen());
+
+	// コンストラクタバッファに情報を設定
+	XMStoreFloat4x4(&pConstBuffer->WVP, XMMatrixTranspose(WVP));
+	XMStoreFloat4x4(&pConstBuffer->World, XMMatrixTranspose(World));
+	XMStoreFloat4(&pConstBuffer->LightDir, *sanLight::getILightDir());
+	XMStoreFloat4(&pConstBuffer->LightCol, *sanLight::getLightColor());
+	XMStoreFloat4(&pConstBuffer->LightAmb, *sanLight::getAmbient());
+
+	sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+
+	sanDirect3D::getCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	sanDirect3D::getCommandList()->SetDescriptorHeaps(1, &basicDescHeap);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE basicHeapHandle = basicDescHeap->GetGPUDescriptorHandleForHeapStart();
+	sanDirect3D::getCommandList()->SetGraphicsRootDescriptorTable(0, basicHeapHandle);
+
+	sanDirect3D::getCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);
+
+	sanDirect3D::getCommandList()->DrawInstanced(VertexNum, 1, 0, 0);
+}
+
+// 移動値の設定
+void cCube::setPositionX(float value)
+{
+	Position = XMVectorSetX(Position, value);
+}
+
+void cCube::setPositionY(float value)
+{
+	Position = XMVectorSetY(Position, value);
+}
+
+void cCube::setPositionZ(float value)
+{
+	Position = XMVectorSetZ(Position, value);
+}
+
+void cCube::addPositionX(float value)
+{
+	Position = XMVectorAdd(Position, XMVectorSet(value, 0.0f, 0.0f, 0.0f));
+}
+
+void cCube::addPositionY(float value)
+{
+	Position = XMVectorAdd(Position, XMVectorSet(0.0f, value, 0.0f, 0.0f));
+}
+
+void cCube::addPositionZ(float value)
+{
+	Position = XMVectorAdd(Position, XMVectorSet(0.0f, 0.0f, value, 0.0f));
+}
+
+// 回転値の設定
+void cCube::setRotationX(float radian)
+{
+	Rotation = XMVectorSetX(Rotation, radian);
+}
+
+void cCube::setRotationY(float radian)
+{
+	Rotation = XMVectorSetY(Rotation, radian);
+}
+
+void cCube::setRotationZ(float radian)
+{
+	Rotation = XMVectorSetZ(Rotation, radian);
+}
+
+void cCube::addRotationX(float radian)
+{
+	Rotation = XMVectorAdd(Rotation, XMVectorSet(radian, 0.0f, 0.0f, 0.0f));
+}
+
+void cCube::addRotationY(float radian)
+{
+	Rotation = XMVectorAdd(Rotation, XMVectorSet(0.0f, radian, 0.0f, 0.0f));
+}
+
+void cCube::addRotationZ(float radian)
+{
+	Rotation = XMVectorAdd(Rotation, XMVectorSet(0.0f, 0.0f, radian, 0.0f));
+}
+
+// 拡大値の設定
+void cCube::setScaleX(float value)
+{
+	Scale = XMVectorSetX(Scale, value);
+}
+
+void cCube::setScaleY(float value)
+{
+	Scale = XMVectorSetY(Scale, value);
+}
+
+void cCube::setScaleZ(float value)
+{
+	Scale = XMVectorSetZ(Scale, value);
+}
+
+void cCube::addScaleX(float value)
+{
+	Scale = XMVectorAdd(Scale, XMVectorSet(value, 0.0f, 0.0f, 0.0f));
+}
+
+void cCube::addScaleY(float value)
+{
+	Scale = XMVectorAdd(Scale, XMVectorSet(0.0f, value, 0.0f, 0.0f));
+}
+
+void cCube::addScaleZ(float value)
+{
+	Scale = XMVectorAdd(Scale, XMVectorSet(0.0f, 0.0f, value, 0.0f));
+}
+
+// 移動値の取得
+float cCube::getPositionX(void)
+{
+	return XMVectorGetX(Position);
+}
+
+float cCube::getPositionY(void)
+{
+	return XMVectorGetY(Position);
+}
+
+float cCube::getPositionZ(void)
+{
+	return XMVectorGetZ(Position);
+}
+
+// 回転値の取得
+float cCube::getRotationX(void)
+{
+	return XMVectorGetX(Rotation);
+}
+
+float cCube::getRotationY(void)
+{
+	return XMVectorGetY(Rotation);
+}
+
+float cCube::getRotationZ(void)
+{
+	return XMVectorGetZ(Rotation);
+}
+
+// 拡大値の取得
+float cCube::getScaleX(void)
+{
+	return XMVectorGetX(Scale);
+}
+
+float cCube::getScaleY(void)
+{
+	return XMVectorGetY(Scale);
+}
+
+float cCube::getScaleZ(void)
+{
+	return XMVectorGetZ(Scale);
+}
+
+// ワールド行列の取得
+XMMATRIX *cCube::getWorld()
+{
+	return &world;
+}

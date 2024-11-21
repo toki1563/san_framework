@@ -1,0 +1,84 @@
+SceneXXXの作成について
+(XXXには任意のシーン名を入力してください)
+
+
+
+ヘッダーファイルの作成
+Visual Studioのソリューションエクスプローラーで、"public/scene"フォルダを選択して右クリックし、"追加" > "新しい項目"を選択して、"scene_xxx.h"という名前のヘッダーファイルを作成します（既にファイルが存在する場合はこの手順をスキップしてください）。
+
+
+その後、以下のようなコードを記述します。このクラスはvnSceneクラスを継承しており、各シーンの基本的な機能を提供します。
+#pragma once
+
+class SceneXXX : public vnScene
+{
+public:
+    // 初期化処理
+    bool initialize();
+
+    // 終了処理
+    void terminate();
+    
+    // 実行処理
+    void execute();
+
+    // 描画処理
+    void render();
+};
+
+
+
+ソースファイルの作成
+Visual Studioのソリューションエクスプローラーで、"public/scene"フォルダを選択して右クリックし、"追加" > "新しい項目"を選択して、"scene_xxx.cpp"という名前のソースファイルを作成します（既にファイルが存在する場合はこの手順をスキップしてください）。
+
+
+その後、以下のようなコードを記述します。このファイルにはinitialize、terminate、execute、render関数の基本的な処理を記述します。
+#include "../../framework.h"
+#include "../../framework/vn_environment.h"
+
+// 初期化処理
+bool SceneXXX::initialize()
+{
+    return true;
+}
+
+// 終了処理
+void SceneXXX::terminate()
+{
+}
+
+// 実行処理
+void SceneXXX::execute()
+{
+    vnScene::execute();
+}
+
+// 描画処理
+void SceneXXX::render()
+{
+    vnScene::render();
+}
+
+
+
+シーンの登録
+"scene_table.h"にシーンを一意に識別するための列挙型（enum eSceneTable）を追加します。新しいシーンを追加する際には、この列挙型に新しいエントリを追加してください。
+
+
+シーン切り替え処理の追加
+"scene_table.cpp"に、シーンを切り替えるための関数（switchScene）を追加します。この関数には、switch文を用いて新しいシーンのインスタンスを作成するコードを記述します。
+
+例えば、新しいシーンSceneXXXを追加する場合は、以下のようにcase文を追加します。
+case eSceneTable::SceneXXX:
+    new SceneXXX();
+    break;
+
+
+
+デバッグ描画の追加
+初期化関数（initialize）または実行関数（execute）内にデバッグ描画用のコードを追加します。例えば、以下のようなコードを記述すると、グリッドや軸の描画が可能です。
+vnDebugDraw::Grid();
+vnDebugDraw::Axis();
+
+シーンの位置や状態を確認するために、これらのデバッグ描画を活用してください。
+

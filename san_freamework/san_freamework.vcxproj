@@ -165,7 +165,7 @@
     <ClInclude Include="public\scene\scene_model_test.h" />
     <ClInclude Include="public\scene\scene_pick_test.h" />
     <ClInclude Include="public\scene\scene_se_test.h" />
-    <ClInclude Include="public\scene\scene_spherecollision.h" />
+    <ClInclude Include="public\scene\scene_spherecollision_test.h" />
     <ClInclude Include="public\scene\scene_sprite_test.h" />
     <ClInclude Include="public\scene\scene_table.h" />
     <ClInclude Include="resource.h" />
@@ -205,7 +205,7 @@
     <ClCompile Include="public\scene\scene_model_test.cpp" />
     <ClCompile Include="public\scene\scene_pick_test.cpp" />
     <ClCompile Include="public\scene\scene_se_test.cpp" />
-    <ClCompile Include="public\scene\scene_spherecollision.cpp" />
+    <ClCompile Include="public\scene\scene_spherecollision_test.cpp" />
     <ClCompile Include="public\scene\scene_sprite_test.cpp" />
     <ClCompile Include="public\scene\scene_table.cpp" />
     <ClCompile Include="san_framework.cpp" />

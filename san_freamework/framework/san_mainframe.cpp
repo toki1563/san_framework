@@ -18,7 +18,7 @@ int freameCount = 0;
 float framePerSrecond = 0.0f;
 float countTime = 0.0f;
 
-extern eSceneTable initialScene;
+extern eSelectTable initialScene;
 
 // 静的変数
 int sanMainFrame::screenWidth;   // 画面の幅
@@ -50,8 +50,6 @@ bool sanMainFrame::initialize(void* hWnd, void* hInst, int width, int height)
 #endif
 
 	sanDirect3D::initialize();
-
-	swichScene();
 
 	return true;
 }
@@ -114,7 +112,7 @@ void sanMainFrame::execute()
 	sanDirect3D::present();
 	
 	// ステージ切り替え
-	swichScene();
+	switchScene(SceneBoot::getCurrentBootScene());
 }
 
 void sanMainFrame::initializeScene(sanScene* p)

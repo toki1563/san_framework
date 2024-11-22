@@ -2,16 +2,61 @@
 #pragma once
 
 // シーンの種類
-enum eSceneTable
+// セレクト用テーブル
+enum eSelectTable
 {
-	Boot,
-	SceneMax,
+	SelectBoot,
+	TestTable,
+	GameTable,
+	SceneSelectMax,
 };
+
+// テスト用テーブル
+enum eTestTable
+{
+	TestBoot,
+	GameTest,
+	BillBoardTest,
+	GroundTest,
+	ModelTest,
+	CubeTest,
+	PickTest,
+	SphereCollisionTest,
+	CollisionTest,
+	SpriteTest,
+	JoystickTest,
+	SeTest,
+	FontTest,
+	SceneTestMax,
+};
+
+// ゲーム用テーブル
+enum eGameTable
+{
+	GameBoot,
+	SceneGameMax,
+};
+
 
 // シーンクラス定義ファイル
 #include "san_scene.h"
+#include "scene_boot.h"
+#include "scene_billboard_test.h"
+#include "scene_game_test.h"
+#include "scene_ground_test.h"
+#include "scene_model_test.h"
+#include "scene_cube_test.h"
+#include "scene_pick_test.h"
+#include "scene_spherecollision_test.h"
+#include "scene_collision_test.h"
+#include "scene_sprite_test.h"
+#include "scene_joystick_test.h"
+#include "scene_se_test.h"
+#include "scene_font_test.h"
+
 
 // シーンの切り替え関数(予約)
-void switchScene(eSceneTable scene);
+void switchScene(eTestTable scene);
+void switchScene(eGameTable scene);
 // 現在のシーン取得(実処理)
-void swichScene();
+void switchScene(int currentBootScene);

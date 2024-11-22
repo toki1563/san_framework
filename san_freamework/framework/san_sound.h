@@ -13,7 +13,7 @@ private:
 	XAUDIO2_BUFFER		 xbuf;
 
 	UINT64				 lastSamplePlayed;
-	UINT64				 lastSampleStopped;
+	UINT64				 lastSamplesStopped;
 	WAVEFORMATEX		 wfex;
 
 public:

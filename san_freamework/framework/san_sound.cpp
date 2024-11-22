@@ -112,7 +112,7 @@ sanSound::sanSound(const WCHAR* path)
 	assert(hr == S_OK);
 
 	lastSamplePlayed = 0;
-	lastSampleStopped = 0;
+	lastSamplesStopped = 0;
 	memcpy(&wfex, wf, sizeof(WAVEFORMATEX));
 
 	// ヘッダ用メモリを解放
@@ -158,7 +158,7 @@ bool sanSound::stop()
 
 		XAUDIO2_VOICE_STATE stat;
 		pSourceVoice->GetState(&stat);
-		lastSampleStopped = stat.SamplesPlayed;
+		lastSamplesStopped = stat.SamplesPlayed;
 
 		return hr == S_OK;
 	}
@@ -171,14 +171,14 @@ bool sanSound::isPlaying(void)
 	{
 		XAUDIO2_VOICE_STATE stat;
 		pSourceVoice->GetState(&stat);
-		return stat.SamplesPlayed > 0 && stat.SamplesPlayed != lastSampleStopped;
+		return stat.SamplesPlayed > 0 && stat.SamplesPlayed != lastSamplesStopped;
 	}
 	return false;
 }
 
 bool sanSound::isStopped()
 {
-	return !isPlaying;
+	return !isPlaying();
 }
 
 bool sanSound::setVolume(float volume)

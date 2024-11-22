@@ -10,7 +10,7 @@
 #define IDI_SMALL     108
 #define IDC_SANFRAMEWORK         109
 #define IDC_MYICON      2
-#ifdef  IDC_STATIC
+#ifndef IDC_STATIC
 #define IDC_STATIC     -1
 #endif
 

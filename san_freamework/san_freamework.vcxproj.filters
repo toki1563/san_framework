@@ -45,9 +45,6 @@
     <ClCompile Include="public\scene\san_scene.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\scene\scene_table.cpp">
-      <Filter>public\scene</Filter>
-    </ClCompile>
     <ClCompile Include="framework\directX\san_DirectInput.cpp">
       <Filter>framework\directX</Filter>
     </ClCompile>
@@ -138,10 +135,13 @@
     <ClCompile Include="public\scene\scene_se_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\scene\scene_spherecollision.cpp">
+    <ClCompile Include="public\scene\scene_sprite_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\scene\scene_sprite_test.cpp">
+    <ClCompile Include="public\scene\scene_table.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\scene_spherecollision_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,9 +162,6 @@
       <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="public\scene\san_scene.h">
-      <Filter>public\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="public\scene\scene_table.h">
       <Filter>public\scene</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -263,10 +260,13 @@
     <ClInclude Include="public\scene\scene_se_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
-    <ClInclude Include="public\scene\scene_spherecollision.h">
+    <ClInclude Include="public\scene\scene_sprite_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
-    <ClInclude Include="public\scene\scene_sprite_test.h">
+    <ClInclude Include="public\scene\scene_table.h">
+      <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_spherecollision_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
   </ItemGroup>

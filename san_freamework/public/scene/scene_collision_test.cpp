@@ -1,4 +1,9 @@
-// 当たり判定
+//--------------------------------------------------------------//
+//	"san_collision_test.cpp"									//
+//	     当たり判定												//
+//													2024/11/22	//
+//														sanda	//
+//--------------------------------------------------------------//
 #include "../../framework.h"
 #include "../../framework/san_environment.h"
 #include "scene_collision_test.h"

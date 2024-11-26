@@ -1,8 +1,16 @@
+//--------------------------------------------------------------//
+//	"san_se._test.h"  						    				//
+//	     サウンド												//
+//													2024/11/25	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
-// サウンド
 
 class SceneSeTest : public sanScene
 {
+private:
+	int fileNum;
+	sanSound **pSound;
 
 public:
 	bool initialize();

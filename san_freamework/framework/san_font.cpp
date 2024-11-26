@@ -244,7 +244,7 @@ DWORD sanFont::getColor()
 }
 
 // 文字列の描画(ワイド文字)
-void sanFont::print(float x, float y, DWORD color, const WCHAR *string, ...)
+void sanFont::print(float x, float y, DWORD color, const WCHAR* string, ...)
 {
 	if (string == NULL) return;
 

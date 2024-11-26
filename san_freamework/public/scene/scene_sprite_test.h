@@ -1,8 +1,30 @@
+//--------------------------------------------------------------//
+//	"san_sprite._test.h"  						    			//
+//	     スプライトテスト											//
+//													2024/11/26	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
-// スプライトテスト
 
 class SceneSpriteTest : public sanScene
 {
+private:
+	sanSprite* pSprite;
+	int Cursor;
+	float value_p;
+	float value_s;
+	float value_r;
+
+	// 操作の種類
+	enum eOperation
+	{
+		PositionX,
+		PositionY,
+		ScaleX,
+		ScaleY,
+		Rotate,
+		OperationMax,
+	};
 
 public:
 	bool initialize();

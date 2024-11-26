@@ -1,5 +1,10 @@
+//--------------------------------------------------------------//
+//	"san_spherecollision_test.h"								//
+//	     球の当たり判定											//
+//													2024/11/24	//
+//														sanda	//
+//--------------------------------------------------------------//
 #pragma once
-// 球
 
 class SceneSphereCollisionTest : public sanScene
 {
@@ -18,7 +23,7 @@ private:
 
 	// デバッグ用モデル(最近棒距離を示す直線状の1点)
 	sanModel* pPoint;
-	sanModel* pHit[2];
+	sanModel* pHitModel[2];
 	// 当たり判定モデル
 	sanModel* pSphere;
 
@@ -28,12 +33,16 @@ private:
 
 	// 球の情報
 	XMVECTOR sphereCenter;
-	float sphereRadius;
+	float	 sphereRadius;
 
 	// 平面情報
 	// 平面方程式 ax + by + cz = d
-	XMVECTOR planeNormal; // (a, b, c)
-	float pointDots[3];
+	XMVECTOR planeNormal;  // (a, b, c)
+	float planeDistance;   // d
+
+	// ヒット判定の情報
+	XMVECTOR pointNormal;
+	float    pointDots[3];
 
 	XMVECTOR point[2];  // 三角形と線のデバッグ用
 	XMVECTOR add[3];	// 足し算用

@@ -39,7 +39,7 @@ vnFont::create()関数を呼ぶことで、自身でフォント名を指定し�
 
 
 // 初期化関数
-bool SceneFontTeat::initialize()
+bool SceneFontTest::initialize()
 {
 	Cursor = 0;
 
@@ -59,7 +59,7 @@ bool SceneFontTeat::initialize()
 }
 
 // 終了関数
-void SceneFontTeat::terminate()
+void SceneFontTest::terminate()
 {
 	//描画フォントをデフォルトに戻す
 	sanFont::setTextFormat();
@@ -75,7 +75,7 @@ void SceneFontTeat::terminate()
 }
 
 // 処理関数
-void SceneFontTeat::execute()
+void SceneFontTest::execute()
 {
 	if (sanKeyboard::trg(DIK_UP) && --Cursor < 0)
 	{	//↑キーでカーソルを上に移動
@@ -132,7 +132,7 @@ void SceneFontTeat::execute()
 }
 
 // 描画関数
-void SceneFontTeat::render()
+void SceneFontTest::render()
 {
 	sanScene::render();
 }

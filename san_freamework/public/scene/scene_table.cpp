@@ -84,28 +84,28 @@ void switchScene(int currentBootScene)
 	switch (currentBootScene)
 	{
 	case 1: // テスト画面の時
-		//switch (reserveTestScene)
-		//{
-		//case Boot:				  pScene = new SceneBoot();			       break;
-		//case GameTest:			  pScene = new GameTest();				   break;
-		//case BillBoardTest:		  pScene = new SceneBillBoardTest();	   break;
-		//case GroundTest:		  pScene = new SceneGroundTest;			   break;
-		//case ModelTest:			  pScene = new SceneModelTest();           break;
-		//case CubeTest:			  pScene = new SceneCubeTest();		       break;
-		//case PickTest:			  pScene = new ScenePickTest();		       break;
-		//case SphereCollisionTest: pScene = new SceneSphereCollisionTest(); break;
-		//case CollisionTest:	      pScene = new SceneCollisionTest();	   break;
-		//case SpriteTest:	      pScene = new SceneSpriteTest();		   break;
-		//case JoystickTest:	      pScene = new SceneJoystickTest();	       break;
-		//case SeTest:		      pScene = new SceneSeTest();	           break;
-		//case FontTest:		      pScene = new SceneFontTest();		       break;
-		//}
+		switch (reserveTestScene)
+		{
+		case TestBoot:			  pScene = new SceneBoot();			       break;
+		case GameTest:			  pScene = new SceneGameTest();			   break;
+		case BillBoardTest:		  pScene = new SceneBillBoardTest();	   break;
+		case GroundTest:		  pScene = new SceneGroundTest;			   break;
+		case ModelTest:			  pScene = new SceneModelTest();           break;
+		case CubeTest:			  pScene = new SceneCubeTest();		       break;
+		case PickTest:			  pScene = new ScenePickTest();		       break;
+		case SphereCollisionTest: pScene = new SceneSphereCollisionTest(); break;
+		case CollisionTest:	      pScene = new SceneCollisionTest();	   break;
+		case SpriteTest:	      pScene = new SceneSpriteTest();		   break;
+		case JoystickTest:	      pScene = new SceneJoystickTest();	       break;
+		case SeTest:		      pScene = new SceneSeTest();	           break;
+		case FontTest:		      pScene = new SceneFontTest();		       break;
+		}
 		break;
 	case 2: // ゲーム画面の時
-		//switch (reserveTestScene)
-		//{
-		//case Boot:				  pScene = new SceneBoot();			       break;
-		//}
+		switch (reserveTestScene)
+		{
+		case GameBoot:				  pScene = new SceneBoot();			       break;
+		}
 		break;
 	}
 

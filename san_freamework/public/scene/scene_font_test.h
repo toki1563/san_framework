@@ -6,7 +6,7 @@
 //--------------------------------------------------------------//
 #pragma once
 
-class SceneFontTeat : public sanScene
+class SceneFontTest : public sanScene
 {
 private:
 	int Cursor;  // 選択

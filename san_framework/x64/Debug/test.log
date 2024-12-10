@@ -1,0 +1,106 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (san_freamework.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  san_framework.cpp
+C:\Users\sanda\source\repos\test\test\san_framework.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\sanda\source\repos\test\test\framework.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\targetver.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\resource.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_environment.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\directX\san_shader.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\directX\san_Direct3D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\directX\san_Direct2D.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\directX\san_DirectInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\directX\san_XInput.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\directX\san_XAudio2.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_mouse.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_keyboard.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_joystick.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_sound.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_font.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_camera.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_light.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_debugDraw.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\san_object.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_modelData.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\san_billboard.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\san_model.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\san_sprite.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\san_collide.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\san_scene.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_table.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_boot.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_billboard_test.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_game_test.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\object\cube.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_pick_test.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_sprite_test.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\public\scene\scene_joystick_test.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+C:\Users\sanda\source\repos\test\test\framework\san_mainframe.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'san_framework.cpp' をコンパイルしています)
+  
+  test.vcxproj -> C:\Users\sanda\source\repos\test\x64\Debug\test.exe

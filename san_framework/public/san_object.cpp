@@ -1,4 +1,4 @@
-//--------------------------------------------------------------//
+﻿//--------------------------------------------------------------//
 //	"san_object.cpp"											//
 //	     オブジェクト基底クラス									//
 //													2024/11/13	//
@@ -11,22 +11,22 @@
 // 頂点座標
 D3D12_INPUT_ELEMENT_DESC sanObject::inputElementDescs[]
 {
-	{ "POSITOPN", 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,  	 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 };
-
-// パイプラインステート
+//パイプラインステート
 ID3D12PipelineState* sanObject::pPipelineState = NULL;
-ID3D12PipelineState* sanObject::pPipelineState_NL = NULL;	    // ライティングなし
+ID3D12PipelineState* sanObject::pPipelineState_NL = NULL; // ライティングなし
 ID3D12PipelineState* sanObject::pPipelineState_Alpha = NULL;
-ID3D12PipelineState* sanObject::pPipelineState_Alpha_NL = NULL;	// ライティングなし
+ID3D12PipelineState* sanObject::pPipelineState_Alpha_NL = NULL; // ライティングなし
 
 // 静的共通データの初期化
 bool sanObject::initializeCommon()
 {
 	HRESULT hr;
+
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
 	psoDesc.pRootSignature = sanDirect3D::getRootSignature();
@@ -95,9 +95,8 @@ bool sanObject::initializeCommon()
 	// ライティング無効＆不透明
 	psoDesc.VS.pShaderBytecode = sanShader::getVShader(sanShader::eVertexShader::VS_3D_NoLight)->getCode();
 	psoDesc.VS.BytecodeLength = sanShader::getVShader(sanShader::eVertexShader::VS_3D_NoLight)->getLength();
-	psoDesc.VS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getCode();
-	psoDesc.VS.BytecodeLength = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getLength();
-
+	psoDesc.PS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getCode();
+	psoDesc.PS.BytecodeLength = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getLength();
 	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_NL));
 	pPipelineState_NL->SetName(L"sanObject::pPipelineState_NL");
 

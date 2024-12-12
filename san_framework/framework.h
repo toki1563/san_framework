@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "targetver.h" // 最新に
 // Windowsヘッダーからほとんど使用されていない部分を除外する

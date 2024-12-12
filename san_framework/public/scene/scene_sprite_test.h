@@ -1,4 +1,4 @@
-//--------------------------------------------------------------//
+﻿//--------------------------------------------------------------//
 //	"san_sprite._test.h"  						    			//
 //	     スプライトテスト											//
 //													2024/11/26	//
@@ -10,10 +10,8 @@ class SceneSpriteTest : public sanScene
 {
 private:
 	sanSprite* pSprite;
+
 	int Cursor;
-	float value_p;
-	float value_s;
-	float value_r;
 
 	// 操作の種類
 	enum eOperation

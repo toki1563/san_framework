@@ -1,4 +1,4 @@
-// ジョイスティック入力(DirectInput)
+﻿// ジョイスティック入力(DirectInput)
 #pragma once
 
 class sanJoystick

@@ -12,13 +12,15 @@
 bool SceneCollisionTest::initialize()
 {
 	cursor = 0;
-	radians = 10.0f;
+	radius = 10.0f;
 	theta = 0.0f;
 	phi = 0.0f / 180.0f * 3.14f;
 	value_r = 1.0f * 3.141592f / 180.0f;
 	radians = 180.0f / 3.141592f;
 	radiusRoll = 0.5f;
 	scrollMove = 0.05f;
+	gridActive = true;
+	axisActive = true;
 
 	point[0] = XMVectorSet(-2.0f, 4.0f, -2.0f, 0.0f);
 	point[1] = XMVectorSet(3.0f, -4.0f, 3.0f, 0.0f);
@@ -124,6 +126,12 @@ void SceneCollisionTest::execute()
 	{
 		phi += scrollMove;
 	}
+	if (sanKeyboard::trg(DIK_L))
+	{
+		gridActive = !gridActive;
+		axisActive = !axisActive;
+	}
+
 	// カメラ座標の計算
 	// 回転してない基準となる軸ベクトル
 	XMVECTOR v = XMVectorSet(0.0f, 0.0f, -radius, 0.0f);
@@ -202,8 +210,8 @@ void SceneCollisionTest::execute()
 	}
 
 	sanScene::execute();
-	sanDebugDraw::Grid();
-	sanDebugDraw::Axis();
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
+	sanDebugDraw::Axis(5.0f, axisActive);
 	sanDebugDraw::Line(&point[0], &point[1], 0xffffff00);
 	sanDebugDraw::Line(&point[2], &point[3], 0xffff00ff);
 	sanDebugDraw::Line(&point[3], &point[4], 0xffff00ff);

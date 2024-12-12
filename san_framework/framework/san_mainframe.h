@@ -1,4 +1,4 @@
-// インターフェース
+﻿// インターフェース
 #pragma once
 
 class sanMainFrame

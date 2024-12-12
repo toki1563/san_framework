@@ -1,4 +1,4 @@
-//--------------------------------------------------------------//
+﻿//--------------------------------------------------------------//
 //	"san_cube.cpp"												//
 //	     キューブ												//
 //													2024/11/20	//
@@ -60,7 +60,7 @@ private:
 	XMMATRIX scale;
 	XMMATRIX world;
 
-	// �ÓI���ʃf�[�^
+	// 静的共通データ
 	static int					    initCommon;			 // 初期化用
 	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[]; // 頂点要素
 	static ID3D12PipelineState*		pPipelineState;      // パイプラインステート

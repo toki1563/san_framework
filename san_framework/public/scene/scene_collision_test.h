@@ -18,6 +18,8 @@ private:
 	float radians;
 	float radiusRoll; // ミドル回転時の値
 	float scrollMove; // 右クリック時のスクロール値
+	bool gridActive;		// グリッド表示/非表示
+	bool axisActive;		// 軸表示/非表示
 
 	// デバック用交差点表示用モデル
 	sanModel* pPoint;

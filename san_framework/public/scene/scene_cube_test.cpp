@@ -144,7 +144,7 @@ void SceneCubeTest::execute()
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleY : %.3f", pCube->getScaleY());
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleZ : %.3f", pCube->getScaleZ());
 	sanFont::print(20.0f, 170.0f, L"LキーでGrid&Axis表示・非表示");
-	sanFont::print(20.0f, 170.0f, L"spaceキーでCubeリセット");
+	sanFont::print(20.0f, 190.0f, L"spaceキーでCubeリセット");
 
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
 	sanDebugDraw::Axis(5.0f, axisActive);

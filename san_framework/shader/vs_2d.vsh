@@ -1,13 +1,13 @@
 //--------------------------------------------------------------//
 //	"san_2d.vsh"												//
-//	     鬆らせ繧ｷ繧ｧ繝ｼ繝繝ｼ (2D繧ｹ繧ｯ繝ｪ繝ｼ繝ｳ逕ｨ)							//
+//	     頂点シェーダー (2Dスクリーン用)							//
 //													2024/11/07	//
 //														sanda	//
 //--------------------------------------------------------------//
 
 float4 screen : register(b0);
 
-// 蜈･蜉帷畑
+// 入力用
 struct vertexIn
 {
     float4 pos : POSITION0;
@@ -15,7 +15,7 @@ struct vertexIn
     float2 tx0 : TEXCOORD0;
 };
 
-// 蜃ｺ蜉帷畑
+// 出力用
 struct vertexOut
 {
     float4 pos : SV_POSITION;

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------//
+﻿//--------------------------------------------------------------//
 //	"san_cube.cpp"												//
 //	     キューブ												//
 //													2024/11/20	//
@@ -12,9 +12,9 @@
 // 頂点座標(自分で作った頂点座標をDirectXに教える)
 D3D12_INPUT_ELEMENT_DESC cCube::inputElementDescs[] =
 {
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-	{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 };
 
 // 静的共通データ
@@ -24,7 +24,7 @@ ID3D12PipelineState* cCube::pPipelineState = NULL; // パイプラインステ�
 // 静的共通データ初期化
 bool cCube::initializeCommon()
 {
-	if(initCommon++ > 0) return true;
+	if (initCommon++ > 0)return true;
 
 	HRESULT hr = S_OK;
 
@@ -33,9 +33,9 @@ bool cCube::initializeCommon()
 	psoDesc.pRootSignature = sanDirect3D::getRootSignature();
 
 	psoDesc.VS.pShaderBytecode = sanShader::getVShader(sanShader::eVertexShader::VS_3D_Cube)->getCode();
-	psoDesc.VS.BytecodeLength  = sanShader::getVShader(sanShader::eVertexShader::VS_3D_Cube)->getLength();
+	psoDesc.VS.BytecodeLength = sanShader::getVShader(sanShader::eVertexShader::VS_3D_Cube)->getLength();
 	psoDesc.PS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D_Cube)->getCode();
-	psoDesc.PS.BytecodeLength  = sanShader::getPShader(sanShader::ePixelShader::PS_3D_Cube)->getLength();
+	psoDesc.PS.BytecodeLength = sanShader::getPShader(sanShader::ePixelShader::PS_3D_Cube)->getLength();
 
 	psoDesc.RasterizerState.MultisampleEnable = false;
 	psoDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;

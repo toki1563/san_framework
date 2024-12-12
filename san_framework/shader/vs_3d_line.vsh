@@ -19,10 +19,10 @@ vertexOut main(vertexIn IN)
 {
     vertexOut OUT;
 
-	// 鬆らせ蠎ｧ讓吶ｒ繝薙Η繝ｼ繝昴�ｼ繝亥ｺｧ讓吶↓螟画鋤
+	// 頂点座標をビューポート座標に変換
     OUT.pos = mul(IN.pos, WVP);
 
-	// 鬆らせ繧ｫ繝ｩ繝ｼ
+	// 頂点カラー
     OUT.col = IN.col;
 
     return OUT;

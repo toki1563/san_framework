@@ -3,21 +3,21 @@ struct pixelIn
     float4 pos : SV_POSITION;
     float4 col : COLOR0;
     float2 tx0 : TEXCOORD0;
-    float3 nor : TEXCOORD1; // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
-    float3 eye : TEXCOORD2; // è¦–ç·šãƒ™ã‚¯ãƒˆãƒ«
+    float3 nor : TEXCOORD1; // –@üƒxƒNƒgƒ‹
+    float3 eye : TEXCOORD2; // ‹üƒxƒNƒgƒ‹
 };
 
 cbuffer ConstantBuffer
 {
     float4x4 WVP; // World*View*Proj
-    float4x4 World; // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
-    float4 LightDir; // å…‰æºæ–¹å‘ (å˜ä½ãƒ™ã‚¯ãƒˆãƒ«)
-    float4 LightCol; // å…‰æºã®è‰²
-    float4 LightAmb; // ç’°å¢ƒå…‰ã®è‰²
-    float4 CameraPos; // ã‚«ãƒ¡ãƒ©ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
-    float4 Diffuse; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®æ‹¡æ•£è‰²
-    float4 Ambient; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç’°å¢ƒå…‰è‰²
-    float4 Specular; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®é¡é¢åå°„ç‰¹æ€§
+    float4x4 World; // ƒ[ƒ‹ƒhs—ñ
+    float4 LightDir; // ŒõŒ¹•ûŒü (’PˆÊƒxƒNƒgƒ‹)
+    float4 LightCol; // ŒõŒ¹‚ÌF
+    float4 LightAmb; // ŠÂ‹«Œõ‚ÌF
+    float4 CameraPos; // ƒJƒƒ‰‚Ìƒ[ƒ‹ƒhÀ•W
+    float4 Diffuse; // ƒ}ƒeƒŠƒAƒ‹‚ÌŠgUF
+    float4 Ambient; // ƒ}ƒeƒŠƒAƒ‹‚ÌŠÂ‹«ŒõF
+    float4 Specular; // ƒ}ƒeƒŠƒAƒ‹‚Ì‹¾–Ê”½Ë“Á«
 }
 
 Texture2D txDiffuse : register(t0);
@@ -25,15 +25,15 @@ SamplerState samLinear : register(s0);
 
 float4 main(pixelIn IN) : SV_Target
 {
-	// ã‚«ãƒ©ãƒ¼ã¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®åˆæˆ
+	// ƒJƒ‰[‚ÆƒeƒNƒXƒ`ƒƒ‚Ì‡¬
     float4 color = txDiffuse.Sample(samLinear, IN.tx0) * IN.col;
 
-	// ãƒ•ã‚©ãƒ³ã‚·ã‚§ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°
+	// ƒtƒHƒ“ƒVƒF[ƒfƒBƒ“ƒO
     float3 N = normalize(IN.nor);
-    float3 H = normalize(LightDir.xyz + normalize(IN.eye)); // ãƒãƒ¼ãƒ•ãƒ™ã‚¯ãƒˆãƒ«
+    float3 H = normalize(LightDir.xyz + normalize(IN.eye)); // ƒn[ƒtƒxƒNƒgƒ‹
     float3 spec = Specular.xyz * pow(max(0, dot(N, H)), Specular.w);
 
-	// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ã‚’åˆæˆ
+	// ƒXƒyƒLƒ…ƒ‰‚ğ‡¬
     color.xyz += spec;
 
     return color;

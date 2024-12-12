@@ -1,4 +1,4 @@
-//--------------------------------------------------------------//
+﻿//--------------------------------------------------------------//
 //	"san_sprite.cpp"											//
 //	     スプライトクラス											//
 //													2024/11/14	//
@@ -17,8 +17,8 @@ D3D12_INPUT_ELEMENT_DESC sanSprite::inputElementDescs[] =
 
 // 静的共通データ
 ID3D12PipelineState *sanSprite::pPipelineState = NULL; // パイプラインステート
-ID3D12PipelineState *sanSprite::pPipelineState_Add = NULL; // パイプラインステート(加算合成)
-ID3D12Resource *sanSprite::constBuff = NULL; // 定数バッファ
+ID3D12PipelineState* sanSprite::pPipelineState_Add = NULL; // パイプラインステート(加算合成)
+ID3D12Resource* sanSprite::constBuff = NULL; // 定数バッファ
 float *sanSprite::scr = NULL;
 
 // 静的共通データの初期化
@@ -324,7 +324,7 @@ void sanSprite::render()
 	setVertexPosition();
 
 	sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
-	sanDirect3D::getCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	sanDirect3D::getCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	sanDirect3D::getCommandList()->SetDescriptorHeaps(1, &basicDescHeap);
 	sanDirect3D::getCommandList()->SetGraphicsRootDescriptorTable(0, basicDescHeap->GetGPUDescriptorHandleForHeapStart());
 	sanDirect3D::getCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);

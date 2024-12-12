@@ -16,31 +16,31 @@ struct vertexOut
 cbuffer ConstantBuffer
 {
     float4x4 WVP; // World*View*Proj
-    float4x4 World; // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
-    float4 LightDir; // å…‰æºæ–¹å‘ (å˜ä½ãƒ™ã‚¯ãƒˆãƒ«)
-    float4 LightCol; // å…‰æºã®è‰²
-    float4 LightAmb; // ç’°å¢ƒå…‰ã®è‰²
-    float4 CameraPos; // ã‚«ãƒ¡ãƒ©ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
-    float4 Diffuse; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®æ‹¡æ•£è‰²
-    float4 Ambient; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç’°å¢ƒå…‰è‰²
-    float4 Specular; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®é¡é¢åå°„ç‰¹æ€§
+    float4x4 World; // ƒ[ƒ‹ƒhs—ñ
+    float4 LightDir; // ŒõŒ¹•ûŒü (’PˆÊƒxƒNƒgƒ‹)
+    float4 LightCol; // ŒõŒ¹‚ÌF
+    float4 LightAmb; // ŠÂ‹«Œõ‚ÌF
+    float4 CameraPos; // ƒJƒƒ‰‚Ìƒ[ƒ‹ƒhÀ•W
+    float4 Diffuse; // ƒ}ƒeƒŠƒAƒ‹‚ÌŠgUF
+    float4 Ambient; // ƒ}ƒeƒŠƒAƒ‹‚ÌŠÂ‹«ŒõF
+    float4 Specular; // ƒ}ƒeƒŠƒAƒ‹‚Ì‹¾–Ê”½Ë“Á«
 }
 
 vertexOut main(vertexIn IN)
 {
     vertexOut OUT;
 
-	// é ‚ç‚¹åº§æ¨™ã‚’ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆåº§æ¨™ã«å¤‰æ›
+	// ’¸“_À•W‚ğƒrƒ…[ƒ|[ƒgÀ•W‚É•ÏŠ·
     OUT.pos = mul(IN.pos, WVP);
 
-	// é ‚ç‚¹ã‚«ãƒ©ãƒ¼
+	// ’¸“_ƒJƒ‰[
     OUT.col = IN.col;
 
-	// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚«ãƒ©ãƒ¼
+	// ƒ}ƒeƒŠƒAƒ‹ƒJƒ‰[
     OUT.col *= Diffuse;
     OUT.col.xyz += Ambient.xyz;
 
-	// ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™
+	// ƒeƒNƒXƒ`ƒƒÀ•W
     OUT.tx0 = IN.tx0;
 
     return OUT;

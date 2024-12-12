@@ -1,4 +1,4 @@
-//--------------------------------------------------------------//
+﻿//--------------------------------------------------------------//
 //	"san_shader.cpp"											//
 //	     シェーダー管理											//
 //													2024/11/07	//
@@ -43,7 +43,7 @@ void sanShader::terminate()
 	for (int i = 0; i < (unsigned int)eVertexShader::VS_MAX; i++)
 	{
 		delete vshader[i];
-		vshader = NULL;
+		vshader[i] = NULL;
 	}
 	delete[] vshader;
 	vshader = NULL;
@@ -68,7 +68,7 @@ sanShader::sanShaderObject::sanShaderObject(const WCHAR* path)
 	{
 		WCHAR text[256];
 		swprintf_s(text, L"cannot open file \"%s\"", path);
-		MessageBox(hWnd, text, L"sanShader Load Error", MB_OK);
+		MessageBox(hWnd, text, L"vnShader Load Error", MB_OK);
 		assert(false);
 		return;
 	}

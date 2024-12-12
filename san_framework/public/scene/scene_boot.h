@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // シーン(起動/シーンセレクト)
 
 class SceneBoot : public sanScene

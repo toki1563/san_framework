@@ -10,12 +10,11 @@ SamplerState samLinear : register(s0);
 
 float4 main(pixelIn IN) : SV_Target
 {
-    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°
+    //ƒeƒNƒXƒ`ƒƒ‚ÌƒTƒ“ƒvƒŠƒ“ƒO
     float4 color = txDiffuse.Sample(samLinear, IN.tx0) * IN.col;
 
     return color;
 }
-
 struct vertexIn
 {
     float4 pos : POSITION0;
@@ -26,37 +25,37 @@ struct vertexIn
 struct vertexOut
 {
     float4 pos : SV_POSITION;
-    float4 col : COLOR0;
+    float4 col : COLORO;
     float2 tx0 : TEXCOORD0;
 };
 
-// ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
+// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
 cbuffer ConstantBuffer : register(b0)
 {
     float4x4 WVP; // World * View * Proj
-    float4x4 World; // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
-    float4 LightDir; // å…‰æºæ–¹å‘ (å˜ä½ãƒ™ã‚¯ãƒˆãƒ«)
-    float4 LightCol; // å…‰æºã®è‰²
-    float4 LightAmb; // ç’°å¢ƒå…‰ã®è‰²
+    float4x4 World; // ƒ[ƒ‹ƒhs—ñ
+    float4 LightDir; // •½sŒõŒ¹‚Ì(‹t)•ûŒü
+    float4 LightCol; // •½sŒõŒ¹‚ÌF
+    float4 LightAmb; // ŠÂ‹«Œõ‚ÌF
 }
 
 vertexOut main(vertexIn IN)
 {
     vertexOut OUT;
 
-    // é ‚ç‚¹åº§æ¨™ã‚’WVPè¡Œåˆ—ã§å¤‰æ›
+    //’¸“_À•W‚ğWVPs—ñ‚Å•ÏŠ·
     OUT.pos = mul(IN.pos, WVP);
 
-    // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã§å¤‰æ›
+    //–@üƒxƒNƒgƒ‹‚ğƒ[ƒ‹ƒhs—ñ‚Å•ÏŠ·
     float3 n = mul(float4(IN.nor.xyz, 0), World).xyz;
 
-    // ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚° (dot: å†…ç©)
-    // saturateé–¢æ•°ã§-1ã‹ã‚‰0ã«åˆ¶é™
-    // LightColã‚’æ›ã‘ã¦æ˜ã‚‹ã•ã‚’æ±ºå®šã—ã€ç’°å¢ƒå…‰ã‚’è¿½åŠ 
+    //ƒ‰ƒCƒeƒBƒ“ƒO(dot:“àÏ)
+    //saturate‚Í-1‚ğ0‚É‚·‚éˆ—
+    //LightCol‚ğ‚©‚¯‚Ä–¾‚é‚³‚ğo‚µ‚ÄÅ’á‚ÌŒõ‚ğƒAƒ“ƒrƒGƒ“ƒg‚Å‘«‚·
     OUT.col.xyz = saturate(dot(normalize(n), LightDir.xyz)) * LightCol.xyz + LightAmb.xyz;
     OUT.col.w = 1;
 
-    // ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™
+    //ƒeƒNƒXƒ`ƒƒÀ•W
     OUT.tx0 = IN.tx0;
 
     return OUT;

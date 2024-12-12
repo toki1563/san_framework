@@ -12,9 +12,6 @@ bool SceneSpriteTest::initialize()
 {
 	// スプライトの作成
 	pSprite = new sanSprite((float)sanMainFrame::screenCenterX, (float)sanMainFrame::screenCenterY, 512.0f, 512.0f, L"data/image/checker.png");
-	value_p = 1.0f;
-	value_s = 0.01f;
-	value_r = 1.0f * 3.141592f / 180.0f;
 
 	registerObject(pSprite);
 
@@ -30,6 +27,10 @@ void SceneSpriteTest::terminate()
 // 処理関数
 void SceneSpriteTest::execute()
 {
+	float value_p = 1.0f;
+	float value_s = 0.01f;
+	float value_r = 1.0f * 3.141592f / 180.0f;
+
 	if (sanKeyboard::trg(DIK_UP) && --Cursor < 0)
 	{
 		Cursor = OperationMax - 1;

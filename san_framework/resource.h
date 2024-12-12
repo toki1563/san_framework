@@ -1,4 +1,4 @@
-// Microsoft Visual C++ で生成されたインクルードファイル
+﻿// Microsoft Visual C++ で生成されたインクルードファイル
 // 次で使用 : san_framewark.rc/.cpp
 
 #define IDS_APP_TITLE 103

@@ -144,6 +144,12 @@
     <ClCompile Include="san_framework.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="public\san_effect.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\scene_effect_test.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\directX\san_Direct2D.h">
@@ -268,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="public\san_effect.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_effect_test.h">
+      <Filter>public\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

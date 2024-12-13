@@ -12,7 +12,7 @@
 
 #define FONT_NAME_X			(40.0f)
 #define FONT_NAME_Y			(40.0f)
-#define FONT_NAME_LINE		(26.0f)
+#define FONT_NAME_LINE		(35.0f)
 #define SAMPLE_TEXT_X		(640.0f)
 #define SAMPLE_TEXT_Y		(40.0f)
 #define SAMPLE_TEXT_LINE	(40.0f)
@@ -85,6 +85,14 @@ void SceneFontTest::execute()
 	{	//↓キーでカーソルを下に移動
 		Cursor = 0;
 	}
+	else if (sanKeyboard::trg(DIK_RIGHT) && Cursor <= 26)
+	{	//↓キーでカーソルを下に移動
+		Cursor += 18;
+	}
+	else if (sanKeyboard::trg(DIK_LEFT) && Cursor >= 18)
+	{	//↓キーでカーソルを下に移動
+		Cursor -= 18;
+	}
 
 	//フォント名の描画
 	for (int i = 0; i < FontNum; i++)
@@ -93,8 +101,19 @@ void SceneFontTest::execute()
 		DWORD col = i == Cursor ? 0xffffff80 : 0xffffffff;
 		//これから描画(vnFont::print)するフォントを指定する
 		sanFont::setTextFormat(textFormat[i]);
-		//指定された情報でフォント名を描画する
-		sanFont::print(FONT_NAME_X, FONT_NAME_Y + FONT_NAME_LINE * (float)i, col, sanFont::getFontName(i));
+		if (i <= 17)
+		{
+			//指定された情報でフォント名を描画する
+			sanFont::print(FONT_NAME_X, FONT_NAME_Y + FONT_NAME_LINE * (float)i, col, sanFont::getFontName(i));
+		}
+		else if(i <= 35)
+		{
+			sanFont::print(FONT_NAME_X + 350, FONT_NAME_Y - 635 + FONT_NAME_LINE * (float)i, col, sanFont::getFontName(i));
+		}
+		else
+		{
+			sanFont::print(FONT_NAME_X + 580, FONT_NAME_Y - 950 + FONT_NAME_LINE * (float)i, col, sanFont::getFontName(i));
+		}
 	}
 
 	//選択されたフォントでサンプル文字列の描画を行う

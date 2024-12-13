@@ -103,7 +103,7 @@ void ScenePickTest::execute()
 	if (sanMouse::on())
 	{
 		// ビューポート座標が中心が原点で(-1~0~1)マウス座標が左上が原点で(1280,720)
-// マウス座標(スクリーン座標)→ビューポート座標
+		// マウス座標(スクリーン座標)→ビューポート座標
 		float viewport_x = (float)sanMouse::getX() /
 			(float)sanMainFrame::screenWidth * 2.0f - 1.0f;
 		float viewport_y = -(float)sanMouse::getY() /
@@ -179,6 +179,14 @@ void ScenePickTest::execute()
 		sanFont::print(10.0f, 10.0f, L"マウス座標(%d, %d)", sanMouse::getX(), sanMouse::getY());
 
 		sanScene::execute();
+	}
+	else
+	{
+		for (int i = 0; i < SPHERE_NUM; i++)
+		{
+			pSphere[i]->setDiffuse(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+
 	}
 }
 

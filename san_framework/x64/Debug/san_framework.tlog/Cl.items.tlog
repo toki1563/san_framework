@@ -16,6 +16,7 @@ C:\Users\sanda\source\repos\san_framework\san_framework\framework\san_sound.cpp;
 C:\Users\sanda\source\repos\san_framework\san_framework\public\object\cube.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\cube.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\san_billboard.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_billboard.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\san_collide.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_collide.obj
+C:\Users\sanda\source\repos\san_framework\san_framework\public\san_effect.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_effect.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\san_model.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_model.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\san_object.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_object.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\san_sprite.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_sprite.obj
@@ -24,6 +25,7 @@ C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_billb
 C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_boot.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_boot.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_collision_test.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_collision_test.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_cube_test.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_cube_test.obj
+C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_effect_test.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_effect_test.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_font_test.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_font_test.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_game_test.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_game_test.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_ground_test.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\scene_ground_test.obj

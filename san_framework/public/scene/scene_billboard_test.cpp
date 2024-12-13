@@ -61,7 +61,7 @@ void SceneBillBoardTest::execute()
 	{
 		phi += scrollMove;
 	}
-	if (sanKeyboard::trg(DIK_RETURN))
+	if (sanKeyboard::trg(DIK_SPACE))
 	{
 		isActiveBillboard = !isActiveBillboard;
 		pBillboard->setRenderEnable(isActiveBillboard);
@@ -91,7 +91,7 @@ void SceneBillBoardTest::execute()
 
 	// デバッグ情報
 	sanFont::print(20.0f, 40.0f, L"LキーでGrid&Axis表示・非表示");
-	sanFont::print(20.0f, 60.0f, L"EnterキーでBillBoard表示・非表示");
+	sanFont::print(20.0f, 60.0f, L"spaceキーでBillBoard表示・非表示");
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
 	sanDebugDraw::Axis(5.0f, axisActive);
 

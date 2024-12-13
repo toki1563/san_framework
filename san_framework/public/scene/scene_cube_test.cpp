@@ -48,37 +48,7 @@ void SceneCubeTest::execute()
 	{
 		Cursor = 0;
 	}
-	// カメラの回転
-	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
-	{
-		radius += radiusRoll;
-	}
-	else if (sanMouse::getR() <= -0.1)
-	{
-		radius -= radiusRoll;
-	}
-	if (sanMouse::onR() && sanMouse::getDX() >= 10) // ｽｸﾛｰﾙ
-	{
-		theta -= scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDX() <= -10)
-	{
-		theta += scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDY() <= -10)
-	{
-		phi += scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDY() >= 10)
-	{
-		phi -= scrollMove;
-	}
-	if (sanKeyboard::trg(DIK_L))
-	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
-	}
-	if (sanKeyboard::on(DIK_RIGHT))
+	else if (sanKeyboard::on(DIK_RIGHT))
 	{
 		switch (Cursor)
 		{
@@ -123,6 +93,37 @@ void SceneCubeTest::execute()
 		case ScaleZ:	pCube->setScaleZ(XMVectorGetZ(resetScl));		break;
 		}
 	}
+	else if (sanKeyboard::trg(DIK_L))
+	{
+		gridActive = !gridActive;
+		axisActive = !axisActive;
+	}
+
+	// カメラの回転
+	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
+	{
+		radius += radiusRoll;
+	}
+	else if (sanMouse::getR() <= -0.1)
+	{
+		radius -= radiusRoll;
+	}
+	if (sanMouse::onR() && sanMouse::getDX() >= 10) // ｽｸﾛｰﾙ
+	{
+		theta -= scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDX() <= -10)
+	{
+		theta += scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDY() <= -10)
+	{
+		phi += scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDY() >= 10)
+	{
+		phi -= scrollMove;
+	}
 
 	// 仰角(Φ)の計算
 	float px = cosf(theta) * cosf(phi) * radius;
@@ -143,8 +144,8 @@ void SceneCubeTest::execute()
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleX : %.3f", pCube->getScaleX());
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleY : %.3f", pCube->getScaleY());
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleZ : %.3f", pCube->getScaleZ());
-	sanFont::print(20.0f, 170.0f, L"LキーでGrid&Axis表示・非表示");
-	sanFont::print(20.0f, 190.0f, L"spaceキーでCubeリセット");
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"spaceキーでリセット");
 
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
 	sanDebugDraw::Axis(5.0f, axisActive);

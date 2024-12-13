@@ -145,6 +145,7 @@
     <ClCompile Include="public\object\cube.cpp" />
     <ClCompile Include="public\san_billboard.cpp" />
     <ClCompile Include="public\san_collide.cpp" />
+    <ClCompile Include="public\san_effect.cpp" />
     <ClCompile Include="public\san_model.cpp" />
     <ClCompile Include="public\san_object.cpp" />
     <ClCompile Include="public\san_sprite.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="public\scene\scene_boot.cpp" />
     <ClCompile Include="public\scene\scene_collision_test.cpp" />
     <ClCompile Include="public\scene\scene_cube_test.cpp" />
+    <ClCompile Include="public\scene\scene_effect_test.cpp" />
     <ClCompile Include="public\scene\scene_font_test.cpp" />
     <ClCompile Include="public\scene\scene_game_test.cpp" />
     <ClCompile Include="public\scene\scene_ground_test.cpp" />
@@ -187,6 +189,7 @@
     <ClInclude Include="public\object\cube.h" />
     <ClInclude Include="public\san_billboard.h" />
     <ClInclude Include="public\san_collide.h" />
+    <ClInclude Include="public\san_effect.h" />
     <ClInclude Include="public\san_model.h" />
     <ClInclude Include="public\san_object.h" />
     <ClInclude Include="public\san_sprite.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="public\scene\scene_boot.h" />
     <ClInclude Include="public\scene\scene_collision_test.h" />
     <ClInclude Include="public\scene\scene_cube_test.h" />
+    <ClInclude Include="public\scene\scene_effect_test.h" />
     <ClInclude Include="public\scene\scene_font_test.h" />
     <ClInclude Include="public\scene\scene_game_test.h" />
     <ClInclude Include="public\scene\scene_ground_test.h" />

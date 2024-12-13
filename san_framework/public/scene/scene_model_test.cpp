@@ -82,7 +82,8 @@ void SceneModelTest::execute()
 		gridActive = !gridActive;
 		axisActive = !axisActive;
 	}
-	else if (sanKeyboard::on(DIK_RIGHT))
+
+	if (sanKeyboard::on(DIK_RIGHT))
 	{
 		switch (Cursor)
 		{
@@ -147,7 +148,8 @@ void SceneModelTest::execute()
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleX : %.3f", pModel->getScaleX());
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleY : %.3f", pModel->getScaleY());
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleZ : %.3f", pModel->getScaleZ());
-	sanFont::print(20.0f, 170.0f, L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"spaceキーでリセット");
 
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
 	sanDebugDraw::Axis(5.0f, axisActive);

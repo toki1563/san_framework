@@ -7,6 +7,7 @@ enum eSceneTable
 {
 	Boot,
 	GameTest,
+	EffectTest,
 	BillBoardTest,
 	GroundTest,
 	ModelTest,
@@ -24,8 +25,9 @@ enum eSceneTable
 // シーンクラス定義ファイル
 #include "san_scene.h"
 #include "scene_boot.h"
-#include "scene_billboard_test.h"
 #include "scene_game_test.h"
+#include "scene_effect_test.h"
+#include "scene_billboard_test.h"
 #include "scene_ground_test.h"
 #include "scene_model_test.h"
 #include "scene_cube_test.h"

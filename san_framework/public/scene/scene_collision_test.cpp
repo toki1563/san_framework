@@ -47,15 +47,15 @@ void SceneCollisionTest::terminate()
 // 処理関数
 void SceneCollisionTest::execute()
 {
-	if (sanKeyboard::trg(DIK_W) && --cursor < 0)
+	if (sanKeyboard::trg(DIK_UP) && --cursor < 0)
 	{
 		cursor = OperationMax - 1;
 	}
-	else if (sanKeyboard::trg(DIK_S) && ++cursor >= OperationMax)
+	else if (sanKeyboard::trg(DIK_DOWN) && ++cursor >= OperationMax)
 	{
 		cursor = 0;
 	}
-	if (sanKeyboard::on(DIK_D))
+	else if (sanKeyboard::on(DIK_RIGHT))
 	{
 		switch (cursor)
 		{
@@ -73,7 +73,7 @@ void SceneCollisionTest::execute()
 		case Triangle3PositionZ:	point[4] = XMVectorAdd(point[4], add[2]);	break;
 		}
 	}
-	else if (sanKeyboard::on(DIK_A))
+	else if (sanKeyboard::on(DIK_LEFT))
 	{
 		switch (cursor)
 		{
@@ -91,7 +91,7 @@ void SceneCollisionTest::execute()
 		case Triangle3PositionZ:	point[4] = XMVectorSubtract(point[4], add[2]);	break;
 		}
 	}
-	else if (sanKeyboard::on(DIK_R))
+	else if (sanKeyboard::on(DIK_SPACE))
 	{
 		//　リセット機能
 		point[0] = XMVectorSet(-2.0f, 4.0f, -2.0f, 0.0f);
@@ -100,6 +100,12 @@ void SceneCollisionTest::execute()
 		point[3] = XMVectorSet(-1.0f, 0.0f, -1.0f, 0.0f);
 		point[4] = XMVectorSet(1.0f, 0.0f, -1.0f, 0.0f);
 	}
+	else if (sanKeyboard::trg(DIK_L))
+	{
+		gridActive = !gridActive;
+		axisActive = !axisActive;
+	}
+
 
 	// カメラの回転
 	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
@@ -125,11 +131,6 @@ void SceneCollisionTest::execute()
 	if (sanMouse::onR() && sanMouse::getDY() >= 10)
 	{
 		phi += scrollMove;
-	}
-	if (sanKeyboard::trg(DIK_L))
-	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
 	}
 
 	// カメラ座標の計算
@@ -231,6 +232,9 @@ void SceneCollisionTest::execute()
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"Triangle3PositionX : %.3f", XMVectorGetX(point[4]));
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"Triangle3PositionY : %.3f", XMVectorGetY(point[4]));
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"Triangle3PositionZ : %.3f", XMVectorGetZ(point[4]));
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"spaceキーでBillBoard表示・非表示");
+
 }
 
 // 描画関数

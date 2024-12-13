@@ -57,15 +57,15 @@ void SceneSphereCollisionTest::terminate()
 // 処理関数
 void SceneSphereCollisionTest::execute()
 {
-	if (sanKeyboard::trg(DIK_W) && --cursor < 0)
+	if (sanKeyboard::trg(DIK_UP) && --cursor < 0)
 	{
 		cursor = OperationMax - 1;
 	}
-	else if (sanKeyboard::trg(DIK_S) && ++cursor >= OperationMax)
+	else if (sanKeyboard::trg(DIK_DOWN) && ++cursor >= OperationMax)
 	{
 		cursor = 0;
 	}
-	if (sanKeyboard::on(DIK_D))
+	if (sanKeyboard::on(DIK_RIGHT))
 	{
 		switch (cursor)
 		{
@@ -79,7 +79,7 @@ void SceneSphereCollisionTest::execute()
 		pSphere->setPosition(&spherePos);
 	}
 
-	else if (sanKeyboard::on(DIK_A))
+	else if (sanKeyboard::on(DIK_LEFT))
 	{
 		switch (cursor)
 		{
@@ -92,7 +92,7 @@ void SceneSphereCollisionTest::execute()
 		}
 		pSphere->setPosition(&spherePos);
 	}
-	else if (sanKeyboard::on(DIK_R))
+	else if (sanKeyboard::on(DIK_SPACE))
 	{
 		//　リセット機能
 		point[0] = XMVectorSet(-2.0f, 4.0f, -2.0f, 0.0f);
@@ -243,9 +243,8 @@ void SceneSphereCollisionTest::execute()
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"SpherePositionX : %.3f", XMVectorGetX(spherePos));
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"SpherePositionY : %.3f", XMVectorGetY(spherePos));
 	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"SpherePositionZ : %.3f", XMVectorGetZ(spherePos));
-	sanFont::print(20.0f, 160.0f, L"LキーでGrid&Axis表示・非表示");
-
-}
+	sanFont::print(20.0f, 170.0f, L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 190.0f, L"spaceキーでリセット");}
 
 // 描画関数
 void SceneSphereCollisionTest::render()

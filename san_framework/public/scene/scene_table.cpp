@@ -13,6 +13,7 @@ eSceneTable reserveScene = initialScene;
 WCHAR SceneName[(int)eSceneTable::SceneMax][32] =
 {
 	L"Boot",
+	L"Main Game",
 	L"Game Test",
 	L"Effect Test",
 	L"BillBoard Test",
@@ -51,6 +52,7 @@ void switchScene()
 	switch (reserveScene)
 	{
 		case Boot:				  pScene = new SceneBoot();			       break;
+		case MainGame:		      pScene = new SceneMainGame();			   break;
 		case GameTest:			  pScene = new SceneGameTest();			   break;
 		case EffectTest:		  pScene = new SceneEffectTest();		   break;
 		case BillBoardTest:		  pScene = new SceneBillBoardTest();	   break;

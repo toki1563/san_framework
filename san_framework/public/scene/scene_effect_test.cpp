@@ -1,4 +1,10 @@
-﻿#include "../../framework.h"
+﻿//--------------------------------------------------------------//
+//	"san_effect_test.cpp"									    //
+//	     エフェクトクラス						                	//
+//													2024/12/12	//
+//														sanda	//
+//--------------------------------------------------------------//
+#include "../../framework.h"
 #include "../../framework/san_environment.h"
 
 #include "scene_effect_test.h"

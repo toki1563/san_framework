@@ -1,7 +1,21 @@
-.vs/ 
-/Debug/
-/Release/
-/x64/
-/x86/
-/bin/
-/obj/
+# ビルド済みバイナリ
+*.exe
+*.dll
+*.obj
+*.pdb
+*.lib
+
+# 中間ファイルやキャッシュ
+*.tmp
+*.cache
+*.log
+*.o
+
+# Visual Studio関連の不要ファイル
+.vs/
+x64/
+Debug/
+Release/
+*.suo
+*.user
+*.filters

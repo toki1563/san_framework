@@ -19,3 +19,4 @@ Release/
 *.suo
 *.user
 *.filters
+*.obj

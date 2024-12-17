@@ -21,6 +21,11 @@ ID3D12PipelineState* sanObject::pPipelineState = NULL;
 ID3D12PipelineState* sanObject::pPipelineState_NL = NULL; // ライティングなし
 ID3D12PipelineState* sanObject::pPipelineState_Alpha = NULL;
 ID3D12PipelineState* sanObject::pPipelineState_Alpha_NL = NULL; // ライティングなし
+ID3D12PipelineState* sanObject::pPipelineState_ZOff = NULL;    // 深度書き込みなし
+ID3D12PipelineState* sanObject::pPipelineState_NL_ZOff = NULL;
+ID3D12PipelineState* sanObject::pPipelineState_Alpha_ZOff = NULL;
+ID3D12PipelineState* sanObject::pPipelineState_Alpha_NL_ZOff = NULL;
+
 
 // 静的共通データの初期化
 bool sanObject::initializeCommon()
@@ -88,11 +93,21 @@ bool sanObject::initializeCommon()
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleDesc.Quality = 0;
 
-	// ライティング有効＆不透明
+	// ライティング有効＆不透明&深度あり
 	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState));
 	pPipelineState->SetName(L"sanObject::pPipelineState");
 
-	// ライティング無効＆不透明
+	// 半透明描画の有効
+	psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
+
+	// ライティング有効＆半透明&深度あり
+	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_Alpha));
+	pPipelineState_Alpha->SetName(L"sanObject::pPipelineState_Alpha");
+
+	// 半透明描画の無効
+	psoDesc.BlendState.RenderTarget[0].BlendEnable = false;
+
+	// ライティング無効＆不透明&深度あり
 	psoDesc.VS.pShaderBytecode = sanShader::getVShader(sanShader::eVertexShader::VS_3D_NoLight)->getCode();
 	psoDesc.VS.BytecodeLength = sanShader::getVShader(sanShader::eVertexShader::VS_3D_NoLight)->getLength();
 	psoDesc.PS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getCode();
@@ -103,23 +118,54 @@ bool sanObject::initializeCommon()
 	// 半透明描画の有効
 	psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
 
-	// ライティング有効＆半透明
+	// ライティング無効&半透明&深度あり
+	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_Alpha_NL));
+	pPipelineState_Alpha_NL->SetName(L"sanObject::pPipelineState_Alpha_NL");
+
+
+	psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+
+
 	psoDesc.VS.pShaderBytecode = sanShader::getVShader(sanShader::eVertexShader::VS_3D)->getCode();
 	psoDesc.VS.BytecodeLength = sanShader::getVShader(sanShader::eVertexShader::VS_3D)->getLength();
 	psoDesc.PS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D)->getCode();
 	psoDesc.PS.BytecodeLength = sanShader::getPShader(sanShader::ePixelShader::PS_3D)->getLength();
 
-	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_Alpha));
-	pPipelineState_Alpha->SetName(L"sanObject::pPipelineState_Alpha");
 
-	// ライティング無効&半透明
+	// 半透明描画の無効
+	psoDesc.BlendState.RenderTarget[0].BlendEnable = false;
+
+	// ライティング有効＆不透明&深度なし
+	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_ZOff));
+	pPipelineState_ZOff->SetName(L"sanObject::pPipelineState_ZOff");
+
+	// 半透明描画の有効
+	psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
+
+	// ライティング有効＆透明&深度なし
+	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_Alpha_ZOff));
+	pPipelineState_Alpha_ZOff->SetName(L"sanObject::pPipelineState_Alpha_ZOff");
+
+
 	psoDesc.VS.pShaderBytecode = sanShader::getVShader(sanShader::eVertexShader::VS_3D_NoLight)->getCode();
 	psoDesc.VS.BytecodeLength = sanShader::getVShader(sanShader::eVertexShader::VS_3D_NoLight)->getLength();
 	psoDesc.PS.pShaderBytecode = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getCode();
 	psoDesc.PS.BytecodeLength = sanShader::getPShader(sanShader::ePixelShader::PS_3D_NoLight)->getLength();
 
-	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_Alpha_NL));
-	pPipelineState_Alpha_NL->SetName(L"sanObject::pPipelineState_Alpha_NL");
+
+	// 半透明描画の無効
+	psoDesc.BlendState.RenderTarget[0].BlendEnable = false;
+
+	// ライティング有効＆不透明&深度なし
+	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_NL_ZOff));
+	pPipelineState_NL_ZOff->SetName(L"sanObject::pPipelineState_NL_ZOff");
+
+	// 半透明描画の有効
+	psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
+
+	// ライティング無効＆不透明&深度なし
+	hr = sanDirect3D::getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pPipelineState_Alpha_NL_ZOff));
+	pPipelineState_Alpha_NL_ZOff->SetName(L"sanObject::pPipelineState_Alpha_NL_ZOff");
 
 	return true;
 }
@@ -131,6 +177,11 @@ void sanObject::terminateCommon()
 	SAFE_RELEASE(pPipelineState_NL);
 	SAFE_RELEASE(pPipelineState_Alpha);
 	SAFE_RELEASE(pPipelineState_Alpha_NL);
+	SAFE_RELEASE(pPipelineState_ZOff);
+	SAFE_RELEASE(pPipelineState_NL_ZOff);
+	SAFE_RELEASE(pPipelineState_Alpha_ZOff);
+	SAFE_RELEASE(pPipelineState_Alpha_NL_ZOff);
+
 }
 
 sanObject::sanObject()
@@ -149,6 +200,8 @@ sanObject::sanObject()
 
 	lighting = true;
 	transparent = false;
+
+	zWrite = true;
 
 	pParent = NULL;
 }
@@ -473,6 +526,19 @@ void sanObject::setTransparent(bool flag)
 {
 	transparent = flag;
 }
+
+// 深度書き込みの有効/無効の設定
+void sanObject::setZWrite(bool flag)
+{
+	zWrite = flag;
+}
+
+// 深度書き込みの有効/無効の設定
+bool sanObject::getZWrite()
+{
+	return zWrite;
+}
+
 
 // ライティングの有効/無効の取得
 bool sanObject::getLighting()

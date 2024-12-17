@@ -259,32 +259,62 @@ void sanBillboard::render()
 	XMStoreFloat4(&pConstBuffer->Ambient, Ambient);
 	XMStoreFloat4(&pConstBuffer->Specular, Specular);
 
-	if (lighting)
+	if (zWrite)
 	{
-		// ライティング有効
-		if (transparent)
+		if (lighting)
 		{
-			// 半透明有効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha);
+			// ライティングの有効
+			if (transparent)
+			{
+				// 半透明有効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha);
+			}
+			else
+			{
+				// 半透明無効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+			}
 		}
 		else
 		{
-			// 半透明無効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+			// ライティング有効
+			if (transparent)
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL);
+			}
 		}
 	}
 	else
 	{
-		// ライティング無効
-		if (transparent)
+		if (lighting)
 		{
-			// 半透明有効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL);
+			// ライティングの有効
+			if (transparent)
+			{
+				// 半透明有効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_ZOff);
+			}
+			else
+			{
+				// 半透明無効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_ZOff);
+			}
 		}
 		else
 		{
-			// 半透明無効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL);
+			// ライティング有効
+			if (transparent)
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL_ZOff);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL_ZOff);
+			}
 		}
 	}
 

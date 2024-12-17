@@ -17,8 +17,11 @@ sanEffect::sanEffect()
 	for (int i = 0; i < sanPARTICLE_MAX; i++)
 	{
 		pParticle[i].Life = 0.0f;
+		pParticle[i].StartLife = 0.0f;
+		pParticle[i].Size = 1.0f;
 		pParticle[i].Pos = XMVectorZero();
 		pParticle[i].Vel = XMVectorZero();
+		pParticle[i].Col = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	// 描画情報の初期化
@@ -31,7 +34,7 @@ sanEffect::sanEffect()
 	basicDescHeap = NULL;
 
 	// テクスチャの拡張子
-	WCHAR texture_file[] = L"";//L"data/image/particle/particle001.png";
+	WCHAR texture_file[] = L"data/image/particle/particle001.png";
 	const WCHAR* ext = wcsrchr(texture_file, L'.');
 
 	// テスクチャの読み込み
@@ -270,6 +273,8 @@ sanEffect::sanEffect()
 	setTransparent(true);
 
 	setLighting(false);
+
+	setZWrite(false);
 }
 
 sanEffect::~sanEffect()
@@ -293,7 +298,9 @@ void sanEffect::execute()
 			continue;
 		}
 
-		pParticle[i].Life = 60.0f;
+		pParticle[i].StartLife = 60.0f;
+		pParticle[i].Life = pParticle[i].StartLife;
+		pParticle[i].Size = 0.2f + (float)(rand() % 1000) / 1000.0f * 0.3f; // 0.f~0.5
 		pParticle[i].Pos = XMVectorZero();
 		pParticle[i].Vel = XMVectorSet(
 			(float)(rand() % 2000) / 1000.0f - 1.0f,  // -1~1
@@ -302,6 +309,12 @@ void sanEffect::execute()
 			0.0f
 		);
 		pParticle[i].Vel *= 0.08f;
+		pParticle[i].Col = XMVectorSet(
+			(float)(rand() % 1000) / 1000.0f,
+			(float)(rand() % 1000) / 1000.0f,
+			(float)(rand() % 1000) / 1000.0f,
+			(float)(rand() % 1000) / 1000.0f
+		);
 		break;
 	}
 
@@ -341,8 +354,10 @@ void sanEffect::setVertexPosition()
 			continue;
 		}
 
+		float overLifeTime = pParticle[i].Life / pParticle[i].StartLife;
+
 		XMVECTOR v[4];
-		float size = 0.2f;
+		float size = pParticle[i].Size;
 		v[0] = XMVectorSet(-size, size, 0.0f, 0.0f);
 		v[1] = XMVectorSet(size, size, 0.0f, 0.0f);
 		v[2] = XMVectorSet(-size, -size, 0.0f, 0.0f);
@@ -356,6 +371,17 @@ void sanEffect::setVertexPosition()
 			vtx[renderParticleNum * 4 + j].x = XMVectorGetX(v[j]);
 			vtx[renderParticleNum * 4 + j].y = XMVectorGetY(v[j]);
 			vtx[renderParticleNum * 4 + j].z = XMVectorGetZ(v[j]);
+			vtx[renderParticleNum * 4 + j].r = XMVectorGetX(pParticle[i].Col);
+			vtx[renderParticleNum * 4 + j].g = XMVectorGetY(pParticle[i].Col);
+			vtx[renderParticleNum * 4 + j].b = XMVectorGetZ(pParticle[i].Col);
+			if (overLifeTime <= 0.5) // 半分から薄くしていく
+			{
+				vtx[renderParticleNum * 4 + j].a = XMVectorGetW(pParticle[i].Col) * overLifeTime; // 時間経過で透明になる
+			}
+			else
+			{
+				vtx[renderParticleNum * 4 + j].a = XMVectorGetW(pParticle[i].Col);
+			}
 		}
 
 		// インデックスデータ
@@ -369,13 +395,13 @@ void sanEffect::setVertexPosition()
 
 		renderParticleNum++;
 
-		sanDebugDraw::Line(&v[0], &v[1]);
-		sanDebugDraw::Line(&v[1], &v[3]);
-		sanDebugDraw::Line(&v[3], &v[2]);
-		sanDebugDraw::Line(&v[2], &v[0]);
+		//sanDebugDraw::Line(&v[0], &v[1]);
+		//sanDebugDraw::Line(&v[1], &v[3]);
+		//sanDebugDraw::Line(&v[3], &v[2]);
+		//sanDebugDraw::Line(&v[2], &v[0]);
 
-		// 原点からデバッグ用でライン表示
-		sanDebugDraw::Line(&Position, &pParticle[i].Pos, 0xFF00FFFF);
+		//// 原点からデバッグ用でライン表示
+		//sanDebugDraw::Line(&Position, &pParticle[i].Pos, 0xFF00FFFF);
 	}
 }
 
@@ -403,26 +429,62 @@ void sanEffect::render()
 	XMStoreFloat4(&pConstBuffer->Ambient, Ambient);
 	XMStoreFloat4(&pConstBuffer->Specular, Specular);
 
-	if (lighting)
-	{ // ライティング有効
-		if (transparent)
-		{ // 半透明有効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha);
+	if (zWrite)
+	{
+		if (lighting)
+		{
+			// ライティングの有効
+			if (transparent)
+			{
+				// 半透明有効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha);
+			}
+			else
+			{
+				// 半透明無効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+			}
 		}
 		else
-		{ // 半透明無効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+		{
+			// ライティング有効
+			if (transparent)
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL);
+			}
 		}
 	}
 	else
-	{ // ライティング無効
-		if (transparent)
-		{ // 半透明有効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL);
+	{
+		if (lighting)
+		{
+			// ライティングの有効
+			if (transparent)
+			{
+				// 半透明有効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_ZOff);
+			}
+			else
+			{
+				// 半透明無効
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_ZOff);
+			}
 		}
 		else
-		{ // 半透明無効
-			sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL);
+		{
+			// ライティング有効
+			if (transparent)
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL_ZOff);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL_ZOff);
+			}
 		}
 	}
 

@@ -10,10 +10,13 @@
 class sanParticle
 {
 public:
-	float Life; // 寿命
+	float Life;		 // 寿命
+	float StartLife; // 初期値
+	float Size;      // 大きさ
 
 	XMVECTOR Pos; // 座標
 	XMVECTOR Vel; // 速度
+	XMVECTOR Col; // 色
 };
 
 class sanEffect : public sanObject

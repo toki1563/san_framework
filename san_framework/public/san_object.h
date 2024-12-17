@@ -44,6 +44,9 @@ protected:
 	// 半透明有効/無効
 	bool transparent;
 
+	// 深度書き込みの有効/無効
+	bool zWrite;
+
 	// 階段構造の親
 	sanObject* pParent;
 
@@ -53,10 +56,15 @@ protected:
 
 	// 静的共有データ
 	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[]; // 頂点要素
-	static ID3D12PipelineState* pPipelineState;          // パイプラインステート
-	static ID3D12PipelineState* pPipelineState_NL;		 // ライティングなし
-	static ID3D12PipelineState* pPipelineState_Alpha;	 // 半透明
-	static ID3D12PipelineState* pPipelineState_Alpha_NL; // 半透明＆ライティングなし
+	static ID3D12PipelineState *pPipelineState;          // パイプラインステート
+	static ID3D12PipelineState *pPipelineState_NL;		 // ライティングなし
+	static ID3D12PipelineState *pPipelineState_Alpha;	 // 半透明
+	static ID3D12PipelineState *pPipelineState_Alpha_NL; // 半透明＆ライティングなし
+	// 深度書き込みなし
+	static ID3D12PipelineState *pPipelineState_ZOff;          // パイプラインステート
+	static ID3D12PipelineState *pPipelineState_NL_ZOff;		  // ライティングなし
+	static ID3D12PipelineState *pPipelineState_Alpha_ZOff;	  // 半透明
+	static ID3D12PipelineState *pPipelineState_Alpha_NL_ZOff; // 半透明＆ライティングなし
 
 	// コンスタントバッファ構造体
 	struct stConstantBuffer
@@ -172,6 +180,12 @@ public:
 
 	// 半透明の有効/向こうの設定
 	void setTransparent(bool flag);
+
+	// 深度書き込みの有効/無効の設定
+	void setZWrite(bool flag);
+
+	// 深度書き込みの有効/無効の取得
+	bool getZWrite();
 
 	// ライティングの有効/向こうの取得
 	bool getLighting();

@@ -73,11 +73,21 @@ void boss::actionState(player* rival)
 	damageDisplay();
 }
 
-void boss::DecideNextAction()
+void boss::DecideNextAction(player* rival)
 {
-	// ここでランダムにする
 	// 最終的には残りのHPやプレイヤーの状況によって行動を変える
-	//handleAction = 
+	// プレイヤーが近い時は防御と攻撃
+	// プレイヤーが範囲外の時は防御と移動
+	if(playerCloseSearch(rival))
+	{
+		int actionIndex = rand() % 2; // 0か1
+		handleAction = static_cast<handleActionState>(actionIndex);
+	}
+	else
+	{
+		int actionIndex = (rand() % 2) * 2; // 0か2
+		handleAction = static_cast<handleActionState>(actionIndex);
+	}
 }
 
 void boss::execute(player* rival)
@@ -152,42 +162,33 @@ void boss::move(player* rival)
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
 
 	// 固定値なのでメモリを削減
-	constexpr float moveSpeed = 0.1f;
+	constexpr float moveSpeed = 0.1f; // プレイヤーの移動速度
 
-	if (sanKeyboard::on(DIK_U) || sanXInput::leftY(1) >= 0.5f)
-	{
-		vMove = XMVectorSetZ(vMove, 1);
-	}
-	if (sanKeyboard::on(DIK_J) || sanXInput::leftY(1) <= -0.5f)
-	{
-		vMove = XMVectorSetZ(vMove, -1);
-	}
-	if (sanKeyboard::on(DIK_H) || sanXInput::leftX(1) <= -0.5f)
-	{
-		vMove = XMVectorSetX(vMove, -1);
-	}
-	if (sanKeyboard::on(DIK_K) || sanXInput::leftX(1) >= 0.5f)
-	{
-		vMove = XMVectorSetX(vMove, 1);
-	}
+	// 敵と自身の位置を取得
+	XMVECTOR rivalPos = *(rival->getPosition());
+	XMVECTOR playerPos = *(getPosition());
+
+	// プレイヤーから敵へのベクトルと距離を計算
+	XMVECTOR vToRival = XMVectorSubtract(rivalPos, playerPos);
+	float distToRival = XMVectorGetX(XMVector3Length(vToRival));
+
+	// 敵に向かって前進
+	vMove = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化
 
 	// 移動ベクトルにスピードを適用(長さを変える)
 	vMove = XMVectorScale(vMove, moveSpeed);
 
-	// ここを常に敵に向くのか行動によって向くのかなど考える
+	// 腕をついてくるように設定
+	pRightArm->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
+	pRightArmAtkCoolTime->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
 
-	//if (input)	// 入力があるときのみ
-	//{
-	//	// 進行方向(方向ベクトル : vMove)に向ける処理
-	//	float rotY = atan2f(XMVectorGetX(vMove), XMVectorGetZ(vMove));
-	//	setRotationY(rotY);
-	//}
+	// 敵を正面に向けるよう回転を設定
+	float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
+	setRotationY(rotY);
 
-	addPosition(&vMove); // 移動ベクトルをプレイヤーの座標に加算
-
-	// プレイヤーの距離を測る計算
-	XMVECTOR v = XMVector3Length(*getPosition());
-	float dist = XMVectorGetX(v);
+	// プレイヤーを移動
+	XMVECTOR newPos = XMVectorAdd(playerPos, vMove);
+	setPosition(&newPos); // 新しい位置を設定
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -196,6 +197,24 @@ void boss::move(player* rival)
 void boss::stun()
 {
 
+}
+
+bool boss::playerCloseSearch(player* rival)
+{
+	// ボスとプレイヤーの距離
+	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR vDist = XMVector3Length(bossToPlayer);
+	float dist = XMVectorGetX(vDist);
+
+	// 一定距離内のプレイヤーがいるかどうか
+	if (dist <= 10)
+	{
+		return true;
+	}
+	else // 一定距離以上離れているかどうか
+	{
+		return false;
+	}
 }
 
 void boss::takeDamage()
@@ -248,4 +267,9 @@ void boss::playerAllRender()
 		render();
 		pRightArm->render();
 	}
+}
+
+handleActionState boss::getBossAction()
+{
+	return handleAction;
 }

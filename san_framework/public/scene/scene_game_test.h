@@ -14,6 +14,9 @@ class SceneGameTest : public sanScene
 	sanModel*	   pSky;
 	sanModel*	   pCrown;
 	sanBillboard*  pBillboard;
+	sanEffect*	   pEffect;
+	sanEffect*     pEffectNPC;
+	sanEffect*     pHitEffect;
 
 	// 極座標の情報
 	float radius;  // 半径

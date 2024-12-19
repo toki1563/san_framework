@@ -12,7 +12,8 @@
 //初期化関数
 bool SceneEffectTest::initialize()
 {
-	pEmitter = new sanEffect();
+	sanEffect::stEffectDesc desc;
+	pEmitter = new sanEffect(&desc);
 	registerObject(pEmitter);
 	cursor = 0;
 	radius = 10.0f; // 座標設定

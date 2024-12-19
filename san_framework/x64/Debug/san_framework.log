@@ -1,3 +1,51 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (san_freamework.vcxproj, test.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  san_Direct2D.cpp
+  san_Direct3D.cpp
+  san_DirectInput.cpp
+  san_XAudio2.cpp
+  san_XInput.cpp
+  san_shader.cpp
+  san_camera.cpp
+  san_debugDraw.cpp
+C:\Users\sanda\source\repos\san_framework\san_framework\framework\san_debugDraw.cpp(254,19): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+  san_font.cpp
+  san_joystick.cpp
+  san_keyboard.cpp
+  san_light.cpp
+  san_mainframe.cpp
+  san_mouse.cpp
+  san_sound.cpp
+  cube.cpp
+  san_billboard.cpp
+  san_collide.cpp
+C:\Users\sanda\source\repos\san_framework\san_framework\public\san_collide.cpp(147,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   san_effect.cpp
+  san_model.cpp
+  コードを生成中...
+  コンパイル中...
+  san_object.cpp
+  san_sprite.cpp
+  san_scene.cpp
+  scene_billboard_test.cpp
+  scene_boot.cpp
+  scene_collision_test.cpp
+  scene_cube_test.cpp
+C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_cube_test.cpp(131,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  scene_effect_test.cpp
+C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_effect_test.cpp(74,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  scene_font_test.cpp
+  scene_game_test.cpp
+C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_game_test.cpp(248,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_game_test.cpp(303,22): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+  scene_ground_test.cpp
+  scene_joystick_test.cpp
+  scene_model_test.cpp
+C:\Users\sanda\source\repos\san_framework\san_framework\public\scene\scene_model_test.cpp(135,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  scene_pick_test.cpp
+  scene_se_test.cpp
+  scene_spherecollision_test.cpp
+  scene_sprite_test.cpp
+  scene_table.cpp
+  san_framework.cpp
+  コードを生成中...
   san_framework.vcxproj -> C:\Users\sanda\source\repos\san_framework\x64\Debug\san_framework.exe

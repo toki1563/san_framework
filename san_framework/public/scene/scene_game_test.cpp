@@ -22,6 +22,14 @@ bool SceneGameTest::initialize()
 	pBillboard = new sanBillboard(1.0f, 1.0f, L"data/image/icon_exc.png");
 	pBillboard->setParent(pNPC);
 	pBillboard->setPositionY(3.6f);
+	// エフェクト
+	sanEffect::stEffectDesc desc;
+	pEffect = new sanEffect(&desc);
+	pEffect->setParent(pPlayer);
+	pEffectNPC = new sanEffect(&desc);
+	pEffectNPC->setParent(pNPC);
+	pHitEffect = new sanEffect(&desc);
+	pHitEffect->setEmit(false);
 
 	// シーンの基底クラスへ登録
 	registerObject(pPlayer);
@@ -30,6 +38,9 @@ bool SceneGameTest::initialize()
 	registerObject(pSky);
 	registerObject(pCrown);
 	registerObject(pBillboard);
+	registerObject(pEffect);
+	registerObject(pEffectNPC);
+	registerObject(pHitEffect);
 
 	for (int i = 0; i < FENCE_NUM; i++)
 	{
@@ -74,6 +85,9 @@ void SceneGameTest::terminate()
 	{
 		deleteObject(pFence[i]);
 	}
+	deleteObject(pHitEffect);
+	deleteObject(pEffectNPC);
+	deleteObject(pEffect);
 	deleteObject(pBillboard);
 	deleteObject(pCrown);
 	deleteObject(pSky);
@@ -111,6 +125,14 @@ void SceneGameTest::execute()
 	{
 		vMove = XMVectorSetX(vMove, 1.0f);
 		input = true;
+	}
+	// エフェクト
+	if (sanKeyboard::trg(DIK_SPACE))
+	{
+		pHitEffect->setPosition(pPlayer->getPosition());
+		pHitEffect->addPositionY(3.5f);
+		pHitEffect->setEmit(true);
+		pHitEffect->setEmitCount(10.0f);
 	}
 	// 移動ベクトルにスピードを適用(長さを変える)
 	vMove = XMVectorScale(vMove, moveSpeed);
@@ -155,6 +177,13 @@ void SceneGameTest::execute()
 			atan2f(-XMVectorGetZ(mAns.r[0]), XMVectorGetZ(mAns.r[2]));
 
 		pPlayer->setRotationY(rotY);
+		// 移動時にエフェクトを表示
+		pEffect->setEmit(true);
+	}
+	else
+	{
+		// 停止時にエフェクトを非表示
+		pEffect->setEmit(false);
 	}
 
 	// 移動ベクトルをプレイヤーの座標に加算
@@ -166,7 +195,7 @@ void SceneGameTest::execute()
 	float dist = XMVectorGetX(vDist);
 
 	// 距離が、フェンスの半径を超えているか調べる
-	if (dist > FENCE_RADIUS)
+	if (dist >= FENCE_RADIUS)
 	{
 		// 超えていた場合、プレイヤーの位置(座標)を半径内に収まるところに設定
 		// 正規化(長さを1にする)
@@ -274,10 +303,12 @@ void SceneGameTest::execute()
 		npcToPlayer *= 0.3 * 0.5f;
 		pNPC->addPosition(&npcToPlayer);
 		pBillboard->setRenderEnable(true);
+		pEffectNPC->setEmit(true);
 	}
 	else
 	{
 		pBillboard->setRenderEnable(false);
+		pEffectNPC->setEmit(false);
 	}
 
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);

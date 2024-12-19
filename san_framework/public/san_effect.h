@@ -21,9 +21,33 @@ public:
 
 class sanEffect : public sanObject
 {
+public:
+	struct stEffectDesc
+	{
+		// エミットの設定(パーティクルのパラメータ)
+		float LifeMin;
+		float LifeMax;
+		XMVECTOR VelocityMin;
+		XMVECTOR VelocityMax;
+		float SizeMin;
+		float SizeMax;
+		stEffectDesc()
+		{
+			LifeMin = 60.0f;
+			LifeMax = 12.0f;
+			VelocityMin = XMVectorSet(-1.0f, 0.0f, -1.0f, 0.0f);
+			VelocityMax = XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f);
+			SizeMin = 0.0f;
+			SizeMax = 1.0;
+		}
+	};
+	
 private:
 	// パーティクル配列
 	sanParticle* pParticle;
+
+	bool emit;       // 放出するかどうか
+	float emitCount; // 放出持続時間
 
 	// 描画されるインデックスの数
 	int IndexNum;
@@ -61,10 +85,18 @@ private:
 	virtual void setVertexPosition();
 
 public:
-	sanEffect();
+	sanEffect(stEffectDesc * pDese);
 	virtual ~sanEffect();
 
 	virtual void execute();
 
 	virtual void render();
+
+	// 放出設定
+	void setEmit(bool flag);
+	bool isEmit();
+
+	// 放出持続時間
+	void setEmitCount(float value);
+	float getEmitCount();
 };

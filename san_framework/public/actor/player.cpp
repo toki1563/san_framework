@@ -179,7 +179,7 @@ void player::atk(boss* rival)
 				//XMVECTOR knockbackVector = playerFront * 4;
 				//XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
 				//rival->setPosition(&newPosition);
-				rival->takeDamage();
+				rival->takeDamage(status.atkPower);
 			}
 
 			// 敵に攻撃が当たった時
@@ -251,7 +251,16 @@ void player::atk(boss* rival)
 						//XMVECTOR knockbackVector = playerFront * 4;
 						//XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
 						//rival->setPosition(&newPosition);
-						rival->takeDamage();
+
+						// 攻撃が3連目の時
+						if (atkCombo == 2)
+						{
+							rival->takeDamage(status.atkPower * 1.5);
+						}
+						else // 攻撃が2連目の時
+						{
+							rival->takeDamage(status.atkPower * 1.2);
+						}
 					}
 
 					// 敵に攻撃が当たった時
@@ -426,9 +435,10 @@ void player::step(boss* rival)
 	}
 }
 
-void player::takeDamage()
+void player::takeDamage(float damage)
 {
 	isTakeDamage = true;
+	status.health -= damage;
 }
 
 void player::damageDisplay()

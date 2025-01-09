@@ -24,7 +24,7 @@ public:
 	void move(boss* rival);	   // プレイヤーの動き
 	void atk(boss* rival);     // プレイヤーの攻撃
 	void step(boss* rival);    // プレイヤーのステップ
-	void takeDamage(); // ダメージ受け時のプレイヤー表示
+	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
 	bool getIsTakeHit(); // 攻撃を受けた時

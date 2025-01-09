@@ -36,7 +36,7 @@ public:
 	void move(player* rival);    // プレイヤーに近づく
 	void stun(); // スタン
 	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
-	void takeDamage(); // ダメージ受け時のプレイヤー表示
+	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
 	bool getIsTakeHit(); // 攻撃を受けた時

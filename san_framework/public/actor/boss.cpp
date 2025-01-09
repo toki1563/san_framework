@@ -125,7 +125,7 @@ void boss::atk(player* rival)
 		XMVECTOR knockbackVector = bossrFront * 4;
 		XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
 		rival->setPosition(&newPosition);
-		rival->takeDamage();
+		rival->takeDamage(status.atkPower);
 	}
 
 	// 敵に当たった時
@@ -217,9 +217,10 @@ bool boss::playerCloseSearch(player* rival)
 	}
 }
 
-void boss::takeDamage()
+void boss::takeDamage(float damage)
 {
 	isTakeDamage = true;
+	status.health -= damage;
 }
 
 void boss::damageDisplay()
@@ -255,6 +256,7 @@ bool boss::getIsTakeHit()
 
 void boss::playerAllRender()
 {
+	sanFont::print(20.0f, 300.0f, L"体力 : %.3f", status.health);
 	pShadow->render();
 	// クールタイム中は切り替える
 	if (isAtkCoolTime)

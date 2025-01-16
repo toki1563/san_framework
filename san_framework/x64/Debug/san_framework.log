@@ -1,7 +1,3 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (san_freamework.vcxproj, test.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
   boss.cpp
-  player.cpp
-C:\Users\sanda\source\repos\san_framework\san_framework\public\actor\player.cpp(258,42): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\sanda\source\repos\san_framework\san_framework\public\actor\player.cpp(262,42): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-  コードを生成中...
   san_framework.vcxproj -> C:\Users\sanda\source\repos\san_framework\x64\Debug\san_framework.exe

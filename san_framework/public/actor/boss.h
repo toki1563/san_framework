@@ -18,7 +18,6 @@ enum class handleActionState
 	Defending,  // 防御中
 	Attacking,  // 攻撃中
 	Move,		// 移動
-	Stunned,    // スタン状態
 	MAX,		// 最大値
 };
 
@@ -34,12 +33,12 @@ public:
 	void defense(player* rival); // 防御
 	void atk(player* rival);     // 攻撃
 	void move(player* rival);    // プレイヤーに近づく
-	void stun(); // スタン
 	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
 	bool getIsTakeHit(); // 攻撃を受けた時
+	bool getIsDefense(); // 防御
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
 	handleActionState getBossAction(); // ボスの行動の取得
 
@@ -52,8 +51,9 @@ private:
 	bossStatus status;
 	handleActionState handleAction;
 
-	float pi;     // 円周率
-	bool isTakeDamage;   // 攻撃を受けたかどうか
+	float pi;           // 円周率
+	bool isDefense;     // 防御しているかどうか
+	bool isTakeDamage;  // 攻撃を受けたかどうか
 	bool isAtkCoolTime; // 攻撃のクールタイム
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
 };

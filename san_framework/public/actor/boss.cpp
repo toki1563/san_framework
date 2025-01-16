@@ -15,6 +15,7 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	status.maxHealth = status.health;
 	handleAction = handleActionState::Defending;
 	pi = 3.14f;
+	isDefence = false;
 	isTakeDamage = false;
 	isAtkCoolTime = false;
 	isTakeDamageDisPlay = false;
@@ -33,7 +34,6 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	pRightArm->setRotationZ(1.0f * pi);
 	pRightArmAtkCoolTime->setRotationX(-0.1f * pi);
 	pRightArmAtkCoolTime->setRotationZ(1.0f * pi);
-
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -58,19 +58,17 @@ void boss::actionState(player* rival)
 		defense(rival);
 		break;
 	case handleActionState::Attacking:
-		move(rival);
-		break;
-	case handleActionState::Move:
 		atk(rival);
 		break;
-	case handleActionState::Stunned:
+	case handleActionState::Move:
+		move(rival);
 		break;
 	case handleActionState::MAX:
 		break;
 	}
 	// ランダムで処理する(別で関数を作成する)
-	atk(rival);
-	damageDisplay();
+	//atk(rival);
+	//damageDisplay();
 }
 
 void boss::DecideNextAction(player* rival)
@@ -97,7 +95,16 @@ void boss::execute(player* rival)
 
 void boss::defense(player* rival)
 {
+	// 敵とプレイヤーの位置を取得
+	XMVECTOR playerPos = *(rival->getPosition());
+	XMVECTOR enemyPos = *(getPosition());
 
+	// プレイヤーから敵へのベクトルと距離を計算
+	XMVECTOR vToRival = XMVectorSubtract(playerPos, enemyPos);
+
+	// 敵を正面に向けるよう回転を設定
+	float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
+	setRotationY(rotY);
 }
 
 void boss::atk(player* rival)
@@ -194,11 +201,6 @@ void boss::move(player* rival)
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
 }
 
-void boss::stun()
-{
-
-}
-
 bool boss::playerCloseSearch(player* rival)
 {
 	// ボスとプレイヤーの距離
@@ -252,6 +254,11 @@ bool boss::getTakeDamageDisPlay()
 bool boss::getIsTakeHit()
 {
 	return isTakeDamage;
+}
+
+bool boss::getIsDefense()
+{
+	return isDefense;
 }
 
 void boss::playerAllRender()

@@ -28,8 +28,7 @@ class SceneGameTest : public sanScene
 	float scrollMove; // 右クリック時のスクロール値
 	int   shapeNumber;		// 形の番号
 
-	bool  gridActive;  // グリッド表示非表示
-	bool  axisActive;  // 軸表示非表示
+	bool  gridAxisActive;  // グリッド&軸表示非表示
 	bool  isLightColorNormal; // ライトの色を通常と夕焼け変更可
 	bool  input;			  // 入力があるかを示すフラグ
 

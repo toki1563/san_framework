@@ -21,8 +21,7 @@ bool SceneBillBoardTest::initialize()
 	value_r = 1.0f * 3.141592f / 180.0f;
 	radiusRoll = 0.5f;
 	scrollMove = 0.05f;
-	gridActive = true;
-	axisActive = true;
+	gridAxisActive = true;
 	isActiveBillboard = true;
 	return true;
 }
@@ -68,8 +67,7 @@ void SceneBillBoardTest::execute()
 	}
 	if (sanKeyboard::trg(DIK_L)) // グリッド・軸の表示/非表示
 	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
+		gridAxisActive = !gridAxisActive;
 	}
 
 	// カメラ座標の計算
@@ -92,8 +90,8 @@ void SceneBillBoardTest::execute()
 	// デバッグ情報
 	sanFont::print(20.0f, 40.0f, L"LキーでGrid&Axis表示・非表示");
 	sanFont::print(20.0f, 60.0f, L"spaceキーでBillBoard表示・非表示");
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
-	sanDebugDraw::Axis(5.0f, axisActive);
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
 
 	sanScene::execute();
 }

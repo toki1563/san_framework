@@ -69,8 +69,7 @@ bool SceneGameTest::initialize()
 	scrollMove = 0.05f;
 	shapeNumber = 0; // 形切り替えの数字
 
-	gridActive = true;
-	axisActive = true;
+	gridAxisActive = true;
 	isLightColorNormal = true;
 	input = false;
 
@@ -228,8 +227,7 @@ void SceneGameTest::execute()
 	}
 	if (sanKeyboard::trg(DIK_L)) // グリッド/軸表示非表示
 	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
+		gridAxisActive = !gridAxisActive;
 	}
 
 	// カメラ座標の計算
@@ -311,8 +309,8 @@ void SceneGameTest::execute()
 		pEffectNPC->setEmit(false);
 	}
 
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
-	sanDebugDraw::Axis(5.0f, axisActive);
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
 
 	// デバッグ情報
 	sanFont::print(20.0f, 20.0f,

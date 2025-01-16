@@ -2,8 +2,6 @@
 
 class SceneKeyframetest : public sanScene
 {
-	bool debugLine;
-
 	struct stKeyframe
 	{
 		float time;  // 時間
@@ -34,13 +32,17 @@ class SceneKeyframetest : public sanScene
 	sanModel* pCube;
 	sanModel* pCube2;
 
-	float radius; // 半径
-	float theta;
-	float phi;
+	float radius;  // 半径
+	float theta;   // 平面角
+	float phi;     // 仰角
+	float value_r; // 回転
+	float radians;   // ラジアン
+	float radiusRoll; // ミドル回転時の値
+	float scrollMove; // 右クリック時のスクロール値
+	bool reverse;     // 反転フラグ
+	bool  gridAxisActive;  // グリッド&軸表示非表示
 
 	int Cursor;
-	float scrollMove; // 右クリック時のスクロール値
-
 
 public:
 	//初期化

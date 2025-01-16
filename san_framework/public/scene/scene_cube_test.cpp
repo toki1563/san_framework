@@ -25,8 +25,7 @@ bool SceneCubeTest::initialize()
 	Cursor  = 0;
 	radiusRoll = 0.5f; // ミドル回転時の値
 	scrollMove = 0.05f; // 右クリック時のスクロール値
-	gridActive = true;
-	axisActive = true;
+	gridAxisActive = true;
 
 	return true;
 }
@@ -95,8 +94,7 @@ void SceneCubeTest::execute()
 	}
 	else if (sanKeyboard::trg(DIK_L))
 	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
+		gridAxisActive = !gridAxisActive;
 	}
 
 	// カメラの回転
@@ -147,8 +145,8 @@ void SceneCubeTest::execute()
 	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"LキーでGrid&Axis表示・非表示");
 	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"spaceキーでリセット");
 
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
-	sanDebugDraw::Axis(5.0f, axisActive);
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
 	sanScene::execute();
 }
 

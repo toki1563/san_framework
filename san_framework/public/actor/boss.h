@@ -17,7 +17,7 @@ enum class handleActionState
 {
 	Defending,  // 防御中
 	Attacking,  // 攻撃中
-	Move,		// 移動
+	Moveing,	// 移動中
 	MAX,		// 最大値
 };
 

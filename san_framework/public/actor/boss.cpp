@@ -13,9 +13,9 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	status.isDefense = false;
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
-	handleAction = handleActionState::Defending;
+	handleAction = handleActionState::Moveing;
 	pi = 3.14f;
-	isDefence = false;
+	isDefense = false;
 	isTakeDamage = false;
 	isAtkCoolTime = false;
 	isTakeDamageDisPlay = false;
@@ -60,15 +60,14 @@ void boss::actionState(player* rival)
 	case handleActionState::Attacking:
 		atk(rival);
 		break;
-	case handleActionState::Move:
+	case handleActionState::Moveing:
 		move(rival);
 		break;
 	case handleActionState::MAX:
 		break;
 	}
-	// ランダムで処理する(別で関数を作成する)
-	//atk(rival);
-	//damageDisplay();
+	// ダメージを受けた時
+	damageDisplay();
 }
 
 void boss::DecideNextAction(player* rival)
@@ -95,6 +94,11 @@ void boss::execute(player* rival)
 
 void boss::defense(player* rival)
 {
+	// フラグが防御中でないときは防御にする
+	if (!isDefense)
+	{
+		isDefense = true;
+	}
 	// 敵とプレイヤーの位置を取得
 	XMVECTOR playerPos = *(rival->getPosition());
 	XMVECTOR enemyPos = *(getPosition());
@@ -109,6 +113,16 @@ void boss::defense(player* rival)
 
 void boss::atk(player* rival)
 {
+	// フラグが防御中な時は解除する
+	if (isDefense)
+	{
+		isDefense = false;
+	}
+
+	// 固定値なのでメモリを削減
+	constexpr float atkDist = 3.5f;			 // 攻撃距離
+	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
+
 	// NPCの認識範囲
 	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(bossToPlayer);
@@ -125,8 +139,42 @@ void boss::atk(player* rival)
 	float radian = acosf(dot);
 	float degree = XMConvertToDegrees(radian);
 
+	// 攻撃時のデバッグライン表示開始
+	const int segments = 4; // 円弧の分割数
+	float halfAngle = atkDegree / 2.0f;
+
+	// 円弧の中心点
+	XMVECTOR center = *getPosition();
+
+	// 前方向を基準に左右の範囲を計算
+	for (int i = 0; i < segments; ++i)
+	{
+		float theta1 = -halfAngle + (atkDegree / segments) * i;          // 現在の角度
+		float theta2 = -halfAngle + (atkDegree / segments) * (i + 1);    // 次の角度
+
+		// 現在の角度での方向を計算
+		XMVECTOR dir1 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta1)));
+		XMVECTOR dir2 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta2)));
+
+		// 各方向に距離を掛けてポイントを計算
+		XMVECTOR point1 = center + dir1 * atkDist;
+		XMVECTOR point2 = center + dir2 * atkDist;
+
+		// デバッグラインを描画
+		sanDebugDraw::Line(&center, &point1, 0xffffff00);  // 中心から外へ
+		sanDebugDraw::Line(&point1, &point2, 0xffffff00); // 円弧の外周を繋ぐ
+		// 右端の点を更新
+		XMVECTOR lastPoint = point2;
+		// 右端の点から中心への線を描画
+		sanDebugDraw::Line(&lastPoint, &center, 0xffffff00);
+	}
+	// 攻撃時のデバッグライン表示終了
+
+
 	// 認識範囲に入っているか
-	if (dist < 3.5f && degree < 45.0f)
+	if (dist < atkDist && degree < atkDegree)
 	{
 		// 攻撃処理
 		XMVECTOR knockbackVector = bossrFront * 4;
@@ -166,10 +214,17 @@ void boss::atk(player* rival)
 
 void boss::move(player* rival)
 {
+	// フラグが防御中な時は解除する
+	if (isDefense)
+	{
+		isDefense = false;
+	}
+
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
 
 	// 固定値なのでメモリを削減
 	constexpr float moveSpeed = 0.1f; // プレイヤーの移動速度
+	constexpr float stopDistance = 3.0f; // プレイヤーの手前で止まる距離
 
 	// 敵と自身の位置を取得
 	XMVECTOR rivalPos = *(rival->getPosition());
@@ -179,11 +234,14 @@ void boss::move(player* rival)
 	XMVECTOR vToRival = XMVectorSubtract(rivalPos, playerPos);
 	float distToRival = XMVectorGetX(XMVector3Length(vToRival));
 
-	// 敵に向かって前進
-	vMove = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化
-
-	// 移動ベクトルにスピードを適用(長さを変える)
-	vMove = XMVectorScale(vMove, moveSpeed);
+	// 敵に向かって前進(距離が一定以上の場合のみ)
+	if (distToRival > stopDistance) 
+	{
+		// 敵に向かって前進
+		vMove = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化
+		// 移動ベクトルにスピードを適用(長さを変える)
+		vMove = XMVectorScale(vMove, moveSpeed);
+	}
 
 	// 腕をついてくるように設定
 	pRightArm->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());

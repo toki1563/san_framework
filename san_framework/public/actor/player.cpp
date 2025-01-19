@@ -70,6 +70,7 @@ void player::move(boss* rival)
 
 	// 固定値なのでメモリを削減
 	constexpr float moveSpeed = 0.1f; // プレイヤーの移動速度
+	constexpr float stopDistance = 3.0f;     // 敵の手前で止まる距離
 
 	// 敵と自身の位置を取得
 	XMVECTOR rivalPos = *(rival->getPosition());
@@ -84,9 +85,12 @@ void player::move(boss* rival)
 
 	if (sanKeyboard::on(DIK_W) || sanXInput::leftY(0) >= 0.5f)
 	{
-		// 敵に向かって前進
-		vMove = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化
-		isInput = true;
+		// 敵に向かって前進(距離が一定以上の場合のみ)
+		if (distToRival > stopDistance)
+		{
+			vMove = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化
+			isInput = true;
+		}
 	}
 	if (sanKeyboard::on(DIK_S) || sanXInput::leftY(0) <= -0.5f)
 	{
@@ -140,8 +144,10 @@ void player::atk(boss* rival)
 	static uint8_t atkCombo = 0; // 攻撃のコンボカウント
 
 	// 固定値なのでメモリを削減
-	constexpr float atkDuration = 10.0f;	   // 攻撃モーションのの持続時間
-	constexpr float atkCoolTimeLimit = 3.0f;  // クールタイムの長さ
+	constexpr float atkDist = 3.5f;			 // 攻撃距離
+	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
+	constexpr float atkDuration = 10.0f;	 // 攻撃モーションのの持続時間
+	constexpr float atkCoolTimeLimit = 3.0f; // クールタイムの長さ
 
 	// デバッグ用
 	sanFont::print(20.0f, 180.0f, L"攻撃の進捗度 : %.3f", atkProgress);
@@ -164,6 +170,39 @@ void player::atk(boss* rival)
 	float radian = acosf(dot);
 	float degree = XMConvertToDegrees(radian);
 
+	// 攻撃時のデバッグライン表示開始
+	const int segments = 4; // 円弧の分割数
+	float halfAngle = atkDegree / 2.0f;
+
+	// 円弧の中心点
+	XMVECTOR center = *getPosition();
+
+	// 前方向を基準に左右の範囲を計算
+	for (int i = 0; i < segments; ++i)
+	{
+		float theta1 = -halfAngle + (atkDegree / segments) * i;          // 現在の角度
+		float theta2 = -halfAngle + (atkDegree / segments) * (i + 1);    // 次の角度
+
+		// 現在の角度での方向を計算
+		XMVECTOR dir1 = XMVector3Transform(playerFront,
+			XMMatrixRotationY(XMConvertToRadians(theta1)));
+		XMVECTOR dir2 = XMVector3Transform(playerFront,
+			XMMatrixRotationY(XMConvertToRadians(theta2)));
+
+		// 各方向に距離を掛けてポイントを計算
+		XMVECTOR point1 = center + dir1 * atkDist;
+		XMVECTOR point2 = center + dir2 * atkDist;
+
+		// デバッグラインを描画
+		sanDebugDraw::Line(&center, &point1, 0xffffff00);  // 中心から外へ
+		sanDebugDraw::Line(&point1, &point2, 0xffffff00); // 円弧の外周を繋ぐ
+		// 右端の点を更新
+		XMVECTOR lastPoint = point2;
+		// 右端の点から中心への線を描画
+		sanDebugDraw::Line(&lastPoint, &center, 0xffffff00);
+	}
+	// 攻撃時のデバッグライン表示終了
+
 	// 初の攻撃時
 	if (isCanAtk)
 	{
@@ -173,7 +212,7 @@ void player::atk(boss* rival)
 			isCanAtk = false; // 攻撃不可状態
 
 			// 攻撃範囲なら攻撃する
-			if (dist < 3.5f && degree < 45.0f)
+			if (dist < atkDist && degree < atkDegree)
 			{
 				//ノックバック
 				//XMVECTOR knockbackVector = playerFront * 4;

@@ -2,36 +2,36 @@
 
 class SceneKeyframetest : public sanScene
 {
-	struct stKeyframe
+	// キーフレーム構造体
+	struct stKeyFrame
 	{
 		float time;  // 時間
 		float value; // 値
 	};
 
-	stKeyframe keyPx[4]; // キーフレーム配列 positionX用
-	stKeyframe keyPz[4]; // キーフレーム配列 positionZ用
-
-	void InitializeKeyFramesPx()
+	// アニメーションパーツのチャンネル
+	struct stMotionChannel
 	{
-		keyPx[0] = { 0.0f, -5.0f };
-		keyPx[1] = { 60.0f,  5.0f };
-		keyPx[2] = { 120.0f,  0.0f };
-		keyPx[3] = { 180.0f, -5.0f };
-	}
+		int partsID;     // パーツの種類
+		int channelID;	 // チャンネルの番号
+		int keyframeNum;
+		stKeyFrame *pkey; // 可変させる
+	};
 
-	void InitializeKeyFramesPz()
+	stMotionChannel channel[2];
+
+	// どこを動かすかの構造体
+	enum eChannel
 	{
-		keyPx[0] = { 0.0f, 0.0f };
-		keyPx[1] = { 60.0f, 0.0f };
-		keyPx[2] = { 120.0f, 5.0f };
-		keyPx[3] = { 180.0f, 0.0f };
-	}
+		PosX,
+		PosY,
+		PosZ,
+		RotX,
+		RotY,
+		RotZ,
+	};
 
 	float time; // 時間経過
-
-	sanModel* pCube;
-	sanModel* pCube2;
-
 	float radius;  // 半径
 	float theta;   // 平面角
 	float phi;     // 仰角
@@ -40,9 +40,19 @@ class SceneKeyframetest : public sanScene
 	float radiusRoll; // ミドル回転時の値
 	float scrollMove; // 右クリック時のスクロール値
 	bool reverse;     // 反転フラグ
-	bool  gridAxisActive;  // グリッド&軸表示非表示
+	bool gridAxisActive;  // グリッド&軸表示非表示
 
-	int Cursor;
+	enum eParts
+	{
+		Body,
+		Head,
+		ArmL,
+		ArmR,
+		LegL,
+		LegR,
+		Max,
+	};
+	sanModel* pParts[6];
 
 public:
 	//初期化

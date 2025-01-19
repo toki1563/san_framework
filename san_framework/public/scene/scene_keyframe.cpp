@@ -4,21 +4,49 @@
 //初期化関数
 bool SceneKeyframetest::initialize()
 {
-    pCube = new sanModel(L"data/model/bear_part/", L"head.vnm");
-    registerObject(pCube);
+    pParts[eParts::Body] = new sanModel(L"data/model/bear_part/", L"body.vnm");
 
-    //キーフレーム初期化
-    keyPx[0].time = 0.0f;    keyPx[0].value = -5.0f;
-    keyPz[0].time = 0.0f;    keyPz[0].value = 0.0f;
+    pParts[eParts::Head] = new sanModel(L"data/model/bear_part/", L"head.vnm");
+    pParts[eParts::Head]->setPositionY(0.8f);
+    pParts[eParts::Head]->setParent(pParts[eParts::Body]);
 
-    keyPx[1].time = 60.0f;    keyPx[1].value = 5.0f;
-    keyPz[1].time = 60.0f;    keyPz[1].value = 0.0f;
+    pParts[eParts::ArmL] = new sanModel(L"data/model/bear_part/", L"arm_L.vnm");
+    pParts[eParts::ArmL]->setPosition(0.2f, 0.75f, 0.05f);
+    pParts[eParts::ArmL]->setRotationZ(0.45f);
+    pParts[eParts::ArmL]->setParent(pParts[eParts::Body]);
 
-    keyPx[2].time = 120.0f;    keyPx[2].value = 0.0f;
-    keyPz[2].time = 120.0f;    keyPz[2].value = 5.0f;
+    pParts[eParts::ArmR] = new sanModel(L"data/model/bear_part/", L"arm_R.vnm");
+    pParts[eParts::ArmR]->setPosition(-0.2f, 0.75f, 0.025f);
+    pParts[eParts::ArmR]->setRotationZ(5.8f);
+    pParts[eParts::ArmR]->setParent(pParts[eParts::Body]);
 
-    keyPx[3].time = 180.0f;    keyPx[3].value = -5.0f;
-    keyPz[3].time = 180.0f;    keyPz[3].value = 0.0f;
+    pParts[eParts::LegL] = new sanModel(L"data/model/bear_part/", L"leg_L.vnm");
+    pParts[eParts::LegL]->setPosition(0.2f, 0.0f, 0.1f);
+    pParts[eParts::LegL]->setParent(pParts[eParts::Body]);
+
+    pParts[eParts::LegR] = new sanModel(L"data/model/bear_part/", L"leg_R.vnm");
+    pParts[eParts::LegR]->setPosition(-0.2f, 0.0f, 0.1f);
+    pParts[eParts::LegR]->setParent(pParts[eParts::Body]);
+
+    for (int i = 0; i < eParts::Max; i++)
+    {
+        registerObject(pParts[i]);
+    }
+
+    channel[0].partsID = eParts::Head;
+    channel[0].channelID = eChannel::RotY;
+    channel[0].keyframeNum = 2;
+    channel[0].pkey = new stKeyFrame[channel[0].keyframeNum];
+    channel[0].pkey[0].time = 0.0f; channel[0].pkey[0].value = 0.0f;
+    channel[0].pkey[1].time = 60.0f; channel[0].pkey[1].value = 6.26f;
+
+    channel[1].partsID = eParts::Head;
+    channel[1].channelID = eChannel::PosY;
+    channel[1].keyframeNum = 3;
+    channel[1].pkey = new stKeyFrame[channel[0].keyframeNum];
+    channel[1].pkey[0].time = 0.0f;  channel[0].pkey[0].value = 0.0f;
+    channel[1].pkey[1].time = 30.0f; channel[0].pkey[1].value = 1.0f;
+    channel[1].pkey[2].time = 50.0f; channel[0].pkey[2].value = 0.0f;
 
 
     time = 0.0f;
@@ -30,7 +58,6 @@ bool SceneKeyframetest::initialize()
     scrollMove = 0.05f;
     gridAxisActive = true;
 
-    Cursor = 0;
     scrollMove = 0.05f;
 
     return true;
@@ -39,7 +66,10 @@ bool SceneKeyframetest::initialize()
 //終了関数
 void SceneKeyframetest::terminate()
 {
-    deleteObject(pCube);
+    for (int i = 0; i < eParts::Max; i++)
+    {
+        deleteObject(pParts[i]);
+    }
 }
 
 //処理関数
@@ -50,7 +80,7 @@ void SceneKeyframetest::execute()
     {
         radius += radiusRoll;
     }
-    else if (sanMouse::getR() <= -0.1)
+    else if (sanMouse::getR() <= -0.1 && radius >= radiusRoll * 2)
     {
         radius -= radiusRoll;
     }
@@ -70,14 +100,14 @@ void SceneKeyframetest::execute()
     {
         phi -= scrollMove;
     }
-
     if (sanKeyboard::trg(DIK_L))
     {
         gridAxisActive = !gridAxisActive;
+    }
+    if (sanKeyboard::trg(DIK_SPACE))
+    {
         reverse = !reverse;
     }
-
-
 
 
     // 仰角(Φ)の計算
@@ -89,18 +119,21 @@ void SceneKeyframetest::execute()
     sanCamera::setPosition(px, py, pz);
 
     sanFont::print(20.0f, 40.0f, L"LキーでGrid&Axis表示・非表示");
+    sanFont::print(20.0f, 60.0f, L"SPACEキーでアニメーション反転");
     sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
     sanDebugDraw::Axis(5.0f, gridAxisActive);
 
 
+    float animSpeed = 1.0f; // アニメーションスピード
+
     //時間経過
     if (!reverse)
     {
-        time += 1.0f;
+        time += animSpeed;
     }
     else
     {
-        time -= 1.0f;
+        time -= animSpeed;
     }
 
     //アニメーション時間
@@ -113,7 +146,7 @@ void SceneKeyframetest::execute()
     }
     else if (time <= 0.0f)
     {
-        time = 179.0f;
+        time = 180.0f - animSpeed;
     }
 
     // 線形補間
@@ -127,42 +160,77 @@ void SceneKeyframetest::execute()
     int startIndexPosX = -1;
     int startIndexPosZ = -1;
 
-    for (int i = 0; i < 3; ++i) // 3はキーフレーム数 - 1
+    for (int i = 0; i < 1; i++) //channelNumber
     {
-        if (startIndexPosX == -1 && time >= keyPx[i].time && time < keyPx[i + 1].time)
+        for (int j = 0; j < 2; ++j) // keyframeNumber
         {
-            startIndexPosX = i;
-        }
+            if (startIndexPosX == -1 && time >= keyPosX[i].time && time < keyPosX[i + 1].time)
+            {
+                startIndexPosX = i;
+            }
 
-        if (startIndexPosZ == -1 && time >= keyPz[i].time && time < keyPz[i + 1].time)
-        {
-            startIndexPosZ = i;
-        }
+            if (startIndexPosZ == -1 && time >= keyPosZ[i].time && time < keyPosZ[i + 1].time)
+            {
+                startIndexPosZ = i;
+            }
+            if (time > channel[i].key[j].time)
+            {
+                continue;
+            }
 
-        // 両方のインデックスが見つかったらループを抜ける
-        if (startIndexPosX != -1 && startIndexPosZ != -1)
-        {
-            break;
+            float rate = (time - channel[i].key[j - 1].time) / channel;
+            float value = channel[i].key[j].value - channel[i].key[j - 1].value;
+
+            // 値を対応
+            switch (channel[i].channelID)
+            {
+            case eChannel::PosX:
+                pParts[channel[i].partsID]->setPositionX(value);
+                break;
+            case eChannel::PosY:
+                pParts[channel[i].partsID]->setPositionY(value);
+                break;
+            case eChannel::PosZ:
+                pParts[channel[i].partsID]->setPositionZ(value);
+                break;
+            case eChannel::RotX:
+                pParts[channel[i].partsID]->setRotationX(value);
+                break;
+            case eChannel::RotY:
+                pParts[channel[i].partsID]->setRotationY(value);
+                break;
+            case eChannel::RotZ:
+                pParts[channel[i].partsID]->setRotationZ(value);
+                break;
+
+            }
+
+            // 両方のインデックスが見つかったらループを抜ける
+            if (startIndexPosX != -1 && startIndexPosZ != -1)
+            {
+                break;
+            }
         }
     }
     // 補間
-    stKeyframe startPosX = keyPx[startIndexPosX];
-    stKeyframe endPosX = keyPx[startIndexPosX + 1];
+    stKeyFrame startPosX = keyPosX[startIndexPosX];
+    stKeyFrame endPosX = keyPosX[startIndexPosX + 1];
 
-    stKeyframe startPosZ = keyPz[startIndexPosZ];
-    stKeyframe endPosZ = keyPz[startIndexPosZ + 1];
+    stKeyFrame startPosZ = keyPosZ[startIndexPosZ];
+    stKeyFrame endPosZ = keyPosZ[startIndexPosZ + 1];
 
     // X座標
     float t = (time - startPosX.time) / (endPosX.time - startPosX.time); // 正規化された時間
-    float valuePx = startPosX.value + (endPosX.value - startPosX.value) * t;
+    float valuePosX = startPosX.value + (endPosX.value - startPosX.value) * t;
 
     // Z座標
     float tPz = (time - startPosZ.time) / (endPosZ.time - startPosZ.time); // 正規化された時間
-    float valuePz = startPosZ.value + (endPosZ.value - startPosZ.value) * tPz;
+    float valuePosZ = startPosZ.value + (endPosZ.value - startPosZ.value) * tPz;
 
-    //// 位置の更新
-    //pCube->setPositionX(valuePx);
-    //pCube->setPositionZ(valuePz);
+    // 位置の更新
+    pParts[eParts::Body]->setPositionX(valuePosX);
+    pParts[eParts::Body]->setPositionZ(valuePosZ);
+
 
     sanFont::print(20.0f, 20.0f, L"time : %.3f", time);
 }

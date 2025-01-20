@@ -31,17 +31,6 @@ class SceneKeyframetest : public sanScene
 		RotZ,
 	};
 
-	float time; // 時間経過
-	float radius;  // 半径
-	float theta;   // 平面角
-	float phi;     // 仰角
-	float value_r; // 回転
-	float radians;   // ラジアン
-	float radiusRoll; // ミドル回転時の値
-	float scrollMove; // 右クリック時のスクロール値
-	bool reverse;     // 反転フラグ
-	bool gridAxisActive;  // グリッド&軸表示非表示
-
 	enum eParts
 	{
 		Body,
@@ -53,6 +42,17 @@ class SceneKeyframetest : public sanScene
 		Max,
 	};
 	sanModel* pParts[6];
+
+	float time; // 時間経過
+	float radius;  // 半径
+	float theta;   // 平面角
+	float phi;     // 仰角
+	float value_r; // 回転
+	float radians;   // ラジアン
+	float radiusRoll; // ミドル回転時の値
+	float scrollMove; // 右クリック時のスクロール値
+	bool reverse;     // 反転フラグ
+	bool gridAxisActive;  // グリッド&軸表示非表示
 
 public:
 	//初期化

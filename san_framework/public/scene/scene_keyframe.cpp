@@ -38,16 +38,15 @@ bool SceneKeyframetest::initialize()
     channel[0].keyframeNum = 2;
     channel[0].pkey = new stKeyFrame[channel[0].keyframeNum];
     channel[0].pkey[0].time = 0.0f; channel[0].pkey[0].value = 0.0f;
-    channel[0].pkey[1].time = 60.0f; channel[0].pkey[1].value = 6.26f;
+    channel[0].pkey[1].time = 60.0f; channel[0].pkey[1].value = 6.28f;
 
     channel[1].partsID = eParts::Head;
     channel[1].channelID = eChannel::PosY;
     channel[1].keyframeNum = 3;
-    channel[1].pkey = new stKeyFrame[channel[0].keyframeNum];
-    channel[1].pkey[0].time = 0.0f;  channel[0].pkey[0].value = 0.0f;
-    channel[1].pkey[1].time = 30.0f; channel[0].pkey[1].value = 1.0f;
-    channel[1].pkey[2].time = 50.0f; channel[0].pkey[2].value = 0.0f;
-
+    channel[1].pkey = new stKeyFrame[channel[1].keyframeNum];
+    channel[1].pkey[0].time = 0.0f;  channel[1].pkey[0].value = 0.0f;
+    channel[1].pkey[1].time = 30.0f; channel[1].pkey[1].value = 1.0f;
+    channel[1].pkey[2].time = 60.0f; channel[1].pkey[2].value = 0.0f;
 
     time = 0.0f;
 
@@ -109,7 +108,6 @@ void SceneKeyframetest::execute()
         reverse = !reverse;
     }
 
-
     // 仰角(Φ)の計算
     float px = cosf(theta) * cosf(phi) * radius;
     float py = sinf(phi) * radius;
@@ -137,7 +135,7 @@ void SceneKeyframetest::execute()
     }
 
     //アニメーション時間
-    float animTime = 180.0f;
+    float animTime = 60.0f;
 
     //アニメーションル－プ
     if (time >= animTime)
@@ -146,42 +144,29 @@ void SceneKeyframetest::execute()
     }
     else if (time <= 0.0f)
     {
-        time = 180.0f - animSpeed;
+        time = 60.0f - animSpeed;
     }
 
     // 線形補間
     //time   0    15   30    45   60
     //value -5  -2.5    0    2.5   +5
 
+    float value = 0.0f; // 今の時間で値を計算
 
-    // 現在の時間で値を線形補間(0~1)
-    float rate = time / animTime;
-    // キーフレームがどこにあるかの判定
-    int startIndexPosX = -1;
-    int startIndexPosZ = -1;
-
-    for (int i = 0; i < 1; i++) //channelNumber
+    for (int i = 0; i < 2; i++)	//channel
     {
-        for (int j = 0; j < 2; ++j) // keyframeNumber
+        for (int j = 1; j < channel[i].keyframeNum; j++)	//keyframe
         {
-            if (startIndexPosX == -1 && time >= keyPosX[i].time && time < keyPosX[i + 1].time)
-            {
-                startIndexPosX = i;
-            }
-
-            if (startIndexPosZ == -1 && time >= keyPosZ[i].time && time < keyPosZ[i + 1].time)
-            {
-                startIndexPosZ = i;
-            }
-            if (time > channel[i].key[j].time)
+            if (time > channel[i].pkey[j].time)
             {
                 continue;
             }
 
-            float rate = (time - channel[i].key[j - 1].time) / channel;
-            float value = channel[i].key[j].value - channel[i].key[j - 1].value;
+            float rate = (time - channel[i].pkey[j - 1].time) / (channel[i].pkey[j].time - channel[i].pkey[j - 1].time);
 
-            // 値を対応
+            value = (channel[i].pkey[j].value - channel[i].pkey[j - 1].value) * rate + channel[i].pkey[j - 1].value;
+
+            //値を適応
             switch (channel[i].channelID)
             {
             case eChannel::PosX:
@@ -202,36 +187,10 @@ void SceneKeyframetest::execute()
             case eChannel::RotZ:
                 pParts[channel[i].partsID]->setRotationZ(value);
                 break;
-
             }
-
-            // 両方のインデックスが見つかったらループを抜ける
-            if (startIndexPosX != -1 && startIndexPosZ != -1)
-            {
-                break;
-            }
+            break;
         }
     }
-    // 補間
-    stKeyFrame startPosX = keyPosX[startIndexPosX];
-    stKeyFrame endPosX = keyPosX[startIndexPosX + 1];
-
-    stKeyFrame startPosZ = keyPosZ[startIndexPosZ];
-    stKeyFrame endPosZ = keyPosZ[startIndexPosZ + 1];
-
-    // X座標
-    float t = (time - startPosX.time) / (endPosX.time - startPosX.time); // 正規化された時間
-    float valuePosX = startPosX.value + (endPosX.value - startPosX.value) * t;
-
-    // Z座標
-    float tPz = (time - startPosZ.time) / (endPosZ.time - startPosZ.time); // 正規化された時間
-    float valuePosZ = startPosZ.value + (endPosZ.value - startPosZ.value) * tPz;
-
-    // 位置の更新
-    pParts[eParts::Body]->setPositionX(valuePosX);
-    pParts[eParts::Body]->setPositionZ(valuePosZ);
-
-
     sanFont::print(20.0f, 20.0f, L"time : %.3f", time);
 }
 

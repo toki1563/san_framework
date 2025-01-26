@@ -5,7 +5,8 @@
 //														sanda	//
 //--------------------------------------------------------------//
 #pragma once
-#include "../framework//san_modelData.h"
+#include "../framework/san_modelData.h"
+#include "../framework/san_motionData.h"
 
 // ポリゴン頂点構造体
 struct sanVertex3D

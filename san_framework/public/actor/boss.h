@@ -1,7 +1,7 @@
 ﻿#pragma once
 class player; // 前方宣言
 
-class bossStatus
+class bossStatus // ステータス
 {
 public:
 	float atkPower; // 攻撃力	
@@ -27,7 +27,6 @@ public:
 	boss(const WCHAR* folder, const WCHAR* file);
 	~boss();
 
-	void actionState(player* rival);      // ボスの状態
 	void DecideNextAction(player* rival); // 次の行動
 	void execute(player* rival); // 全体の処理
 	void defense(player* rival); // 防御
@@ -54,6 +53,5 @@ private:
 	float pi;           // 円周率
 	bool isDefense;     // 防御しているかどうか
 	bool isTakeDamage;  // 攻撃を受けたかどうか
-	bool isAtkCoolTime; // 攻撃のクールタイム
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
 };

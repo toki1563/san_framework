@@ -147,7 +147,7 @@ void player::atk(boss* rival)
 	constexpr float atkDist = 3.5f;			 // 攻撃距離
 	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
 	constexpr float atkDuration = 10.0f;	 // 攻撃モーションのの持続時間
-	constexpr float atkCoolTimeLimit = 3.0f; // クールタイムの長さ
+	constexpr float atkCoolTimeLimit = 3.0f; // クールタイムの長さ(60fpsなので0.5秒)
 
 	// デバッグ用
 	sanFont::print(20.0f, 180.0f, L"攻撃の進捗度 : %.3f", atkProgress);
@@ -263,8 +263,7 @@ void player::atk(boss* rival)
 		{
 			// 攻撃が終わった後にクールタイムを開始
 			isAtkCoolTime = true;
-			atkProgress = 0.0f;			// 攻撃の進捗リセット
-			atkProgress = 0.0f; // 攻撃の進捗リセット
+			atkProgress = 0.0f;	// 攻撃の進捗リセット
 			atkCombo = 0;
 		}
 
@@ -507,6 +506,7 @@ bool player::getTakeDamageDisPlay()
 {
 	return isTakeDamageDisPlay;
 }
+
 
 float player::getCurrentTime()
 {

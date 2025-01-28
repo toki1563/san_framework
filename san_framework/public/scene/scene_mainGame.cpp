@@ -27,17 +27,28 @@ bool SceneMainGame::initialize()
 	// BGMを少し小さく
 	pBgm->setVolume(0.2f);
 
-	// カメラ座標の計算
-	// 回転してない基準となる軸ベクトル
-	XMVECTOR v = XMVectorSet(0.0f, -7.0f, -25.0f, 0.0f);
-	// 回転マトリクスを作成
-	XMMATRIX rotate = XMMatrixRotationRollPitchYaw(0.6f, 0.0f, 0.0f);
-	// 基準軸(v)のベクトルを回転させる(回転マトリクスを乗算する)
-	v = XMVector3TransformNormal(v, rotate);
-	// XMVECTORの変数にまとめる
-	XMVECTOR CamPos = v;
-	// カメラの座標(ポインタな為アドレスを渡す)
-	sanCamera::setPosition(&CamPos);
+	// プレイヤーからカメラまでの距離と高さ
+	float distanceBehind = 10.0f;
+	float height = 5.0f;
+
+	// プレイヤーとエネミーの位置を取得
+	XMVECTOR playerPosition = *pPlayer->getPosition();
+	XMVECTOR bossPosition = *pBoss->getPosition();
+
+	// プレイヤーの向きを取得
+	XMMATRIX playerWorld = *pPlayer->getWorld();
+	XMVECTOR playerForward = playerWorld.r[2]; // プレイヤーの前方向
+
+	// プレイヤーの後ろの位置を計算
+	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -distanceBehind));
+	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, height, 0.0f, 0.0f)); // 高さ調整
+
+	// プレイヤーの後ろの位置にカメラを設定
+	sanCamera::setPosition(&cameraPosition);
+
+	// カメラのターゲットをボスの位置に設定
+	sanCamera::setTarget(&bossPosition);
+
 	return true;
 }
 
@@ -55,6 +66,29 @@ void SceneMainGame::terminate()
 void SceneMainGame::execute()
 {
 	sanScene::execute();
+
+	// プレイヤーからカメラまでの距離と高さ
+	float distanceBehind = 8.0f;
+	float height = 5.0f;
+
+	 // プレイヤーとエネミーの位置を取得
+	XMVECTOR playerPosition = *pPlayer->getPosition();
+	XMVECTOR bossPosition = *pBoss->getPosition();
+
+	// プレイヤーの向きを取得
+	XMMATRIX playerWorld = *pPlayer->getWorld();
+	XMVECTOR playerForward = playerWorld.r[2]; // プレイヤーの前方向
+
+	// プレイヤーの後ろの位置を計算
+	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -distanceBehind));
+	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, height, 0.0f, 0.0f)); // 高さ調整
+
+	// プレイヤーの後ろの位置にカメラを設定
+	sanCamera::setPosition(&cameraPosition);
+
+	// カメラのターゲットをボスの位置に設定
+	sanCamera::setTarget(&bossPosition);
+
 
 	// BGM再生
 	//if (pBgm->isPlaying() == false)

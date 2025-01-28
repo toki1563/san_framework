@@ -1,5 +1,9 @@
 ﻿#include "../../framework.h"
 #include "../../framework/san_environment.h"
+#include <iostream>
+#include <functional>
+#include <thread>
+#include <chrono>
 
 boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 {
@@ -13,11 +17,10 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	status.isDefense = false;
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
-	handleAction = handleActionState::Moveing;
+	handleAction = handleActionState::Defending;
 	pi = 3.14f;
 	isDefense = false;
 	isTakeDamage = false;
-	isAtkCoolTime = false;
 	isTakeDamageDisPlay = false;
 	pShadow->setTransparent(true); // 半透明有無
 
@@ -48,28 +51,6 @@ boss::~boss()
 	delete pShadow;
 }
 
-void boss::actionState(player* rival)
-{
-	// ここでランダムにする
-	// 各関数で処理の最後にDecideNextActionを呼び出す
-	switch (handleAction)
-	{
-	case handleActionState::Defending:
-		defense(rival);
-		break;
-	case handleActionState::Attacking:
-		atk(rival);
-		break;
-	case handleActionState::Moveing:
-		move(rival);
-		break;
-	case handleActionState::MAX:
-		break;
-	}
-	// ダメージを受けた時
-	damageDisplay();
-}
-
 void boss::DecideNextAction(player* rival)
 {
 	// 最終的には残りのHPやプレイヤーの状況によって行動を変える
@@ -89,16 +70,45 @@ void boss::DecideNextAction(player* rival)
 
 void boss::execute(player* rival)
 {
-	actionState(rival);
+	// ここでランダムにする
+	// 各関数で処理の最後にDecideNextActionを呼び出す
+	switch (handleAction)
+	{
+	case handleActionState::Defending:
+		defense(rival);
+		sanFont::print(20.0f, 320.0f, L"防御中");
+		break;
+	case handleActionState::Attacking:
+		atk(rival);
+		sanFont::print(20.0f, 320.0f, L"攻撃中");
+		break;
+	case handleActionState::Moveing:
+		move(rival);
+		sanFont::print(20.0f, 320.0f, L"移動中");
+		break;
+	}
+
+	// ダメージを受けた時
+	damageDisplay();
 }
 
 void boss::defense(player* rival)
 {
-	// フラグが防御中でないときは防御にする
-	if (!isDefense)
+	static float defenseProgress = 0.0f;      // 防御の進行度
+	constexpr float defenseTimeLimit = 18.0f; // 防御の時間(60fpsなので3秒)
+
+	isDefense = true; // 防御中にする
+
+	defenseProgress += 0.1f; // 防御が進行する
+
+	// 時間になったら
+	if (defenseProgress >= defenseTimeLimit)
 	{
-		isDefense = true;
+		defenseProgress = 0.0f; // 値のリセット
+		isDefense = false;
+		DecideNextAction(rival); // 次の攻撃
 	}
+
 	// 敵とプレイヤーの位置を取得
 	XMVECTOR playerPos = *(rival->getPosition());
 	XMVECTOR enemyPos = *(getPosition());
@@ -113,10 +123,16 @@ void boss::defense(player* rival)
 
 void boss::atk(player* rival)
 {
-	// フラグが防御中な時は解除する
-	if (isDefense)
+	static float atkProgress = 0.0f;      // 防御の進行度
+	constexpr float atkTimeLimit = 12.0f; // 防御の時間(60fpsなので2秒)
+
+	atkProgress += 0.1f;
+
+	// 時間になったら
+	if (atkProgress >= atkTimeLimit)
 	{
-		isDefense = false;
+		atkProgress = false;
+		DecideNextAction(rival); // 次の攻撃
 	}
 
 	// 固定値なのでメモリを削減
@@ -214,17 +230,24 @@ void boss::atk(player* rival)
 
 void boss::move(player* rival)
 {
-	// フラグが防御中な時は解除する
-	if (isDefense)
-	{
-		isDefense = false;
-	}
-
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
 
 	// 固定値なのでメモリを削減
 	constexpr float moveSpeed = 0.1f; // プレイヤーの移動速度
 	constexpr float stopDistance = 3.0f; // プレイヤーの手前で止まる距離
+
+	static float moveProgress = 0.0f;      // 防御の進行度
+	constexpr float moveTimeLimit = 24.0f; // 防御の時間(60fpsなので4秒)
+
+	moveProgress += 0.1f;
+
+	// 時間になったら
+	if (moveProgress >= moveTimeLimit)
+	{
+		moveProgress = false;
+		DecideNextAction(rival); // 次の攻撃
+	}
+
 
 	// 敵と自身の位置を取得
 	XMVECTOR rivalPos = *(rival->getPosition());
@@ -267,7 +290,7 @@ bool boss::playerCloseSearch(player* rival)
 	float dist = XMVectorGetX(vDist);
 
 	// 一定距離内のプレイヤーがいるかどうか
-	if (dist <= 10)
+	if (dist <= 8)
 	{
 		return true;
 	}
@@ -323,17 +346,8 @@ void boss::playerAllRender()
 {
 	sanFont::print(20.0f, 300.0f, L"体力 : %.3f", status.health);
 	pShadow->render();
-	// クールタイム中は切り替える
-	if (isAtkCoolTime)
-	{
-		render();
-		pRightArmAtkCoolTime->render();
-	}
-	else
-	{
-		render();
-		pRightArm->render();
-	}
+	render();
+	pRightArm->render();
 }
 
 handleActionState boss::getBossAction()

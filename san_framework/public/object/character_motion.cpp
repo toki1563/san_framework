@@ -80,7 +80,7 @@ void createCharacterMotion()
 	motion_idle.pChannel[i].pKey[1].time = 30;	motion_idle.pChannel[i].pKey[1].value = 0.0872f;
 	motion_idle.pChannel[i].pKey[2].time = 60;	motion_idle.pChannel[i].pKey[2].value = 0.0f;
 	motion_idle.pChannel[i].pKey[3].time = 90;	motion_idle.pChannel[i].pKey[3].value = -0.0872f;
-	motion_idle.pChannel[i].pKey[4].time = 120;motion_idle.pChannel[i].pKey[4].value = 0.0f;
+	motion_idle.pChannel[i].pKey[4].time = 120; motion_idle.pChannel[i].pKey[4].value = 0.0f;
 	i++;
 
 	motion_idle.pChannel[i].partsID = cCharacter::ArmL;	motion_idle.pChannel[i].channelID = stMotion::PosX;

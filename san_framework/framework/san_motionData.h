@@ -46,10 +46,10 @@ enum eMotionChannel
 
 struct sanMotionData_Channel
 {
-	char Name[32];
-	int ChannelID;
-	int KeyFrameNum;
-	int StartIndex;
+	char Name[32];   // 部位の名前
+	int ChannelID;   // eMotionChannelのパーツ番号
+	int KeyFrameNum; // キーフレーム
+	int StartIndex;  // 始まりの番号
 	int Reserve;
 };
 

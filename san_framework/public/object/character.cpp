@@ -5,6 +5,42 @@
 
 cCharacter::cCharacter()
 {
+    // 階層構造ファイルの読み込み(開く)
+    FILE* fp = NULL;
+    if (_wfopen_s(&fp, L"data/model/bear_part/bear_part.bone", L"rb") != 0) // 読み込みはバイナリ型
+    {
+        // ファイルが開けなかった
+        assert(false); // 強制終了
+    }
+
+    // ファイルサイズの取得
+    long size = 0;
+    fseek(fp, 0, SEEK_END); // ファイルポインタを最後尾に移動
+    size = ftell(fp); // 現在のファイルポインタの位置を取得(Byte)
+    fseek(fp, 0, SEEK_SET); // ファイルポインタを先頭に移動
+
+    // ファイルサイズ分のメモリを確保
+    sanModel_BoneData *pBoneData = (sanModel_BoneData*)new BYTE[size];
+
+    // ファイルの中身をすべて取得
+    fread(pBoneData, size, 1, fp);
+
+    // ファイルを閉じる
+    fclose(fp);
+
+    // 数を計算
+    int partsNum = size / sizeof(sanModel_BoneData);
+    for (int i = 0; i < partsNum; i++)
+    {
+        // char文字列をWCHAR文字列に変換
+        WCHAR name[256];
+        size_t ret;
+        mbstowcs_s(&ret, name, 256, pBoneData[i].Name, strlen(pBoneData[i].Name));
+
+        sanFont::output(L"Parts[%d].Name : %s\n", i, name);
+    }
+
+
     pParts[eParts::Body] = new sanModel(L"data/model/bear_part/", L"Body.vnm");
     pParts[eParts::Body]->setParent(this);
 
@@ -36,7 +72,7 @@ cCharacter::~cCharacter()
 
 void cCharacter::execute()
 {
-#if 1 //0で無効　1で有効
+#if 0 //0で無効　1で有効
     if (pMotion == NULL) return;
 
     float animTime = 1.0f;
@@ -123,7 +159,7 @@ void cCharacter::bindPose()
     pParts[eParts::LegR]->setRotation(0, 0, 0);
 }
 
-void cCharacter::setMotion(stMotion* p)
+void cCharacter::setMotion(sanMotionData* p)
 {
     if (pMotion == p)
     {
@@ -145,4 +181,35 @@ sanModel* cCharacter::getParts(int i)
 {
     if (i < 0 || i >= eParts::PartsMax)return NULL;
     return pParts[i];
+}
+
+sanModel* cCharacter::getParts(char* name)
+{
+    // 名前があっているか確認
+    if(strcmp(name, "body") == 0)
+    {
+        return pParts[eParts::Body];
+    }
+    else if (strcmp(name, "head") == 0)
+    {
+        return pParts[eParts::Head];
+    }
+    else if (strcmp(name, "arm_L") == 0)
+    {
+        return pParts[eParts::ArmL];
+    }
+    else if (strcmp(name, "arm_R") == 0)
+    {
+        return pParts[eParts::ArmR];
+    }
+    else if (strcmp(name, "leg_L") == 0)
+    {
+        return pParts[eParts::LegL];
+    }
+    else if (strcmp(name, "leg_R") == 0)
+    {
+        return pParts[eParts::LegR];
+    }
+
+    return NULL;
 }

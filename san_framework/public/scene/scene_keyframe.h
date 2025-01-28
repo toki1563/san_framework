@@ -5,6 +5,10 @@ class SceneKeyframetest : public sanScene
 {
 	// キャラクターオブジェクト
 	cCharacter* pCharacter;
+
+	// モーションファイルから読み込んだデータ
+	sanMotionData *mot_idle;
+
 	
 	float radius;  // 半径
 	float theta;   // 平面角

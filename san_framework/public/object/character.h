@@ -16,6 +16,7 @@ struct stMotionChannel
 	stKeyframe* pKey; // 可変させる
 };
 
+// 動作確認として使用
 struct stMotion
 {
 	// どこを動かすかの構造体
@@ -63,7 +64,8 @@ private:
 	float time; // 時間経過
 
 	// 再生中のモーションデータ
-	stMotion* pMotion;
+	// stMotion* pMotion;
+	sanMotionData* pMotion;
 
 public:
 	cCharacter();
@@ -74,7 +76,9 @@ public:
 	// バインドポーズ(キャラの標準状態)に戻す
 	void bindPose();
 
-	void setMotion(stMotion* p);
+	// void setMotion(stMotion* p);
+	void setMotion(sanMotionData* p);
 
 	sanModel* getParts(int i);
+	sanModel* getParts(char* name);
 };

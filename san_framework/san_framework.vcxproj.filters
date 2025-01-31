@@ -162,6 +162,9 @@
     <ClCompile Include="public\scene\scene_mainGame.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
+    <ClCompile Include="public\scene\scene_mainGame_Title.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\directX\san_Direct2D.h">
@@ -300,6 +303,9 @@
       <Filter>public\actor</Filter>
     </ClInclude>
     <ClInclude Include="public\scene\scene_mainGame.h">
+      <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_mainGame_Title.h">
       <Filter>public\scene</Filter>
     </ClInclude>
   </ItemGroup>

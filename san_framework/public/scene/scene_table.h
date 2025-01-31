@@ -6,6 +6,7 @@
 enum eSceneTable
 {
 	Boot,
+	TitleMainGame,
 	MainGame,
 	GameTest,
 	EffectTest,
@@ -26,6 +27,7 @@ enum eSceneTable
 // シーンクラス定義ファイル
 #include "san_scene.h"
 #include "scene_boot.h"
+#include "scene_mainGame_Title.h"
 #include "scene_mainGame.h"
 #include "scene_game_test.h"
 #include "scene_effect_test.h"

@@ -1,9 +1,5 @@
 ﻿#include "../../framework.h"
 #include "../../framework/san_environment.h"
-#include <iostream>
-#include <functional>
-#include <thread>
-#include <chrono>
 
 boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 {

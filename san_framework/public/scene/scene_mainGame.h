@@ -1,6 +1,4 @@
 ﻿#pragma once
-#define FENCE_NUM (32)       // フェンスの数
-#define FENCE_RADIUS (37.5f) // フェンスの半径
 
 class SceneMainGame : public sanScene
 {

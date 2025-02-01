@@ -1,84 +1,61 @@
 #pragma once
 
-// キーフレーム構造体
-struct stKeyframe
-{
-	float time;  // 時間
-	float value; // 値
-};
-
-// アニメーションパーツのチャンネル
-struct stMotionChannel
-{
-	int partsID;     // パーツの種類
-	int channelID;	 // チャンネルの番号
-	int keyframeNum; // キーフレームの総量
-	stKeyframe* pKey; // 可変させる
-};
-
-// 動作確認として使用
-struct stMotion
-{
-	// どこを動かすかの構造体
-	enum eChannel
-	{
-		PosX,
-		PosY,
-		PosZ,
-		RotX,
-		RotY,
-		RotZ,
-		ChannelMax,
-	};
-
-	int Length;
-	int ChannelNum;
-	stMotionChannel* pChannel;
-};
-
-
-// 部位ごとに作成
-//stMotionChannel walk[2];
-//stMotionChannel run[5];
-//stMotionChannel jump[8];
-//stMotionChannel atk[4];
-
-
 class cCharacter : public sanObject
 {
-public:
-	enum eParts
-	{
-		Body,
-		Head,
-		ArmL,
-		ArmR,
-		LegL,
-		LegR,
-		PartsMax,
-	};
-
 private:
-	sanModel* pParts[eParts::PartsMax];
 
-	float time; // 時間経過
+#pragma region Hierarchy	// 階層構造関連
+
+	// 階層構造データ(boneファイル)
+	// ※名前やポーズの初期値(バインドポーズ)等を参照するため保持し続ける
+	sanModel_BoneData* pBoneData;
+
+	// パーツの数
+	int PartsNum;
+
+	// パーツごとのオブジェクトポインタ
+	// ※vnmファイル(ポリゴン)が存在しない階層もあり得るためvnObjectクラスのポインタで作成
+	sanObject** pParts;
+
+#pragma endregion
+
+
+#pragma region Motion	// モーション関連
+
+	float time;	// 経過時間
 
 	// 再生中のモーションデータ
-	// stMotion* pMotion;
 	sanMotionData* pMotion;
 
+#pragma endregion
+
+
+
 public:
-	cCharacter();
+	cCharacter(const WCHAR* folder, const WCHAR* boneFile);
 	~cCharacter();
 
 	void execute();
 
-	// バインドポーズ(キャラの標準状態)に戻す
+	// バインドポーズ(キャラクター標準状態)に戻す
 	void bindPose();
 
-	// void setMotion(stMotion* p);
+	// 再生するモーションを設定(NULLで未適用に戻す)
 	void setMotion(sanMotionData* p);
 
-	sanModel* getParts(int i);
-	sanModel* getParts(char* name);
+	// 現在のモーションを取得
+	sanMotionData* getMotion(void);
+
+	// 再生位置(時間)を取得
+	float getTime(void);
+
+	// パーツ数を取得
+	int getPartsNum(void);
+
+	// パーツを番号で取得
+	sanObject* getParts(int i);
+
+	// パーツを名前で取得
+	sanObject* getParts(char* name);
+
 };

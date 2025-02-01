@@ -42,6 +42,7 @@ bool SceneGameTest::initialize()
 	registerObject(pEffectNPC);
 	registerObject(pHitEffect);
 
+
 	for (int i = 0; i < FENCE_NUM; i++)
 	{
 		pFence[i] = new sanModel(L"data/model/", L"fence.vnm");

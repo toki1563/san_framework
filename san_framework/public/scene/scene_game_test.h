@@ -4,6 +4,7 @@
 #define FIELD_RADIUS (36.5f) // フェンスの当たり判定を取る半径
 // ゲームテスト
 
+
 class SceneGameTest : public sanScene
 {
 	sanModel*	   pPlayer;
@@ -17,6 +18,8 @@ class SceneGameTest : public sanScene
 	sanEffect*	   pEffect;
 	sanEffect*     pEffectNPC;
 	sanEffect*     pHitEffect;
+
+
 
 	// 極座標の情報
 	float radius;  // 半径

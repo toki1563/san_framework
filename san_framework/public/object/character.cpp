@@ -3,213 +3,244 @@
 
 #include "character.h"
 
-cCharacter::cCharacter()
+#define OUTPUT_BONE_DATA (1)
+
+cCharacter::cCharacter(const WCHAR* folder, const WCHAR* boneFile)
 {
-    // 階層構造ファイルの読み込み(開く)
-    FILE* fp = NULL;
-    if (_wfopen_s(&fp, L"data/model/bear_part/bear_part.bone", L"rb") != 0) // 読み込みはバイナリ型
-    {
-        // ファイルが開けなかった
-        assert(false); // 強制終了
-    }
+	//階層構造ファイルのパス(フォルダ名とファイル名を結合)
+	WCHAR path[256];
+	swprintf_s(path, L"%s%s", folder, boneFile);
 
-    // ファイルサイズの取得
-    long size = 0;
-    fseek(fp, 0, SEEK_END); // ファイルポインタを最後尾に移動
-    size = ftell(fp); // 現在のファイルポインタの位置を取得(Byte)
-    fseek(fp, 0, SEEK_SET); // ファイルポインタを先頭に移動
+	//階層構造ファイルの読み込み
+	FILE* fp = NULL;
+	if (_wfopen_s(&fp, path, L"rb") != 0)
+	{
+		//ファイルが開けなかった
+		assert(false);
+	}
 
-    // ファイルサイズ分のメモリを確保
-    sanModel_BoneData *pBoneData = (sanModel_BoneData*)new BYTE[size];
+	//ファイルサイズの取得
+	long size = 0;
+	fseek(fp, 0, SEEK_END);	//ファイルポインタを最後尾に移動
+	size = ftell(fp);		//現在のファイルポインタ位置を取得(Byte)
+	fseek(fp, 0, SEEK_SET);	//ファイルポインタを先頭に移動
 
-    // ファイルの中身をすべて取得
-    fread(pBoneData, size, 1, fp);
+	//ファイルサイズ分のメモリを確保
+	pBoneData = (sanModel_BoneData*)new BYTE[size];
 
-    // ファイルを閉じる
-    fclose(fp);
+	//ファイルの中身を全て取得
+	fread(pBoneData, size, 1, fp);
 
-    // 数を計算
-    int partsNum = size / sizeof(sanModel_BoneData);
-    for (int i = 0; i < partsNum; i++)
-    {
-        // char文字列をWCHAR文字列に変換
-        WCHAR name[256];
-        size_t ret;
-        mbstowcs_s(&ret, name, 256, pBoneData[i].Name, strlen(pBoneData[i].Name));
-
-        sanFont::output(L"Parts[%d].Name : %s\n", i, name);
-    }
+	//ファイルを閉じる
+	fclose(fp);
 
 
-    pParts[eParts::Body] = new sanModel(L"data/model/bear_part/", L"Body.vnm");
-    pParts[eParts::Body]->setParent(this);
 
-    pParts[eParts::Head] = new sanModel(L"data/model/bear_part/", L"Head.vnm");
-    pParts[eParts::Head]->setParent(pParts[eParts::Body]);
+	//ファイル内に格納されたパーツ数を計算
+	PartsNum = size / sizeof(sanModel_BoneData);
 
-    pParts[eParts::ArmL] = new sanModel(L"data/model/bear_part/", L"Arm_L.vnm");
-    pParts[eParts::ArmL]->setParent(pParts[eParts::Body]);
+	//パーツの数だけオブジェクトを作成するためのオブジェクトポインタ配列を作成
+	pParts = new sanObject * [PartsNum];
 
-    pParts[eParts::ArmR] = new sanModel(L"data/model/bear_part/", L"Arm_R.vnm");
-    pParts[eParts::ArmR]->setParent(pParts[eParts::Body]);
+	//vnModel_BoneData構造体配列を読み取りながらパーツの作成＆階層の構築
+	for (int i = 0; i < PartsNum; i++)
+	{
+		WCHAR partsname[256], partsfile[256];
+		size_t ret;
+		mbstowcs_s(&ret, partsname, 256, pBoneData[i].Name, strlen(pBoneData[i].Name));	//パーツ名をWCHARに変換
+		swprintf_s(partsfile, L"%s.vnm", partsname);	//".vnm"を付けてモデルファイル名にする
+		swprintf_s(path, L"%s%s", folder, partsfile);	//ファイルの存在を確認するためパスを作成
 
-    pParts[eParts::LegL] = new sanModel(L"data/model/bear_part/", L"Leg_L.vnm");
-    pParts[eParts::LegL]->setParent(pParts[eParts::Body]);
+#if OUTPUT_BONE_DATA
+		sanFont::output(L"Parts[%d].Name : %s\n", i, partsname);
+#endif
 
-    pParts[eParts::LegR] = new sanModel(L"data/model/bear_part/", L"Leg_R.vnm");
-    pParts[eParts::LegR]->setParent(pParts[eParts::Body]);
+		//パーツ名のvnmファイルが存在するか調べる(fopen()が失敗すればファイルがない)
+		if ((_wfopen_s(&fp, path, L"rb")) != 0)
+		{	//vnmファイルが存在しないパーツはvnObjectクラスで作成
+			pParts[i] = new sanObject();
+		}
+		else
+		{	//vnmファイルが存在しないパーツはvnModelクラスで作成
+			sanModel* pModel = new sanModel(folder, partsfile);
+			pParts[i] = pModel;
+		}
 
-    bindPose(); // 位置の設定
-    pMotion = NULL;
+		//親子関係の設定
+		if (pBoneData[i].ParentID == -1)
+		{	//※parentID == -1 はcCharacterオブジェクト自身を親に設定
+			pParts[i]->setParent(this);
+		}
+		else
+		{
+			pParts[i]->setParent(pParts[pBoneData[i].ParentID]);
+		}
 
-    time = 0;
+		//pos, rot, sclの設定は後のbindPose()関数で行うのでここでは省略する
+	}
+
+	//バインドポーズにする(パーツの姿勢の初期化)
+	bindPose();
+
+	pMotion = NULL;
 }
 
 cCharacter::~cCharacter()
 {
+	/*パーツオブジェクトのdeleteは作成したシーン側で対応*/
+
+	//ボーンデータの削除
+	if (pBoneData != NULL)
+	{
+		delete[] pBoneData;
+		pBoneData = NULL;
+	}
 
 }
 
 void cCharacter::execute()
 {
-#if 0 //0で無効　1で有効
-    if (pMotion == NULL) return;
+	if (pMotion == NULL)return;
 
-    float animTime = 1.0f;
+	//時間経過
+	time += 1.0f;
 
-    //時間経過
-    time += animTime;
+	//アニメーションのループ
+	if (time >= pMotion->Length)
+	{
+		time = 0.0f;
+	}
+	else if (time < 0.0f)
+	{
+		time = pMotion->Length;
+	}
 
-    //モーションのループ
-    if (time >= pMotion->Length)
-    {
-        time = 0.0f;
-    }
-    else if (time < 0.0f)
-    {
-        time = pMotion->Length;
-    }
+	//今の時間での値を計算
+	float value = 0.0f;
 
-    //今の時間での値を計算
-    float value = 0.0f;
-    for (int i = 0; i < pMotion->ChannelNum; i++)    //channel 動かしたい部分の数
-    {
-        for (int j = 1; j < pMotion->pChannel[i].keyframeNum; j++)    //keyframe
-        {
-            if (time > pMotion->pChannel[i].pKey[j].time)continue;
+	//チャンネル構造体配列の先頭アドレス
+	sanMotionData_Channel* channel = (sanMotionData_Channel*)(((BYTE*)pMotion) + pMotion->ChannelAccess);
 
-            float rate = (time - pMotion->pChannel[i].pKey[j - 1].time) / (pMotion->pChannel[i].pKey[j].time - pMotion->pChannel[i].pKey[j - 1].time);
+	//キーフレーム構造体配列の先頭アドレス
+	sanMotionData_KeyFrame* key = (sanMotionData_KeyFrame*)(((BYTE*)pMotion) + pMotion->KeyFrameAccess);
 
-            value = (pMotion->pChannel[i].pKey[j].value - pMotion->pChannel[i].pKey[j - 1].value) * rate + pMotion->pChannel[i].pKey[j - 1].value;
+	for (int i = 0; i < (int)pMotion->ChannelNum; i++)	//vnMotionData_Channel
+	{
+		//各チャンネルにおけるキーフレーム配列の最初
+		sanMotionData_KeyFrame* k = key + channel[i].StartIndex;
 
-            //値を適応
-            switch (pMotion->pChannel[i].channelID)
-            {
-            case stMotion::eChannel::PosX:
-                pParts[pMotion->pChannel[i].partsID]->setPositionX(value);
-                break;
-            case stMotion::eChannel::PosY:
-                pParts[pMotion->pChannel[i].partsID]->setPositionY(value);
-                break;
-            case stMotion::eChannel::PosZ:
-                pParts[pMotion->pChannel[i].partsID]->setPositionZ(value);
-                break;
-            case stMotion::eChannel::RotX:
-                pParts[pMotion->pChannel[i].partsID]->setRotationX(value);
-                break;
-            case stMotion::eChannel::RotY:
-                pParts[pMotion->pChannel[i].partsID]->setRotationY(value);
-                break;
-            case stMotion::eChannel::RotZ:
-                pParts[pMotion->pChannel[i].partsID]->setRotationZ(value);
-                break;
-            }
-            break;
-        }
-    }
+		//モーション対象のパーツ
+		sanObject* pObj = getParts(channel[i].Name);
 
-    sanFont::print(10.0f, 10.0f, L"time : %.3f", time);
+		//エラーチェック
+		if (!k || !pObj)continue;
 
-#endif
+		for (int j = 1; j < channel[i].KeyFrameNum; j++)	//vnMotionData_KeyFrame
+		{
+			if (time > k[j].Time)continue;
+
+			float rate = (time - k[j - 1].Time) / (k[j].Time - k[j - 1].Time);
+
+			value = (k[j].Value - k[j - 1].Value) * rate + k[j - 1].Value;
+
+			switch (channel[i].ChannelID)
+			{
+			case eMotionChannel::PosX:
+				pObj->setPositionX(value);
+				break;
+			case eMotionChannel::PosY:
+				pObj->setPositionY(value);
+				break;
+			case eMotionChannel::PosZ:
+				pObj->setPositionZ(value);
+				break;
+			case eMotionChannel::RotX:
+				pObj->setRotationX(value);
+				break;
+			case eMotionChannel::RotY:
+				pObj->setRotationY(value);
+				break;
+			case eMotionChannel::RotZ:
+				pObj->setRotationZ(value);
+				break;
+			case eMotionChannel::SclX:
+				pObj->setScaleX(value);
+				break;
+			case eMotionChannel::SclY:
+				pObj->setScaleY(value);
+				break;
+			case eMotionChannel::SclZ:
+				pObj->setScaleZ(value);
+				break;
+			}
+
+			break;
+		}
+	}
 }
 
+//バインドポーズ(キャラクター標準状態)に戻す
 void cCharacter::bindPose()
 {
-    // 位置と回転のバインド調整
-    pParts[eParts::Body]->setPositionY(0.72f); 
-
-    pParts[eParts::Head]->setParent(pParts[eParts::Body]);
-    pParts[eParts::Head]->setPositionY(0.8f);
-    pParts[eParts::Head]->setRotation(0, 0, 0);
-
-    pParts[eParts::ArmL]->setParent(pParts[eParts::Body]);
-    pParts[eParts::ArmL]->setPosition(0.2, 0.75f, 0.05);
-    pParts[eParts::ArmL]->setRotation(0, 0, 0.4537856f);
-
-    pParts[eParts::ArmR]->setParent(pParts[eParts::Body]);
-    pParts[eParts::ArmR]->setPosition(-0.2, 0.75f, 0.025f);
-    pParts[eParts::ArmR]->setRotation(0, 0, 5.8294f);
-
-    pParts[eParts::LegL]->setParent(pParts[eParts::Body]);
-    pParts[eParts::LegL]->setPosition(0.2, 4.37114E-09, 0.1);
-    pParts[eParts::LegL]->setRotation(0, 0, 0);
-
-    pParts[eParts::LegR]->setParent(pParts[eParts::Body]);
-    pParts[eParts::LegR]->setPosition(-0.2, 4.37114E-09, 0.1);
-    pParts[eParts::LegR]->setRotation(0, 0, 0);
+	for (int i = 0; i < PartsNum; i++)
+	{
+		pParts[i]->setPosition(pBoneData[i].pos[0], pBoneData[i].pos[1], pBoneData[i].pos[2]);
+		pParts[i]->setRotation(pBoneData[i].rot[0], pBoneData[i].rot[1], pBoneData[i].rot[2]);
+		pParts[i]->setScale(pBoneData[i].scl[0], pBoneData[i].scl[1], pBoneData[i].scl[2]);
+	}
 }
 
+//再生するモーションを設定(NULLで未適用に戻す)
 void cCharacter::setMotion(sanMotionData* p)
 {
-    if (pMotion == p)
-    {
+	//同じモーションが来たら無視する
+	if (pMotion == p)return;
 
-    }
-    if (p == NULL)
-    {
-        return;
-    }
-    pMotion = p;
+	//モーションデータのポインタを代入
+	pMotion = p;
 
-    // アニメーション時間リセット
-    time = 0.0f;
-    // ポーズを初期化する
-    bindPose();
+	//タイムをゼロに戻す
+	time = 0.0f;
+
+	//ポーズを標準状態に戻す
+	bindPose();
 }
 
-sanModel* cCharacter::getParts(int i)
+//現在のモーションを取得
+sanMotionData* cCharacter::getMotion(void)
 {
-    if (i < 0 || i >= eParts::PartsMax)return NULL;
-    return pParts[i];
+	return pMotion;
 }
 
-sanModel* cCharacter::getParts(char* name)
+//再生位置(時間)を取得
+float cCharacter::getTime(void)
 {
-    // 名前があっているか確認
-    if(strcmp(name, "body") == 0)
-    {
-        return pParts[eParts::Body];
-    }
-    else if (strcmp(name, "head") == 0)
-    {
-        return pParts[eParts::Head];
-    }
-    else if (strcmp(name, "arm_L") == 0)
-    {
-        return pParts[eParts::ArmL];
-    }
-    else if (strcmp(name, "arm_R") == 0)
-    {
-        return pParts[eParts::ArmR];
-    }
-    else if (strcmp(name, "leg_L") == 0)
-    {
-        return pParts[eParts::LegL];
-    }
-    else if (strcmp(name, "leg_R") == 0)
-    {
-        return pParts[eParts::LegR];
-    }
+	return time;
+}
 
-    return NULL;
+
+//パーツ数を取得
+int cCharacter::getPartsNum(void)
+{
+	return PartsNum;
+}
+
+//パーツを番号で取得
+sanObject* cCharacter::getParts(int i)
+{
+	if (i < 0 || i >= PartsNum)return NULL;
+	return pParts[i];
+}
+
+//パーツを名前で取得
+sanObject* cCharacter::getParts(char* name)
+{
+	for (int i = 0; i < PartsNum; i++)
+	{
+		if (strcmp(name, pBoneData[i].Name) == 0)
+		{
+			return pParts[i];
+		}
+	}
+	return NULL;
 }

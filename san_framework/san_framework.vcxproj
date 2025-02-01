@@ -143,7 +143,6 @@
     <ClCompile Include="framework\san_mouse.cpp" />
     <ClCompile Include="framework\san_sound.cpp" />
     <ClCompile Include="public\object\character.cpp" />
-    <ClCompile Include="public\object\character_motion.cpp" />
     <ClCompile Include="public\object\cube.cpp" />
     <ClCompile Include="public\san_billboard.cpp" />
     <ClCompile Include="public\san_collide.cpp" />
@@ -161,8 +160,8 @@
     <ClCompile Include="public\scene\scene_game_test.cpp" />
     <ClCompile Include="public\scene\scene_ground_test.cpp" />
     <ClCompile Include="public\scene\scene_joystick_test.cpp" />
-    <ClCompile Include="public\scene\scene_keyframe.cpp" />
     <ClCompile Include="public\scene\scene_model_test.cpp" />
+    <ClCompile Include="public\scene\scene_motion_test.cpp" />
     <ClCompile Include="public\scene\scene_pick_test.cpp" />
     <ClCompile Include="public\scene\scene_se_test.cpp" />
     <ClCompile Include="public\scene\scene_spherecollision_test.cpp" />
@@ -208,8 +207,8 @@
     <ClInclude Include="public\scene\scene_game_test.h" />
     <ClInclude Include="public\scene\scene_ground_test.h" />
     <ClInclude Include="public\scene\scene_joystick_test.h" />
-    <ClInclude Include="public\scene\scene_keyframe.h" />
     <ClInclude Include="public\scene\scene_model_test.h" />
+    <ClInclude Include="public\scene\scene_motion_test.h" />
     <ClInclude Include="public\scene\scene_pick_test.h" />
     <ClInclude Include="public\scene\scene_se_test.h" />
     <ClInclude Include="public\scene\scene_spherecollision_test.h" />

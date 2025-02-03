@@ -14,6 +14,7 @@ C:\Users\sanda\source\repos\san_framework\san_framework\framework\san_mainframe.
 C:\Users\sanda\source\repos\san_framework\san_framework\framework\san_mouse.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_mouse.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\framework\san_sound.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_sound.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\actor\boss.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\boss.obj
+C:\Users\sanda\source\repos\san_framework\san_framework\public\actor\gameUI.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\gameUI.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\actor\player.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\player.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\object\cube.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\cube.obj
 C:\Users\sanda\source\repos\san_framework\san_framework\public\san_billboard.cpp;C:\Users\sanda\source\repos\san_framework\san_framework\x64\Debug\san_billboard.obj

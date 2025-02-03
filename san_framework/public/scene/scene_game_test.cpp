@@ -237,7 +237,7 @@ void SceneGameTest::execute()
 	sanCamera::setTarget(&camTrg);
 
 	// NPCの認識範囲
-// 1条件、プレイヤーとの距離10以内
+	// 1条件、プレイヤーとの距離10以内
 	XMVECTOR npcToPlayer = *pPlayer->getPosition() - *pNPC->getPosition();
 	vDist = XMVector3Length(npcToPlayer);
 	dist = XMVectorGetX(vDist);

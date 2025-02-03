@@ -32,14 +32,18 @@ public:
 	void defense(player* rival); // 防御
 	void atk(player* rival);     // 攻撃
 	void move(player* rival);    // プレイヤーに近づく
-	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
+	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
 	bool getIsTakeHit(); // 攻撃を受けた時
 	bool getIsDefense(); // 防御
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
+	float getCurrentHp(); // 現在のHP取得
 	handleActionState getBossAction(); // ボスの行動の取得
+
+	// UIで参照できるようにpublic
+	bossStatus status;
 
 private:
 	sanModel* pShadow; // 影のモデル
@@ -47,7 +51,6 @@ private:
 	sanModel* pRightArmAtkCoolTime; // 攻撃のクールタイム用
 	sanSound* pSe[2]; // SE
 
-	bossStatus status;
 	handleActionState handleAction;
 
 	float pi;           // 円周率

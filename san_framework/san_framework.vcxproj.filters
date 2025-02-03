@@ -165,6 +165,9 @@
     <ClCompile Include="public\scene\scene_mainGame_Title.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
+    <ClCompile Include="public\actor\gameUI.cpp">
+      <Filter>public\actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\directX\san_Direct2D.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="public\scene\scene_mainGame_Title.h">
       <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\gameUI.h">
+      <Filter>public\actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

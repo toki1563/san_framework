@@ -31,13 +31,12 @@ public:
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
 	float getCurrentTime(); // ゲーム開始から現在の時間を取得
 
+	// UIで参照できるようにpublic
+	playerStatus status; // プレイヤーのステータス
+
 private:
 	sanModel* pShadow; // 影のモデル
-	sanModel* pRightArm;	// アニメーション用右腕
-	sanModel* pRightArmAtkCoolTime; // 攻撃のクールタイム用
-	sanSound* pSe[3]; // SE
-
-	playerStatus status; // プレイヤーのステータス
+	sanSound* pSe[3];  // SE
 
 	float pi;     // 円周率
 	bool isCanAtk;	  // 攻撃可能どうか

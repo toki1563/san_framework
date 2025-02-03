@@ -3,12 +3,14 @@
 class SceneMainGameTitle : public sanScene
 {
 private:
-	sanSprite* pSprite;
-	sanSprite* pSprite2;
+	sanSprite* pTitleImg;
+	sanSprite* pSelectImg1;
+	sanSprite* pSelectImg2;
 
 	float radius; // 座標設定
 	float theta;
 	float phi;
+	bool isGameStartSelect;
 
 public:
 	//初期化

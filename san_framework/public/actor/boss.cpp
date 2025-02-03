@@ -9,7 +9,7 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
 	pSe[1] = new sanSound(L"data/sound/nothitatk.wav");
 	status.atkPower = 10.0f;
-	status.health = 1000.0f;
+	status.health = 100.0f;
 	status.isDefense = false;
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
@@ -91,7 +91,7 @@ void boss::execute(player* rival)
 void boss::defense(player* rival)
 {
 	static float defenseProgress = 0.0f;      // 防御の進行度
-	constexpr float defenseTimeLimit = 18.0f; // 防御の時間(60fpsなので3秒)
+	constexpr float defenseTimeLimit = 12.0f; // 防御の時間(60fpsなので2秒)
 
 	isDefense = true; // 防御中にする
 
@@ -233,7 +233,7 @@ void boss::move(player* rival)
 	constexpr float stopDistance = 3.0f; // プレイヤーの手前で止まる距離
 
 	static float moveProgress = 0.0f;      // 防御の進行度
-	constexpr float moveTimeLimit = 24.0f; // 防御の時間(60fpsなので4秒)
+	constexpr float moveTimeLimit = 18.0f; // 防御の時間(60fpsなので3秒)
 
 	moveProgress += 0.1f;
 
@@ -278,26 +278,12 @@ void boss::move(player* rival)
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
 }
 
-bool boss::playerCloseSearch(player* rival)
-{
-	// ボスとプレイヤーの距離
-	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
-	XMVECTOR vDist = XMVector3Length(bossToPlayer);
-	float dist = XMVectorGetX(vDist);
-
-	// 一定距離内のプレイヤーがいるかどうか
-	if (dist <= 8)
-	{
-		return true;
-	}
-	else // 一定距離以上離れているかどうか
-	{
-		return false;
-	}
-}
-
 void boss::takeDamage(float damage)
 {
+	if (isDefense)
+	{
+		return;
+	}
 	isTakeDamage = true;
 	status.health -= damage;
 }
@@ -323,9 +309,32 @@ void boss::damageDisplay()
 
 }
 
+bool boss::playerCloseSearch(player* rival)
+{
+	// ボスとプレイヤーの距離
+	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR vDist = XMVector3Length(bossToPlayer);
+	float dist = XMVectorGetX(vDist);
+
+	// 一定距離内のプレイヤーがいるかどうか
+	if (dist <= 8)
+	{
+		return true;
+	}
+	else // 一定距離以上離れているかどうか
+	{
+		return false;
+	}
+}
+
 bool boss::getTakeDamageDisPlay()
 {
 	return isTakeDamageDisPlay;
+}
+
+float boss::getCurrentHp()
+{
+	return status.health;
 }
 
 bool boss::getIsTakeHit()

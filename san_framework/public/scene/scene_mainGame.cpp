@@ -4,12 +4,16 @@
 //初期化関数
 bool SceneMainGame::initialize()
 {
-	pPlayer = new player(L"data/model/Player_1/", L"Player.vnm");
+	//pPlayer = new player(L"data/model/Player_1/", L"Player.vnm");
+	pPlayer = new player(L"data/", L"DogPBR.vnm");
 	pBoss = new boss(L"data/model/Player_2/", L"Player.vnm");
 	pGround = new sanModel(L"data/model/stage/", L"stage.vnm");
 	pSky = new sanModel(L"data/model/", L"skydome.vnm");
 	pBgm = new sanSound(L"data/sound/gamebgm.wav");
 	pSky->setLighting(false); // ライティング無効
+	gameUI.initialize();
+
+	pPlayer->setScale(1.5f, 1.5f, 1.5f);
 
 	// シーンの基底クラスへ登録
 	registerObject(pPlayer);
@@ -28,8 +32,8 @@ bool SceneMainGame::initialize()
 	pBgm->setVolume(0.2f);
 
 	// プレイヤーからカメラまでの距離と高さ
-	float distanceBehind = 10.0f;
-	float height = 5.0f;
+	cameraDistance = 4.0f;
+	cameraHeight = 8.0f;
 
 	// プレイヤーとエネミーの位置を取得
 	XMVECTOR playerPosition = *pPlayer->getPosition();
@@ -40,8 +44,8 @@ bool SceneMainGame::initialize()
 	XMVECTOR playerForward = playerWorld.r[2]; // プレイヤーの前方向
 
 	// プレイヤーの後ろの位置を計算
-	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -distanceBehind));
-	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, height, 0.0f, 0.0f)); // 高さ調整
+	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -cameraDistance));
+	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, cameraHeight, 0.0f, 0.0f)); // 高さ調整
 
 	// プレイヤーの後ろの位置にカメラを設定
 	sanCamera::setPosition(&cameraPosition);
@@ -55,6 +59,7 @@ bool SceneMainGame::initialize()
 //終了関数
 void SceneMainGame::terminate()
 {
+	gameUI.terminate();
 	delete pBgm;
 	deleteObject(pSky);
 	deleteObject(pGround);
@@ -65,12 +70,6 @@ void SceneMainGame::terminate()
 //処理関数
 void SceneMainGame::execute()
 {
-	sanScene::execute();
-
-	// プレイヤーからカメラまでの距離と高さ
-	float distanceBehind = 8.0f;
-	float height = 5.0f;
-
 	 // プレイヤーとエネミーの位置を取得
 	XMVECTOR playerPosition = *pPlayer->getPosition();
 	XMVECTOR bossPosition = *pBoss->getPosition();
@@ -80,14 +79,17 @@ void SceneMainGame::execute()
 	XMVECTOR playerForward = playerWorld.r[2]; // プレイヤーの前方向
 
 	// プレイヤーの後ろの位置を計算
-	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -distanceBehind));
-	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, height, 0.0f, 0.0f)); // 高さ調整
+	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -cameraDistance));
+	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, cameraHeight, 0.0f, 0.0f)); // 高さ調整
 
 	// プレイヤーの後ろの位置にカメラを設定
 	sanCamera::setPosition(&cameraPosition);
 
 	// カメラのターゲットをボスの位置に設定
 	sanCamera::setTarget(&bossPosition);
+
+	// 登録されたオブジェクト実行
+	sanScene::execute();
 
 
 	// BGM再生
@@ -99,6 +101,7 @@ void SceneMainGame::execute()
 	// プレイヤーの移動
 	pPlayer->execute(pBoss);
 	pBoss->execute(pPlayer);
+	gameUI.execute(pPlayer, pBoss);
 }
 
 //描画関数
@@ -106,6 +109,7 @@ void SceneMainGame::render()
 {
 	pGround->render();
 	pSky->render();
+	gameUI.render();
 	// ダメージ受け時の表示処理
 	if (!pPlayer->getTakeDamageDisPlay())
 	{

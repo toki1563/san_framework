@@ -4,15 +4,13 @@
 
 player::player(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 {
-	pRightArm = new sanModel(L"data/model/Player_1/", L"RightArm.vnm");
-	pRightArmAtkCoolTime = new sanModel(L"data/model/Player_1/", L"RightArmAtk.vnm");
 	pShadow = new sanModel(L"data/model/", L"shadow.vnm");
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
 	pSe[1] = new sanSound(L"data/sound/nothitatk.wav");
 	pSe[2] = new sanSound(L"data/sound/roll.wav");
 	status.atkPower = 10.0f;
-	status.health = 1000.0f;
-	status.stamina = 200.0f;
+	status.health = 100.0f;
+	status.stamina = 300.0f;
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
 	status.maxStamina = status.stamina;
@@ -22,21 +20,6 @@ player::player(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	isAtkCoolTime = false;
 	isTakeDamageDisPlay = false;
 	pShadow->setTransparent(true); // 半透明有無
-
-	// 攻撃用の腕
-	pRightArm->setRotationX(0.0f * pi);
-	pRightArm->setRotationY(0.0f * pi);
-	pRightArm->setRotationZ(0.0f * pi);
-	pRightArmAtkCoolTime->setRotationX(0.0f * pi);
-	pRightArmAtkCoolTime->setRotationY(0.0f * pi);
-	pRightArmAtkCoolTime->setRotationZ(0.0f * pi);
-	pRightArm->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ() - 5.0f);
-	pRightArmAtkCoolTime->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ() - 5.0f);
-	pRightArm->setRotationX(0.1f * pi);
-	pRightArm->setRotationZ(1.0f * pi);
-	pRightArmAtkCoolTime->setRotationX(0.1f * pi);
-	pRightArmAtkCoolTime->setRotationZ(1.0f * pi);
-
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -48,8 +31,6 @@ player::~player()
 	{
 		delete pSe[i];
 	}
-	delete pRightArmAtkCoolTime;
-	delete pRightArm;
 	delete pShadow;
 }
 
@@ -118,10 +99,6 @@ void player::move(boss* rival)
 
 	if (isInput)	// 入力があるときのみ
 	{
-		// 腕をついてくるように設定
-		pRightArm->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
-		pRightArmAtkCoolTime->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
-
 		// 敵を正面に向けるよう回転を設定
 		float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
 		setRotationY(rotY);
@@ -147,7 +124,7 @@ void player::atk(boss* rival)
 	constexpr float atkDist = 3.5f;			 // 攻撃距離
 	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
 	constexpr float atkDuration = 10.0f;	 // 攻撃モーションのの持続時間
-	constexpr float atkCoolTimeLimit = 3.0f; // クールタイムの長さ(60fpsなので0.5秒)
+	constexpr float atkCoolTimeLimit = 1.2f; // クールタイムの長さ(60fpsなので0.2秒)
 
 	// デバッグ用
 	sanFont::print(20.0f, 180.0f, L"攻撃の進捗度 : %.3f", atkProgress);
@@ -355,10 +332,11 @@ void player::step(boss* rival)
 	static bool isRightStep = false;  // 右にステップ回避
 	static bool isLeftStep = false;	  // 左にステップ回避
 	static bool isStep = false;       // ステップしているかどうか
+	static float stepValue = status.maxStamina / 3; // ステップに必要なスタミナの量
 
-	float stepMoveSpeed = 0.4f;			   // ステップの移動速度
+	float stepMoveSpeed = 0.6f;			   // ステップの移動速度
 	float currentTime = getCurrentTime();  // 現在の時間を取得
-	float stepDuration = 0.08f;             // ステップの持続時間
+	float stepDuration = 0.1f;             // ステップの持続時間
 	float doubleClickTime = 0.3f;          // ダブルクリック判定時間
 
 	// スタミナ回復処理
@@ -385,28 +363,19 @@ void player::step(boss* rival)
 	{
 		if (isStep)
 		{
-			// スタミナを消費できるとき
-			if (status.stamina >= (status.maxStamina / 2))
+			// スタミナを半分減らす
+			status.stamina -= stepValue;
+			isStep = false;
+
+			// SE再生
+			if (pSe[2]->isPlaying() == true)
 			{
-				// スタミナを半分減らす
-				status.stamina -= status.maxStamina / 2;
-				isStep = false;
-
-				// SE再生
-				if (pSe[2]->isPlaying() == true)
-				{
-					pSe[2]->stop();
-				}
-
-				if (pSe[2]->isPlaying() == false)
-				{
-					pSe[2]->play();
-				}
+				pSe[2]->stop();
 			}
-			else
+
+			if (pSe[2]->isPlaying() == false)
 			{
-				isStep = false;
-				return; // スタミナがない時は他の処理を無効にする
+				pSe[2]->play();
 			}
 		}
 		if (isRightStep)
@@ -425,9 +394,6 @@ void player::step(boss* rival)
 		// 移動ベクトルにスピードを適用(長さを変える)
 		vMove = XMVectorScale(vMove, stepMoveSpeed);
 
-		// 腕をついてくるように設定
-		pRightArm->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
-		pRightArmAtkCoolTime->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
 
 		// 敵を正面に向けるよう回転を設定
 		float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
@@ -444,32 +410,36 @@ void player::step(boss* rival)
 		isLeftStep = false;
 	}
 
-	// 右ステップ
-	if (sanKeyboard::trg(DIK_D))
+	// スタミナがある時
+	if (status.stamina >= stepValue)
 	{
-		if (currentTime - lastRightTime <= doubleClickTime)
+		// 右ステップ
+		if (sanKeyboard::trg(DIK_D))
 		{
-			// ステップの設定（時計回り）
-			stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
-			isRightStep = true;
-			isStep = true;
+			if (currentTime - lastRightTime <= doubleClickTime)
+			{
+				// ステップの設定（時計回り）
+				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
+				isRightStep = true;
+				isStep = true;
+			}
+
+			lastRightTime = currentTime; // 入力時間を記録
 		}
 
-		lastRightTime = currentTime; // 入力時間を記録
-	}
-
-	// 左ステップ
-	if (sanKeyboard::trg(DIK_A))
-	{
-		if (currentTime - lastLeftTime <= doubleClickTime)
+		// 左ステップ
+		if (sanKeyboard::trg(DIK_A))
 		{
-			// ステップの設定（反時計回り）
-			stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
-			isLeftStep = true;
-			isStep = true;
-		}
+			if (currentTime - lastLeftTime <= doubleClickTime)
+			{
+				// ステップの設定（反時計回り）
+				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
+				isLeftStep = true;
+				isStep = true;
+			}
 
-		lastLeftTime = currentTime; // 入力時間を記録
+			lastLeftTime = currentTime; // 入力時間を記録
+		}
 	}
 }
 
@@ -507,7 +477,6 @@ bool player::getTakeDamageDisPlay()
 	return isTakeDamageDisPlay;
 }
 
-
 float player::getCurrentTime()
 {
 	// 起動からの経過時間を秒単位で取得
@@ -531,11 +500,9 @@ void player::playerAllRender()
 	if (isAtkCoolTime)
 	{
 		render();
-		pRightArmAtkCoolTime->render();
 	}
 	else
 	{
 		render();
-		pRightArm->render();
 	}
 }

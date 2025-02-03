@@ -94,6 +94,7 @@ using namespace DirectX;
 
 #include "../public/actor/player.h"
 #include "../public/actor/boss.h"
+#include "../public/actor/gameUI.h"
 
 
 #include "../public/scene/san_scene.h"

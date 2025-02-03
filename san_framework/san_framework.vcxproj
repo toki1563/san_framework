@@ -160,6 +160,7 @@
     <ClCompile Include="public\scene\scene_game_test.cpp" />
     <ClCompile Include="public\scene\scene_ground_test.cpp" />
     <ClCompile Include="public\scene\scene_joystick_test.cpp" />
+    <ClCompile Include="public\scene\scene_keyframe_test.cpp" />
     <ClCompile Include="public\scene\scene_model_test.cpp" />
     <ClCompile Include="public\scene\scene_motion_test.cpp" />
     <ClCompile Include="public\scene\scene_pick_test.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="public\scene\scene_game_test.h" />
     <ClInclude Include="public\scene\scene_ground_test.h" />
     <ClInclude Include="public\scene\scene_joystick_test.h" />
+    <ClInclude Include="public\scene\scene_keyframe_test.h" />
     <ClInclude Include="public\scene\scene_model_test.h" />
     <ClInclude Include="public\scene\scene_motion_test.h" />
     <ClInclude Include="public\scene\scene_pick_test.h" />

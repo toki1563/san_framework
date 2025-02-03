@@ -1,7 +1,7 @@
 #include "../../framework.h"
 #include "../../framework/san_environment.h"
 
-#define OUTPUT_MOTION_DATA (0)
+#define OUTPUT_MOTION_DATA (1)
 
 #define FULL_PATH_MAX	(256)
 #define FILE_PATH_MAX	(128)
@@ -110,7 +110,6 @@ void SceneMotionTest::execute()
 	else if (sanKeyboard::on(DIK_RIGHT))
 	{
 		pCharacter->addRotationY(-XMConvertToRadians(3.0f));
-		sanFont::print(400.0f, 50.0f, 0xffffffff, L"%d", pCharacter->getRotationY());
 	}
 	else if (sanKeyboard::trg(DIK_SPACE))
 	{
@@ -121,6 +120,7 @@ void SceneMotionTest::execute()
 	sanFont::print(30.0f, 10.0f, 0xffffffff, L"↑↓  : カーソル移動");
 	sanFont::print(30.0f, 30.0f, 0xffffffff, L"SPACE : モーション再生");
 	sanFont::print(30.0f, 50.0f, 0xffffffff, L"←→  : モデル回転 (RotY = %.3f)", XMConvertToDegrees(pCharacter->getRotationY()));
+	sanFont::print(350.0f, 50.0f, 0xffffffff, L"モデルのRotV : %d", pCharacter->getRotationY());
 
 	//カーソルの表示
 	sanFont::print(10.0f, 130.0f + 20.0f * (float)Cursor, 0xffffff00, L"→");

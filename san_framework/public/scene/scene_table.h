@@ -8,6 +8,7 @@ enum eSceneTable
 	Boot,
 	GameTest,
 	MotionTest,
+	KeyframeTest,
 	EffectTest,
 	BillBoardTest,
 	GroundTest,
@@ -28,6 +29,7 @@ enum eSceneTable
 #include "scene_boot.h"
 #include "scene_game_test.h"
 #include "scene_motion_test.h"
+#include "scene_keyframe_test.h"
 #include "scene_effect_test.h"
 #include "scene_billboard_test.h"
 #include "scene_ground_test.h"

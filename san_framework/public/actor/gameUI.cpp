@@ -20,6 +20,11 @@ bool gameUI::initialize()
 	pBHPBackImg = new sanSprite(initBHpImgPosX, 75.0f, 350.0f, 30.0f, L"data/image/game/enemyBackImg.png");
 	pUIBackGround[0] = new sanSprite(initPHpImgPosX, 60.f, 380.0f, 100.0f, L"data/image/game/UIBackGround.png");
 	pUIBackGround[1] = new sanSprite(initBHpImgPosX, 60.f, 380.0f, 100.0f, L"data/image/game/UIBackGround.png");
+	// 画像透過処理
+	pUIBackGround[0]->vtx[0].a = 0.5f;	pUIBackGround[0]->vtx[1].a = 0.5f;
+	pUIBackGround[0]->vtx[2].a = 0.5f;	pUIBackGround[0]->vtx[3].a = 0.5f;
+	pUIBackGround[1]->vtx[0].a = 0.5f;	pUIBackGround[1]->vtx[1].a = 0.5f;
+	pUIBackGround[1]->vtx[2].a = 0.5f;	pUIBackGround[1]->vtx[3].a = 0.5f;
 
 	return true;
 }

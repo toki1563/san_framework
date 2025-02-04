@@ -39,8 +39,7 @@ bool SceneGroundTest::initialize()
 	velocity = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	gravity = XMVectorSet(0.0f, -0.01f, 0.0f, 0.0f); 
 
-	gridActive = true;
-	axisActive = true;
+	gridAxisActive = true;
 	input = false;
 
 	return true;
@@ -157,8 +156,7 @@ void SceneGroundTest::execute()
 	}
 	if (sanKeyboard::trg(DIK_L))
 	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
+		gridAxisActive = !gridAxisActive;
 	}
 
 	// カメラ座標の計算
@@ -334,8 +332,8 @@ void SceneGroundTest::execute()
 	sanFont::print(20.0f, 80.0f, L"Radius : %.3f", radius);
 	sanFont::print(20.0f, 100.0f, L"Theta : %.3f", theta* radians);
 	sanFont::print(20.0f, 120.0f, L"Phi : %.3f", phi* radians);
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
-	sanDebugDraw::Axis(5.0f, axisActive);
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
 }
 
 // 描画関数

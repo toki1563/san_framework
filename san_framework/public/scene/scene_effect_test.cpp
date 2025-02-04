@@ -12,7 +12,8 @@
 //初期化関数
 bool SceneEffectTest::initialize()
 {
-	pEmitter = new sanEffect();
+	sanEffect::stEffectDesc desc;
+	pEmitter = new sanEffect(&desc);
 	registerObject(pEmitter);
 	cursor = 0;
 	radius = 10.0f; // 座標設定
@@ -20,8 +21,7 @@ bool SceneEffectTest::initialize()
 	phi = -10.0f;
 	radiusRoll = 0.5f;
 	scrollMove = 0.05f;
-	gridActive = true;
-	axisActive = true;
+	gridAxisActive = true;
 
 	return true;
 }
@@ -63,8 +63,7 @@ void SceneEffectTest::execute()
 
 	if (sanKeyboard::trg(DIK_L))
 	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
+		gridAxisActive = !gridAxisActive;
 	}
 
 	// 仰角(Φ)の計算
@@ -76,8 +75,8 @@ void SceneEffectTest::execute()
 	sanCamera::setPosition(px, py, pz);
 
 	sanFont::print(20.0f, 20.0f, L"LキーでGrid&Axis表示・非表示");
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
-	sanDebugDraw::Axis(5.0f, axisActive);
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
 
 	sanScene::execute();
 }

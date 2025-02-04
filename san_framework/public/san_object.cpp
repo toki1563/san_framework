@@ -216,6 +216,60 @@ void sanObject::execute()
 
 void sanObject::render()
 {
+	// ローカル/ワールドマトリクスの計算
+	calculateLocalMatrix();
+	calculateWorldMatrix();
+
+	if (zWrite)
+	{
+		if (lighting == true)
+		{    //有効
+			if (transparent == true)
+			{ //半透明
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+			}
+		}
+		else
+		{   //無効
+			if (transparent == true)
+			{ //半透明
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL);
+			}
+		}
+	}
+	else
+	{
+		if (lighting == true)
+		{    //有効
+			if (transparent == true)
+			{ //半透明
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState);
+			}
+		}
+		else
+		{   //無効
+			if (transparent == true)
+			{ //半透明
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_Alpha_NL);
+			}
+			else
+			{
+				sanDirect3D::getCommandList()->SetPipelineState(pPipelineState_NL);
+			}
+		}
+	}
 }
 
 // マトリクスの計算

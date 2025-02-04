@@ -9,6 +9,7 @@ enum eSceneTable
 	TitleMainGame,
 	MainGame,
 	GameTest,
+	MotionTest,
 	EffectTest,
 	BillBoardTest,
 	GroundTest,
@@ -30,6 +31,7 @@ enum eSceneTable
 #include "scene_mainGame_Title.h"
 #include "scene_mainGame.h"
 #include "scene_game_test.h"
+#include "scene_motion_test.h"
 #include "scene_effect_test.h"
 #include "scene_billboard_test.h"
 #include "scene_ground_test.h"

@@ -9,7 +9,7 @@
 
 #define sanPARTICLE_MAX (1024)
 
-sanEffect::sanEffect()
+sanEffect::sanEffect(stEffectDesc* pDese)
 {
 	// パーティクル配列のメモリ確保
 	pParticle = new sanParticle[sanPARTICLE_MAX];
@@ -275,6 +275,12 @@ sanEffect::sanEffect()
 	setLighting(false);
 
 	setZWrite(false);
+
+	// 放出の設定
+	emit = true;
+
+	// 放出持続時間(-1は永続)
+	emitCount = -1.0f;
 }
 
 sanEffect::~sanEffect()
@@ -290,18 +296,37 @@ sanEffect::~sanEffect()
 
 void sanEffect::execute()
 {
-	// パーティカルの放出
-	for (int i = 0; i < sanPARTICLE_MAX; i++)
+	if (emitCount > 0.0f)
+	{
+		// 持続時間減少
+		emitCount -= 1.0f;
+		if (emitCount < 0.0f)
+		{
+			emitCount = 0.0f;
+		}
+	}
+
+	// 拡張性としてエフェクトの数を増やす方法
+	// 放出可能か&持続時間が残っているか
+	int effectNum = (emit == true && (emitCount > 0.0f || emitCount == -1.0f)) ? 3 : 0;
+	int n = 0;
+
+	// パーティカルの放出(effectNumが0なら放出しない)
+	for (int i = 0; i < sanPARTICLE_MAX && n < effectNum; i++)
 	{
 		if (pParticle[i].Life > 0.0f)
 		{
 			continue;
 		}
 
+		// エミッター自身のワールド座標取得
+		XMVECTOR wPos;
+		getWorldPosition(&wPos);
+
 		pParticle[i].StartLife = 60.0f;
 		pParticle[i].Life = pParticle[i].StartLife;
 		pParticle[i].Size = 0.2f + (float)(rand() % 1000) / 1000.0f * 0.3f; // 0.f~0.5
-		pParticle[i].Pos = XMVectorZero();
+		pParticle[i].Pos = wPos;
 		pParticle[i].Vel = XMVectorSet(
 			(float)(rand() % 2000) / 1000.0f - 1.0f,  // -1~1
 			(float)(rand() % 1000) / 1000.0f,		  //  0~1
@@ -309,13 +334,20 @@ void sanEffect::execute()
 			0.0f
 		);
 		pParticle[i].Vel *= 0.08f;
+		//pParticle[i].Col = XMVectorSet(
+		//	(float)(rand() % 1000) / 1000.0f,
+		//	(float)(rand() % 1000) / 1000.0f,
+		//	(float)(rand() % 1000) / 1000.0f,
+		//	(float)(rand() % 1000) / 1000.0f
 		pParticle[i].Col = XMVectorSet(
-			(float)(rand() % 1000) / 1000.0f,
-			(float)(rand() % 1000) / 1000.0f,
-			(float)(rand() % 1000) / 1000.0f,
+			0.6f,
+			0.6f,
+			0.6f,
 			(float)(rand() % 1000) / 1000.0f
 		);
-		break;
+
+		n++;
+		//break;
 	}
 
 	// パーティカルの動き
@@ -495,4 +527,25 @@ void sanEffect::render()
 	sanDirect3D::getCommandList()->IASetIndexBuffer(&indexBufferView);
 
 	sanDirect3D::getCommandList()->DrawIndexedInstanced(IndexNum, 1, 0, 0, 0);
+}
+
+// 放出設定
+void sanEffect::setEmit(bool flag)
+{
+	emit = flag;
+}
+
+bool sanEffect::isEmit()
+{
+	return emit;
+}
+
+void sanEffect::setEmitCount(float value)
+{
+	emitCount = value;
+}
+
+float sanEffect::getEmitCount()
+{
+	return emitCount;
 }

@@ -19,8 +19,7 @@ bool SceneCollisionTest::initialize()
 	radians = 180.0f / 3.141592f;
 	radiusRoll = 0.5f;
 	scrollMove = 0.05f;
-	gridActive = true;
-	axisActive = true;
+	gridAxisActive = true;
 
 	point[0] = XMVectorSet(-2.0f, 4.0f, -2.0f, 0.0f);
 	point[1] = XMVectorSet(3.0f, -4.0f, 3.0f, 0.0f);
@@ -102,8 +101,7 @@ void SceneCollisionTest::execute()
 	}
 	else if (sanKeyboard::trg(DIK_L))
 	{
-		gridActive = !gridActive;
-		axisActive = !axisActive;
+		gridAxisActive = !gridAxisActive;
 	}
 
 
@@ -211,8 +209,8 @@ void SceneCollisionTest::execute()
 	}
 
 	sanScene::execute();
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridActive);
-	sanDebugDraw::Axis(5.0f, axisActive);
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
 	sanDebugDraw::Line(&point[0], &point[1], 0xffffff00);
 	sanDebugDraw::Line(&point[2], &point[3], 0xffff00ff);
 	sanDebugDraw::Line(&point[3], &point[4], 0xffff00ff);

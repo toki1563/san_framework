@@ -20,8 +20,7 @@ private:
 	float radians;   // ラジアン
 	float radiusRoll; // ミドル回転時の値
 	float scrollMove; // 右クリック時のスクロール値
-	bool  gridActive;  // グリッド表示非表示
-	bool  axisActive;  // 軸表示非表示
+	bool  gridAxisActive;  // グリッド&軸表示非表示
 
 public:
 

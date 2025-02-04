@@ -31,9 +31,6 @@
     <Filter Include="shader">
       <UniqueIdentifier>{50a0a003-3d2e-4a0e-8d4b-06b0afa93c1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="public\actor">
-      <UniqueIdentifier>{cb1c365e-a020-482b-a027-2a7e7dccdee1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework\directX\san_Direct2D.cpp">
@@ -153,20 +150,11 @@
     <ClCompile Include="public\scene\scene_effect_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\actor\boss.cpp">
-      <Filter>public\actor</Filter>
+    <ClCompile Include="public\object\character.cpp">
+      <Filter>public\object</Filter>
     </ClCompile>
-    <ClCompile Include="public\actor\player.cpp">
-      <Filter>public\actor</Filter>
-    </ClCompile>
-    <ClCompile Include="public\scene\scene_mainGame.cpp">
+    <ClCompile Include="public\scene\scene_motion_test.cpp">
       <Filter>public\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="public\scene\scene_mainGame_Title.cpp">
-      <Filter>public\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="public\actor\gameUI.cpp">
-      <Filter>public\actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,20 +287,14 @@
     <ClInclude Include="public\scene\scene_effect_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
-    <ClInclude Include="public\actor\boss.h">
-      <Filter>public\actor</Filter>
+    <ClInclude Include="public\object\character.h">
+      <Filter>public\object</Filter>
     </ClInclude>
-    <ClInclude Include="public\actor\player.h">
-      <Filter>public\actor</Filter>
+    <ClInclude Include="framework\san_motionData.h">
+      <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="public\scene\scene_mainGame.h">
+    <ClInclude Include="public\scene\scene_motion_test.h">
       <Filter>public\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="public\scene\scene_mainGame_Title.h">
-      <Filter>public\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="public\actor\gameUI.h">
-      <Filter>public\actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

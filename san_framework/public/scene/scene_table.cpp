@@ -15,7 +15,6 @@ WCHAR SceneName[(int)eSceneTable::SceneMax][32] =
 	L"Boot",
 	L"Game Test",
 	L"Motion Test",
-	L"Keyframe Test"
 	L"Effect Test",
 	L"BillBoard Test",
 	L"Ground Test",
@@ -55,7 +54,6 @@ void switchScene()
 		case Boot:				  pScene = new SceneBoot();			       break;
 		case GameTest:			  pScene = new SceneGameTest();			   break;
 		case MotionTest:	      pScene = new SceneMotionTest();		   break;
-		case KeyframeTest:	      pScene = new SceneKeyframeTest();		   break;
 		case EffectTest:		  pScene = new SceneEffectTest();		   break;
 		case BillBoardTest:		  pScene = new SceneBillBoardTest();	   break;
 		case GroundTest:		  pScene = new SceneGroundTest;			   break;

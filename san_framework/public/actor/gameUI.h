@@ -8,6 +8,7 @@ private:
 	sanSprite* pPStaminaImg; //スタミナの画像
 	sanSprite* pPHpBackImg;  // HPの画像の背景
 	sanSprite* pPStaminaBackImg; // スタミナの画像の背景
+	sanSprite* pUIBackGround[2]; // UIの背景
 	// プレイヤーの画像の初期Xの位置
 	float initPHpImgPosX; 
 	float initPStaminaImgPosX;
@@ -16,6 +17,7 @@ private:
 	sanSprite* pBHpImg; // HP画像
 	sanSprite* pBHPBackImg; // HPの画像の背景
 	float initBHpImgPosX;
+	float minBHpImgPosX;
 
 
 

@@ -36,6 +36,7 @@ public:
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
 	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
+	bool getIsDead();    // 死んでいるかどうか
 	bool getIsTakeHit(); // 攻撃を受けた時
 	bool getIsDefense(); // 防御
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
@@ -54,6 +55,7 @@ private:
 	handleActionState handleAction;
 
 	float pi;           // 円周率
+	bool isDead;        // 死んだとき
 	bool isDefense;     // 防御しているかどうか
 	bool isTakeDamage;  // 攻撃を受けたかどうか
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示

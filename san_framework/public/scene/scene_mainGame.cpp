@@ -98,7 +98,17 @@ void SceneMainGame::execute()
 	//	pBgm->play();
 	//}
 
-	// プレイヤーの移動
+	// ゲームクリア時の処理
+	if (pBoss->getIsDead())
+	{
+		// カメラを上に向けてIsDeadと表示させる
+	}
+	// ゲームオーバー時の処理
+	else if (pPlayer->getIsDead())
+	{
+
+	}
+
 	pPlayer->execute(pBoss);
 	pBoss->execute(pPlayer);
 	gameUI.execute(pPlayer, pBoss);

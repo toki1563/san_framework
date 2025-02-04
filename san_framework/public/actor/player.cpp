@@ -15,6 +15,7 @@ player::player(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	status.maxHealth = status.health;
 	status.maxStamina = status.stamina;
 	pi = 3.14f;
+	isDead = false;
 	isCanAtk = true;
 	isTakeDamage = false;
 	isAtkCoolTime = false;
@@ -36,6 +37,11 @@ player::~player()
 
 void player::execute(boss* rival)
 {
+	if (isDead) // 死んだとき
+	{
+		// 死んだアニメーションさせる
+		return;
+	}
 	move(rival);
 	step(rival);
 	atk(rival);
@@ -445,6 +451,11 @@ void player::step(boss* rival)
 
 void player::takeDamage(float damage)
 {
+	if (status.health <= 0)
+	{
+		isDead = true;
+	}
+
 	isTakeDamage = true;
 	status.health -= damage;
 }
@@ -505,4 +516,9 @@ void player::playerAllRender()
 	{
 		render();
 	}
+}
+
+bool player::getIsDead()
+{
+	return isDead;
 }

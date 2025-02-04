@@ -27,6 +27,7 @@ public:
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
+	bool getIsDead();    // 死んでいるかどうか
 	bool getIsTakeHit(); // 攻撃を受けた時
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
 	float getCurrentTime(); // ゲーム開始から現在の時間を取得
@@ -38,9 +39,10 @@ private:
 	sanModel* pShadow; // 影のモデル
 	sanSound* pSe[3];  // SE
 
-	float pi;     // 円周率
-	bool isCanAtk;	  // 攻撃可能どうか
-	bool isTakeDamage;   // 攻撃を受けたかどうか
+	float pi;    // 円周率
+	bool isDead; // 死んだとき
+	bool isCanAtk;	    // 攻撃可能どうか
+	bool isTakeDamage;  // 攻撃を受けたかどうか
 	bool isAtkCoolTime; // 攻撃のクールタイム
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
 };

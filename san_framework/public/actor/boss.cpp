@@ -15,6 +15,7 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	status.maxHealth = status.health;
 	handleAction = handleActionState::Defending;
 	pi = 3.14f;
+	isDead = false;
 	isDefense = false;
 	isTakeDamage = false;
 	isTakeDamageDisPlay = false;
@@ -66,6 +67,12 @@ void boss::DecideNextAction(player* rival)
 
 void boss::execute(player* rival)
 {
+	if (isDead) // 死んだとき
+	{
+		// 死んだアニメーションさせる
+		return;
+	}
+
 	// ここでランダムにする
 	// 各関数で処理の最後にDecideNextActionを呼び出す
 	switch (handleAction)
@@ -200,27 +207,27 @@ void boss::atk(player* rival)
 	{
 		// SE再生
 		// もし再生中なら停止する
-		if (pSe[0]->isPlaying() == true)
-		{
-			pSe[0]->stop();
-		}
-		if (pSe[0]->isPlaying() == false)
-		{
-			pSe[0]->play();
-		}
+		//if (pSe[0]->isPlaying() == true)
+		//{
+		//	pSe[0]->stop();
+		//}
+		//if (pSe[0]->isPlaying() == false)
+		//{
+		//	pSe[0]->play();
+		//}
 	}
 	else
 	{
 		// SE再生
 		// もし再生中なら停止する
-		if (pSe[1]->isPlaying() == true)
-		{
-			pSe[1]->stop();
-		}
-		if (pSe[1]->isPlaying() == false)
-		{
-			pSe[1]->play();
-		}
+		//if (pSe[1]->isPlaying() == true)
+		//{
+		//	pSe[1]->stop();
+		//}
+		//if (pSe[1]->isPlaying() == false)
+		//{
+		//	pSe[1]->play();
+		//}
 	}
 }
 
@@ -284,6 +291,10 @@ void boss::takeDamage(float damage)
 	{
 		return;
 	}
+	else if (status.health <= 0) // 死んだとき
+	{
+		isDead = true;
+	}
 	isTakeDamage = true;
 	status.health -= damage;
 }
@@ -325,6 +336,11 @@ bool boss::playerCloseSearch(player* rival)
 	{
 		return false;
 	}
+}
+
+bool boss::getIsDead()
+{
+	return isDead;
 }
 
 bool boss::getTakeDamageDisPlay()

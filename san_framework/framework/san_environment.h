@@ -91,6 +91,8 @@ using namespace DirectX;
 #include "../public/san_model.h"
 #include "../public/san_sprite.h"
 #include "../public/san_collide.h"
+#include "../public/object/character.h"
+
 
 #include "../public/actor/player.h"
 #include "../public/actor/boss.h"

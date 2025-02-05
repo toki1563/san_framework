@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../object/character.h"
-
 class SceneMotionTest : public sanScene
 {
 private:

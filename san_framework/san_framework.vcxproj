@@ -142,6 +142,9 @@
     <ClCompile Include="framework\san_mainframe.cpp" />
     <ClCompile Include="framework\san_mouse.cpp" />
     <ClCompile Include="framework\san_sound.cpp" />
+    <ClCompile Include="public\actor\boss.cpp" />
+    <ClCompile Include="public\actor\gameUI.cpp" />
+    <ClCompile Include="public\actor\player.cpp" />
     <ClCompile Include="public\object\character.cpp" />
     <ClCompile Include="public\object\cube.cpp" />
     <ClCompile Include="public\san_billboard.cpp" />
@@ -160,6 +163,8 @@
     <ClCompile Include="public\scene\scene_game_test.cpp" />
     <ClCompile Include="public\scene\scene_ground_test.cpp" />
     <ClCompile Include="public\scene\scene_joystick_test.cpp" />
+    <ClCompile Include="public\scene\scene_mainGame.cpp" />
+    <ClCompile Include="public\scene\scene_mainGame_Title.cpp" />
     <ClCompile Include="public\scene\scene_model_test.cpp" />
     <ClCompile Include="public\scene\scene_motion_test.cpp" />
     <ClCompile Include="public\scene\scene_pick_test.cpp" />
@@ -189,6 +194,9 @@
     <ClInclude Include="framework\san_motionData.h" />
     <ClInclude Include="framework\san_mouse.h" />
     <ClInclude Include="framework\san_sound.h" />
+    <ClInclude Include="public\actor\boss.h" />
+    <ClInclude Include="public\actor\gameUI.h" />
+    <ClInclude Include="public\actor\player.h" />
     <ClInclude Include="public\object\character.h" />
     <ClInclude Include="public\object\cube.h" />
     <ClInclude Include="public\san_billboard.h" />
@@ -207,6 +215,8 @@
     <ClInclude Include="public\scene\scene_game_test.h" />
     <ClInclude Include="public\scene\scene_ground_test.h" />
     <ClInclude Include="public\scene\scene_joystick_test.h" />
+    <ClInclude Include="public\scene\scene_mainGame.h" />
+    <ClInclude Include="public\scene\scene_mainGame_Title.h" />
     <ClInclude Include="public\scene\scene_model_test.h" />
     <ClInclude Include="public\scene\scene_motion_test.h" />
     <ClInclude Include="public\scene\scene_pick_test.h" />

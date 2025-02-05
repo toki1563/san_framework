@@ -14,10 +14,10 @@ public:
 	float maxStamina; 
 };
 
-class player : public sanModel
+class player : public cCharacter
 {
 public:
-	player(const WCHAR* folder, const WCHAR* filen);
+	player(const WCHAR* folder, const WCHAR* boneFile);
 	~player();
 
 	void execute(boss* rival); // 全体の処理

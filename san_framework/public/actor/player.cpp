@@ -2,7 +2,7 @@
 #include "../../framework/san_environment.h"
 #include "player.h"
 
-player::player(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
+player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, boneFile)
 {
 	pShadow = new sanModel(L"data/model/", L"shadow.vnm");
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
@@ -424,6 +424,11 @@ void player::step(boss* rival)
 		{
 			if (currentTime - lastRightTime <= doubleClickTime)
 			{
+				// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
+				if (rival->getAtkProgress() > 0 && rival->getPlayerAtkRange())
+				{
+					rival->takeJustStep(); // ジャストステップした通知を送る
+				}
 				// ステップの設定（時計回り）
 				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
 				isRightStep = true;
@@ -438,6 +443,11 @@ void player::step(boss* rival)
 		{
 			if (currentTime - lastLeftTime <= doubleClickTime)
 			{
+				// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
+				if (rival->getAtkProgress() > 0 && rival->getPlayerAtkRange())
+				{
+					rival->takeJustStep(); // ジャストステップした通知を送る
+				}
 				// ステップの設定（反時計回り）
 				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
 				isLeftStep = true;
@@ -505,17 +515,9 @@ void player::playerAllRender()
 {
 	sanFont::print(20.0f, 140.0f, L"体力 : %.3f", status.health);
 	sanFont::print(20.0f, 160.0f, L"スタミナ : %.3f", status.stamina);
-	
+
 	pShadow->render();
-	// クールタイム中は切り替える
-	if (isAtkCoolTime)
-	{
-		render();
-	}
-	else
-	{
-		render();
-	}
+	render();
 }
 
 bool player::getIsDead()

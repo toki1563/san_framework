@@ -3,8 +3,6 @@
 
 boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 {
-	pRightArm = new sanModel(L"data/model/Player_2/", L"RightArm.vnm");
-	pRightArmAtkCoolTime = new sanModel(L"data/model/Player_2/", L"RightArmAtk.vnm");
 	pShadow = new sanModel(L"data/model/", L"shadow.vnm");
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
 	pSe[1] = new sanSound(L"data/sound/nothitatk.wav");
@@ -15,25 +13,15 @@ boss::boss(const WCHAR* folder, const WCHAR* file) : sanModel(folder, file)
 	status.maxHealth = status.health;
 	handleAction = handleActionState::Defending;
 	pi = 3.14f;
+	atkProgress = 0.0f;
+	atkTimeLimit = 12.0f; // (60fpsなので2秒)
 	isDead = false;
 	isDefense = false;
+	isPlayerAtkRange = false;
+	isPlayerJustStep = false;
 	isTakeDamage = false;
 	isTakeDamageDisPlay = false;
 	pShadow->setTransparent(true); // 半透明有無
-
-	// 敵の腕
-	pRightArm->setRotationX(0.0f * pi);
-	pRightArm->setRotationY(0.0f * pi);
-	pRightArm->setRotationZ(0.0f * pi);
-	pRightArmAtkCoolTime->setRotationX(0.0f * pi);
-	pRightArmAtkCoolTime->setRotationY(0.0f * pi);
-	pRightArmAtkCoolTime->setRotationZ(0.0f * pi);
-	pRightArm->setPosition(getPositionX() - 0.7f, getPositionY() + 3.0f, getPositionZ());
-	pRightArmAtkCoolTime->setPosition(getPositionX() - 0.7f, getPositionY() + 3.0f, getPositionZ());
-	pRightArm->setRotationX(-0.1f * pi);
-	pRightArm->setRotationZ(1.0f * pi);
-	pRightArmAtkCoolTime->setRotationX(-0.1f * pi);
-	pRightArmAtkCoolTime->setRotationZ(1.0f * pi);
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -43,8 +31,6 @@ boss::~boss()
 {
 	delete pSe[0];
 	delete pSe[1];
-	delete pRightArmAtkCoolTime;
-	delete pRightArm;
 	delete pShadow;
 }
 
@@ -118,24 +104,36 @@ void boss::defense(player* rival)
 
 	// プレイヤーから敵へのベクトルと距離を計算
 	XMVECTOR vToRival = XMVectorSubtract(playerPos, enemyPos);
+	float targetRotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival)); // 敵の方向
 
-	// 敵を正面に向けるよう回転を設定
-	float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
-	setRotationY(rotY);
+	// 現在の回転角度を取得
+	float currentRotY = getRotationY();
+
+	// ゆっくり回転させる (補間率 0.1f は回転速度を調整)
+	float smoothFactor = 0.07f; // 0.0f〜1.0f (小さいほどゆっくり回る)
+	float newRotY = currentRotY + (targetRotY - currentRotY) * smoothFactor;
+
+	setRotationY(newRotY); // 更新
 }
 
 void boss::atk(player* rival)
 {
-	static float atkProgress = 0.0f;      // 防御の進行度
-	constexpr float atkTimeLimit = 12.0f; // 防御の時間(60fpsなので2秒)
-
-	atkProgress += 0.1f;
+	// プレイヤーがジャスト回避でなければ
+	if (!isPlayerJustStep)
+	{
+		atkProgress += 0.1f;
+	}
+	else // プレイヤーがジャスト回避なら
+	{
+		atkProgress += 0.01f;
+	}
 
 	// 時間になったら
 	if (atkProgress >= atkTimeLimit)
 	{
-		atkProgress = false;
-		DecideNextAction(rival); // 次の攻撃
+		atkProgress = 0.0f;
+		isPlayerJustStep = false;
+		handleAction = handleActionState::Defending; // 防御にする
 	}
 
 	// 固定値なのでメモリを削減
@@ -191,15 +189,25 @@ void boss::atk(player* rival)
 	}
 	// 攻撃時のデバッグライン表示終了
 
-
 	// 認識範囲に入っているか
 	if (dist < atkDist && degree < atkDegree)
 	{
-		// 攻撃処理
-		XMVECTOR knockbackVector = bossrFront * 4;
-		XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-		rival->setPosition(&newPosition);
-		rival->takeDamage(status.atkPower);
+		// プレイヤーが攻撃が当たる範囲にいるかどうか
+		isPlayerAtkRange = true; 
+
+		// 攻撃が半分以上の時
+		if (atkProgress >= atkTimeLimit / 2)
+		{
+			// 攻撃処理
+			XMVECTOR knockbackVector = bossrFront * 4;
+			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
+			rival->setPosition(&newPosition);
+			rival->takeDamage(status.atkPower);
+		}
+	}
+	else
+	{
+		isPlayerAtkRange = false;
 	}
 
 	// 敵に当たった時
@@ -269,10 +277,6 @@ void boss::move(player* rival)
 		vMove = XMVectorScale(vMove, moveSpeed);
 	}
 
-	// 腕をついてくるように設定
-	pRightArm->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
-	pRightArmAtkCoolTime->setPosition(getPositionX() + 0.7f, getPositionY() + 3.0f, getPositionZ());
-
 	// 敵を正面に向けるよう回転を設定
 	float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
 	setRotationY(rotY);
@@ -283,6 +287,11 @@ void boss::move(player* rival)
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
+}
+
+void boss::takeJustStep()
+{
+	isPlayerJustStep = true;
 }
 
 void boss::takeDamage(float damage)
@@ -363,12 +372,22 @@ bool boss::getIsDefense()
 	return isDefense;
 }
 
+bool boss::getAtkProgress()
+{
+	return atkProgress;
+}
+
+bool boss::getPlayerAtkRange()
+{
+	return isPlayerAtkRange;
+}
+
 void boss::playerAllRender()
 {
 	sanFont::print(20.0f, 300.0f, L"体力 : %.3f", status.health);
+	sanFont::print(20.0f, 340.0f, L"ボスの攻撃進捗度 : %.3f", atkProgress);
 	pShadow->render();
 	render();
-	pRightArm->render();
 }
 
 handleActionState boss::getBossAction()

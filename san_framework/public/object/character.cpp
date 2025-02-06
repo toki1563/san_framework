@@ -34,8 +34,6 @@ cCharacter::cCharacter(const WCHAR* folder, const WCHAR* boneFile)
 	//ファイルを閉じる
 	fclose(fp);
 
-
-
 	//ファイル内に格納されたパーツ数を計算
 	PartsNum = size / sizeof(sanModel_BoneData);
 
@@ -55,16 +53,29 @@ cCharacter::cCharacter(const WCHAR* folder, const WCHAR* boneFile)
 		sanFont::output(L"Parts[%d].Name : %s\n", i, partsname);
 #endif
 
+// 対応したモデル
+#if 1
 		//パーツ名のvnmファイルが存在するか調べる(fopen()が失敗すればファイルがない)
 		if ((_wfopen_s(&fp, path, L"rb")) != 0)
 		{	//vnmファイルが存在しないパーツはvnObjectクラスで作成
 			pParts[i] = new sanObject();
 		}
 		else
-		{	//vnmファイルが存在しないパーツはvnModelクラスで作成
+		{	//vnmファイルが存在するパーツはvnModelクラスで作成
 			sanModel* pModel = new sanModel(folder, partsfile);
 			pParts[i] = pModel;
 		}
+#endif
+
+// スフィアで代用
+#if 0
+
+		sanModel* pModel = new sanModel(L"data/model/primitive/", L"smallSphere.vnm");
+		pParts[i] = pModel;
+#endif
+
+
+		// 別モデルとして右の手を親にする
 
 		//親子関係の設定
 		if (pBoneData[i].ParentID == -1)
@@ -75,7 +86,6 @@ cCharacter::cCharacter(const WCHAR* folder, const WCHAR* boneFile)
 		{
 			pParts[i]->setParent(pParts[pBoneData[i].ParentID]);
 		}
-
 		//pos, rot, sclの設定は後のbindPose()関数で行うのでここでは省略する
 	}
 
@@ -104,6 +114,8 @@ void cCharacter::execute()
 
 	//時間経過
 	time += 1.0f;
+	// アニメループでないならループしない
+	time = 0.0f;
 
 	//アニメーションのループ
 	if (time >= pMotion->Length)
@@ -131,6 +143,12 @@ void cCharacter::execute()
 
 		//モーション対象のパーツ
 		sanObject* pObj = getParts(channel[i].Name);
+
+		// 名前が違う場合は表示
+		if (pObj == NULL)
+		{
+			sanFont::output(L"pObjName : %s\n", i, pObj);
+		}
 
 		//エラーチェック
 		if (!k || !pObj)continue;

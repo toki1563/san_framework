@@ -65,15 +65,21 @@ void boss::execute(player* rival)
 	{
 	case handleActionState::Defending:
 		defense(rival);
-		sanFont::print(20.0f, 320.0f, L"防御中");
+		sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		sanFont::print(20.0f, 350.0f, L"防御中");
+		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		break;
 	case handleActionState::Attacking:
 		atk(rival);
-		sanFont::print(20.0f, 320.0f, L"攻撃中");
+		sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		sanFont::print(20.0f, 350.0f, L"攻撃中");
+		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		break;
 	case handleActionState::Moveing:
 		move(rival);
-		sanFont::print(20.0f, 320.0f, L"移動中");
+		sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		sanFont::print(20.0f, 350.0f, L"移動中");
+		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		break;
 	}
 
@@ -385,7 +391,9 @@ bool boss::getPlayerAtkRange()
 void boss::playerAllRender()
 {
 	sanFont::print(20.0f, 300.0f, L"体力 : %.3f", status.health);
-	sanFont::print(20.0f, 340.0f, L"ボスの攻撃進捗度 : %.3f", atkProgress);
+	sanFont::setTextFormat(sanFont::create(L"Meiryo", 24));
+	sanFont::print(20.0f, 320.0f, L"ボスの攻撃進捗度 : %.3f", atkProgress);
+	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 	pShadow->render();
 	render();
 }

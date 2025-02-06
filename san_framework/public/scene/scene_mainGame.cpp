@@ -6,54 +6,41 @@
 #define FULL_PATH_MAX	(256)
 #define FILE_PATH_MAX	(128)
 
-//WCHAR playerMotionFolder[] = L"data/model/BoxUnityChan/motion/";
-WCHAR playerMotionFolder[] = L"data/motion/player/";
+WCHAR playerMotionFolder[] = L"data/model/BoxUnityChan/motion/";
 
 WCHAR playerMotionFile[][FILE_PATH_MAX] =
 {
-	L"Attack01.mot",
-	L"Attack02.mot",
-	L"Defend.mot",
-	L"Die.mot",
-	L"DieRecover.mot",
-	L"Dizzy.mot",
-	L"GetHit.mot",
-	L"Idle_Battle.mot",
-	L"RunForwardBattle.mot",
-	L"WalkForwardBattle.mot",
-
-	//L"DAMAGED00.mot",
-	//L"DAMAGED01.mot",
-	//L"HANDUP00_R.mot",
-	//L"JUMP00.mot",
-	//L"JUMP00B.mot",
-	//L"JUMP01.mot",
-	//L"JUMP01B.mot",
-	//L"LOSE00.mot",
-	//L"REFLESH00.mot",
-	//L"RUN00_F.mot",
-	//L"RUN00_L.mot",
-	//L"RUN00_R.mot",
-	//L"SLIDE00.mot",
-	//L"UMATOBI00.mot",
-	//L"WAIT00.mot",
-	//L"WAIT01.mot",
-	//L"WAIT02.mot",
-	//L"WAIT03.mot",
-	//L"WAIT04.mot",
-	//L"WALK00_B.mot",
-	//L"WALK00_F.mot",
-	//L"WALK00_L.mot",
-	//L"WALK00_R.mot",
-	//L"WIN00.mot",
+	L"DAMAGED00.mot", //  0 : ちょいダメージ
+	L"DAMAGED01.mot", //  1 : 吹っ飛び
+	L"HANDUP00_R.mot",//  2 : 片手上げ
+	L"JUMP00.mot",	  //  3 : 高ジャンプ
+	L"JUMP00B.mot",	  //  4 : 低ジャンプ
+	L"JUMP01.mot",	  //  5 : 優勝喜び1　
+	L"JUMP01B.mot",	  //  6 : 優勝喜び2
+	L"LOSE00.mot",	  //  7 : 頭抱え込む
+	L"REFLESH00.mot", //  8 : 疲れた膝に手を置く
+	L"RUN00_F.mot",	  //  9 : 走る
+	L"RUN00_L.mot",	  // 10 : 走る左向く
+	L"RUN00_R.mot",	  // 11 : 走る右向く
+	L"SLIDE00.mot",	  // 12 : スライディング
+	L"UMATOBI00.mot", // 13 : 跳び箱
+	L"WAIT00.mot",	  // 14 : 通常立ち
+	L"WAIT01.mot",	  // 15 : 手を前に伸ばしてのびのび
+	L"WAIT02.mot",	  // 16 : 左右にルンルン
+	L"WAIT03.mot",	  // 17 : にっこにっこにー
+	L"WAIT04.mot",	  // 18 : まわし蹴り
+	L"WALK00_B.mot",  // 19 : 後ろ見ながら歩く
+	L"WALK00_F.mot",  // 20 : 正面見ながら歩く
+	L"WALK00_L.mot",  // 21 : 左見ながら歩く
+	L"WALK00_R.mot",  // 22 : 右見ながら歩く
+	L"WIN00.mot",	  // 23 : 勝利ポーズ
 };
 
 
 //初期化関数
 bool SceneMainGame::initialize()
 {
-	pPlayer = new player(L"data/model/Player/", L"DogPBR.bone");
-	//pPlayer = new player(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
+	pPlayer = new player(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
 	pBoss = new boss(L"data/model/Player_2/", L"DogPBR.vnm");
 	pGround = new sanModel(L"data/model/stage/", L"stage.vnm");
 	pSky = new sanModel(L"data/model/", L"skydome.vnm");
@@ -96,7 +83,7 @@ bool SceneMainGame::initialize()
 	// プレイヤーの位置を設定
 	pPlayer->setPositionZ(-5.0f);
 
-	pPlayer->setMotion(playerMotion[0]);
+	pPlayer->setMotion(playerMotion[14]);
 
 	// BGMを少し小さく
 	pBgm->setVolume(0.2f);
@@ -181,6 +168,11 @@ void SceneMainGame::execute()
 	}
 	// ゲームオーバー時の処理
 	else if (pPlayer->getIsDead())
+	{
+
+	}
+
+	if (pPlayer->getIsCanAtk())
 	{
 
 	}

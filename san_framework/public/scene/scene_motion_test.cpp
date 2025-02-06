@@ -6,48 +6,35 @@
 #define FULL_PATH_MAX	(256)
 #define FILE_PATH_MAX	(128)
 
-//WCHAR motionFolder[] = L"data/model/BoxUnityChan/motion/";
-WCHAR motionFolder[] = L"data/motion/player/";
+WCHAR motionFolder[] = L"data/model/BoxUnityChan/motion/";
 
 
 WCHAR motionFile[][FILE_PATH_MAX] =
 {
-	L"Attack01.mot",
-	L"Attack02.mot",
-	L"Defend.mot",
-	L"Die.mot",
-	L"DieRecover.mot",
-	L"Dizzy.mot",
-	L"GetHit.mot",
-	L"Idle_Battle.mot",
-	L"RunForwardBattle.mot",
-	L"WalkForwardBattle.mot",
-
-
-	//L"DAMAGED00.mot",
-	//L"DAMAGED01.mot",
-	//L"HANDUP00_R.mot",
-	//L"JUMP00.mot",
-	//L"JUMP00B.mot",
-	//L"JUMP01.mot",
-	//L"JUMP01B.mot",
-	//L"LOSE00.mot",
-	//L"REFLESH00.mot",
-	//L"RUN00_F.mot",
-	//L"RUN00_L.mot",
-	//L"RUN00_R.mot",
-	//L"SLIDE00.mot",
-	//L"UMATOBI00.mot",
-	//L"WAIT00.mot",
-	//L"WAIT01.mot",
-	//L"WAIT02.mot",
-	//L"WAIT03.mot",
-	//L"WAIT04.mot",
-	//L"WALK00_B.mot",
-	//L"WALK00_F.mot",
-	//L"WALK00_L.mot",
-	//L"WALK00_R.mot",
-	//L"WIN00.mot",
+	L"DAMAGED00.mot",
+	L"DAMAGED01.mot",
+	L"HANDUP00_R.mot",
+	L"JUMP00.mot",
+	L"JUMP00B.mot",
+	L"JUMP01.mot",
+	L"JUMP01B.mot",
+	L"LOSE00.mot",
+	L"REFLESH00.mot",
+	L"RUN00_F.mot",
+	L"RUN00_L.mot",
+	L"RUN00_R.mot",
+	L"SLIDE00.mot",
+	L"UMATOBI00.mot",
+	L"WAIT00.mot",
+	L"WAIT01.mot",
+	L"WAIT02.mot",
+	L"WAIT03.mot",
+	L"WAIT04.mot",
+	L"WALK00_B.mot",
+	L"WALK00_F.mot",
+	L"WALK00_L.mot",
+	L"WALK00_R.mot",
+	L"WIN00.mot",
 };
 
 //初期化
@@ -79,8 +66,7 @@ bool SceneMotionTest::initialize()
 	}
 
 	//キャラクターの作成
-	//pCharacter = new cCharacter(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
-	pCharacter = new cCharacter(L"data/model/Player/", L"DogPBR.bone");
+	pCharacter = new cCharacter(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
 	//キャラクターとパーツの登録
 	registerObject(pCharacter);
 	for (int i = 0; i < pCharacter->getPartsNum(); i++)
@@ -151,6 +137,20 @@ void SceneMotionTest::execute()
 		sanFont::print(30.0f, 130.0f + 20.0f * (float)i, col, &motionFile[i][0]);
 		sanFont::print(200.0f, 130.0f + 20.0f * (float)i, col, L"%d", motion[i]->ChannelNum);
 		sanFont::print(350.0f, 130.0f + 20.0f * (float)i, col, L"%d", motion[i]->KeyFrameNum);
+	}
+
+	// キャラクターのパーツを取得してsanObject* 
+	for (int i = 0; i < pCharacter->getPartsNum(); i++)
+	{
+		sanObject* pChild = pCharacter->getParts(i);
+		if (pChild == NULL) continue;
+		sanObject* pParent = pChild->getParent();
+		if (pParent == NULL) continue;
+
+		XMVECTOR v, m;
+		pChild->getWorldPosition(&v);
+		pParent->getWorldPosition(&m);
+		sanDebugDraw::Line(&v, &m);
 	}
 
 	sanDebugDraw::Grid();

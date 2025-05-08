@@ -91,6 +91,8 @@ cCharacter::cCharacter(const WCHAR* folder, const WCHAR* boneFile)
 
 	//バインドポーズにする(パーツの姿勢の初期化)
 	bindPose();
+	isMotionEnded = false;
+	animSpeed = 1.0f;
 
 	pMotion = NULL;
 }
@@ -113,18 +115,21 @@ void cCharacter::execute()
 	if (pMotion == NULL)return;
 
 	//時間経過
-	time += 1.0f;
-	// アニメループでないならループしない
-	time = 0.0f;
+	time += animSpeed;
 
 	//アニメーションのループ
 	if (time >= pMotion->Length)
 	{
 		time = 0.0f;
+		isMotionEnded = true;
 	}
 	else if (time < 0.0f)
 	{
 		time = pMotion->Length;
+	}
+	else
+	{
+		isMotionEnded = false;
 	}
 
 	//今の時間での値を計算
@@ -236,12 +241,17 @@ float cCharacter::getTime(void)
 	return time;
 }
 
-
 //パーツ数を取得
 int cCharacter::getPartsNum(void)
 {
 	return PartsNum;
 }
+
+void cCharacter::setAnimSpeed(int speed)
+{
+	animSpeed = speed;
+}
+
 
 //パーツを番号で取得
 sanObject* cCharacter::getParts(int i)

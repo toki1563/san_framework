@@ -157,6 +157,10 @@ void sanMainFrame::execute()
 		QueryPerformanceCounter(&finishCount);
 		count = ((float)(finishCount.QuadPart - startCount.QuadPart) / (float)freq.QuadPart);
 
+		// 何％使ってるかの確認
+		sanFont::print(10.0f, 
+			(float)sanMainFrame::screenHeight - 26.0f,0xffffffff, L"処理占有率: %f", count * 1000.0f / 16.66667f * 100);
+
 		if (count < frame_mec)
 		{
 			// 1/60秒が経つまで待つ

@@ -39,6 +39,18 @@ private:
 	sanModel* pShadow; // 影のモデル
 	sanSound* pSe[3];  // SE
 
+	//モーションの数
+	int playerMotionNum;
+	//読み込んだモーションデータ
+	sanMotionData** playerMotion;
+
+	//モーションファイル読み込み関数
+	sanMotionData* loadMotionFile(const WCHAR* motFile);
+
+	//回転補正
+	void rotRoll(sanMotionData* p);
+
+
 	float pi;    // 円周率
 	bool isDead; // 死んだとき
 	bool isCanAtk;	    // 攻撃可能どうか

@@ -23,6 +23,7 @@ private:
 #pragma region Motion	// モーション関連
 
 	float time;	// 経過時間
+	float animSpeed; // アニメーション速度
 
 	// 再生中のモーションデータ
 	sanMotionData* pMotion;
@@ -57,5 +58,10 @@ public:
 
 	// パーツを名前で取得
 	sanObject* getParts(char* name);
+
+	void setAnimSpeed(int speed);
+
+	// モーション終了フラグ
+	bool isMotionEnded; 
 
 };

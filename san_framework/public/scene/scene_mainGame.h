@@ -10,16 +10,6 @@ private:
 	sanSound* pBgm;
 	gameUI gameUI;
 
-	//モーションの数
-	int playerMotionNum;
-	//読み込んだモーションデータ
-	sanMotionData** playerMotion;
-
-	//モーションファイル読み込み関数
-	sanMotionData* loadMotionFile(const WCHAR* motFile);
-
-	//回転補正
-	void rotRoll(sanMotionData* p);
 
 
 	// 極座標の情報

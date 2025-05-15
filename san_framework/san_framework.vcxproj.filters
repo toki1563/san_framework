@@ -156,6 +156,15 @@
     <ClCompile Include="public\scene\scene_motion_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
+    <ClCompile Include="public\object\skinned_cube.cpp">
+      <Filter>public\object</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\scene_skin_test.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\scene_async_test.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\directX\san_Direct2D.h">
@@ -294,6 +303,15 @@
       <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="public\scene\scene_motion_test.h">
+      <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\object\skinned_cube.h">
+      <Filter>public\object</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_skin_test.h">
+      <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_async_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
   </ItemGroup>

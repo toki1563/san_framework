@@ -21,6 +21,8 @@ private:
 	bool  gridAxisActive;  // グリッド&軸表示非表示
 	bool isActiveBillboard; // ビルボードの表示/非表示
 
+	void operateCamera(); // カメラ処理
+
 public:
 	bool initialize();
 	void terminate();

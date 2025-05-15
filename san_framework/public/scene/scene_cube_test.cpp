@@ -97,6 +97,36 @@ void SceneCubeTest::execute()
 		gridAxisActive = !gridAxisActive;
 	}
 
+	int line = 0;
+	sanFont::print(0.0f, (float)(20 + Cursor * 16), L"→");
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"PositionX : %.3f", pCube->getPositionX());
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"PositionY : %.3f", pCube->getPositionY());
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"PositionZ : %.3f", pCube->getPositionZ());
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"RotationX : %.3f", pCube->getRotationX() / 3.141592f * 180.0f);
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"RotationY : %.3f", pCube->getRotationY() / 3.141592f * 180.0f);
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"RotationZ : %.3f", pCube->getRotationZ() / 3.141592f * 180.0f);
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleX : %.3f", pCube->getScaleX());
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleY : %.3f", pCube->getScaleY());
+	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleZ : %.3f", pCube->getScaleZ());
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"spaceキーでリセット");
+
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
+	operateCamera(); // カメラ処理
+	sanScene::execute();
+}
+
+// 描画関数
+void SceneCubeTest::render()
+{
+	pCube->render();
+	sanScene::render();
+}
+
+// カメラ処理
+void SceneCubeTest::operateCamera()
+{
 	// カメラの回転
 	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
 	{
@@ -130,29 +160,4 @@ void SceneCubeTest::execute()
 
 	// カメラの座標
 	sanCamera::setPosition(px, py, pz);
-
-	int line = 0;
-	sanFont::print(0.0f, (float)(20 + Cursor * 16), L"→");
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"PositionX : %.3f", pCube->getPositionX());
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"PositionY : %.3f", pCube->getPositionY());
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"PositionZ : %.3f", pCube->getPositionZ());
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"RotationX : %.3f", pCube->getRotationX() / 3.141592f * 180.0f);
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"RotationY : %.3f", pCube->getRotationY() / 3.141592f * 180.0f);
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"RotationZ : %.3f", pCube->getRotationZ() / 3.141592f * 180.0f);
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleX : %.3f", pCube->getScaleX());
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleY : %.3f", pCube->getScaleY());
-	sanFont::print(20.0f, 20.0f + (float)(line++ * 16), L"ScaleZ : %.3f", pCube->getScaleZ());
-	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"LキーでGrid&Axis表示・非表示");
-	sanFont::print(20.0f, 30.0f + (float)(line++ * 16), L"spaceキーでリセット");
-
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
-	sanDebugDraw::Axis(5.0f, gridAxisActive);
-	sanScene::execute();
-}
-
-// 描画関数
-void SceneCubeTest::render()
-{
-	pCube->render();
-	sanScene::render();
 }

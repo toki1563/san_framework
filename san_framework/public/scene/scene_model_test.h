@@ -49,4 +49,5 @@ public:
 	void terminate();
 	void execute();
 	void render();
+	void operateCamera(); // カメラ処理
 };

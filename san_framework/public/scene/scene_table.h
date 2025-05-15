@@ -10,9 +10,11 @@ enum eSceneTable
 	MotionTest,
 	EffectTest,
 	BillBoardTest,
+	AsyncTest,
 	GroundTest,
 	ModelTest,
 	CubeTest,
+	SkinTest,
 	PickTest,
 	SphereCollisionTest,
 	CollisionTest,
@@ -30,9 +32,11 @@ enum eSceneTable
 #include "scene_motion_test.h"
 #include "scene_effect_test.h"
 #include "scene_billboard_test.h"
+#include "scene_async_test.h"
 #include "scene_ground_test.h"
 #include "scene_model_test.h"
 #include "scene_cube_test.h"
+#include "scene_skin_test.h"
 #include "scene_pick_test.h"
 #include "scene_spherecollision_test.h"
 #include "scene_collision_test.h"
@@ -40,6 +44,7 @@ enum eSceneTable
 #include "scene_joystick_test.h"
 #include "scene_se_test.h"
 #include "scene_font_test.h"
+
 
 
 // シーンの切り替え関数(予約)

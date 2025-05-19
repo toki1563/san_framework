@@ -52,34 +52,6 @@ void SceneModelTest::execute()
 	{
 		Cursor = 0;
 	}
-	else if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
-	{
-		radius += radiusRoll;
-	}
-	else if (sanMouse::getR() <= -0.1)
-	{
-		radius -= radiusRoll;
-	}
-	if (sanMouse::onR() && sanMouse::getDX() >= 10) // ｽｸﾛｰﾙ
-	{
-		theta -= scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDX() <= -10)
-	{
-		theta += scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDY() <= -10)
-	{
-		phi += scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDY() >= 10)
-	{
-		phi -= scrollMove;
-	}
-	if (sanKeyboard::trg(DIK_L))
-	{
-		gridAxisActive = !gridAxisActive;
-	}
 
 	if (sanKeyboard::on(DIK_RIGHT))
 	{
@@ -126,14 +98,11 @@ void SceneModelTest::execute()
 		case ScaleZ:	pModel->setScaleZ(XMVectorGetZ(resetScl));		break;
 		}
 	}
+	if (sanKeyboard::trg(DIK_L))
+	{
+		gridAxisActive = !gridAxisActive;
+	}
 
-	// 仰角(Φ)の計算
-	float px = cosf(theta) * cosf(phi) * radius;
-	float py = sinf(phi) * radius;
-	float pz = sin(theta) * cosf(phi) * radius;
-
-	// カメラの座標
-	sanCamera::setPosition(px, py, pz);
 
 	int line = 0;
 	sanFont::print(0.0f, (float)(20 + Cursor * 16), L"→");
@@ -152,6 +121,7 @@ void SceneModelTest::execute()
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
 	sanDebugDraw::Axis(5.0f, gridAxisActive);
 
+	operateCamera(); // カメラ処理
 	sanScene::execute();
 
 }
@@ -163,4 +133,41 @@ void SceneModelTest::render()
 	pModel->render();
 
 	sanScene::render();
+}
+
+// カメラ処理
+void SceneModelTest::operateCamera()
+{
+	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
+	{
+		radius += radiusRoll;
+	}
+	else if (sanMouse::getR() <= -0.1)
+	{
+		radius -= radiusRoll;
+	}
+	if (sanMouse::onR() && sanMouse::getDX() >= 10) // ｽｸﾛｰﾙ
+	{
+		theta -= scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDX() <= -10)
+	{
+		theta += scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDY() <= -10)
+	{
+		phi += scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDY() >= 10)
+	{
+		phi -= scrollMove;
+	}
+
+	// 仰角(Φ)の計算
+	float px = cosf(theta) * cosf(phi) * radius;
+	float py = sinf(phi) * radius;
+	float pz = sin(theta) * cosf(phi) * radius;
+
+	// カメラの座標
+	sanCamera::setPosition(px, py, pz);
 }

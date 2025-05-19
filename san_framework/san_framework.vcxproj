@@ -147,6 +147,7 @@
     <ClCompile Include="public\actor\player.cpp" />
     <ClCompile Include="public\object\character.cpp" />
     <ClCompile Include="public\object\cube.cpp" />
+    <ClCompile Include="public\object\skinned_cube.cpp" />
     <ClCompile Include="public\san_billboard.cpp" />
     <ClCompile Include="public\san_collide.cpp" />
     <ClCompile Include="public\san_effect.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="public\san_object.cpp" />
     <ClCompile Include="public\san_sprite.cpp" />
     <ClCompile Include="public\scene\san_scene.cpp" />
+    <ClCompile Include="public\scene\scene_async_test.cpp" />
     <ClCompile Include="public\scene\scene_billboard_test.cpp" />
     <ClCompile Include="public\scene\scene_boot.cpp" />
     <ClCompile Include="public\scene\scene_collision_test.cpp" />
@@ -169,6 +171,7 @@
     <ClCompile Include="public\scene\scene_motion_test.cpp" />
     <ClCompile Include="public\scene\scene_pick_test.cpp" />
     <ClCompile Include="public\scene\scene_se_test.cpp" />
+    <ClCompile Include="public\scene\scene_skin_test.cpp" />
     <ClCompile Include="public\scene\scene_spherecollision_test.cpp" />
     <ClCompile Include="public\scene\scene_sprite_test.cpp" />
     <ClCompile Include="public\scene\scene_table.cpp" />
@@ -199,6 +202,7 @@
     <ClInclude Include="public\actor\player.h" />
     <ClInclude Include="public\object\character.h" />
     <ClInclude Include="public\object\cube.h" />
+    <ClInclude Include="public\object\skinned_cube.h" />
     <ClInclude Include="public\san_billboard.h" />
     <ClInclude Include="public\san_collide.h" />
     <ClInclude Include="public\san_effect.h" />
@@ -206,6 +210,7 @@
     <ClInclude Include="public\san_object.h" />
     <ClInclude Include="public\san_sprite.h" />
     <ClInclude Include="public\scene\san_scene.h" />
+    <ClInclude Include="public\scene\scene_async_test.h" />
     <ClInclude Include="public\scene\scene_billboard_test.h" />
     <ClInclude Include="public\scene\scene_boot.h" />
     <ClInclude Include="public\scene\scene_collision_test.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="public\scene\scene_motion_test.h" />
     <ClInclude Include="public\scene\scene_pick_test.h" />
     <ClInclude Include="public\scene\scene_se_test.h" />
+    <ClInclude Include="public\scene\scene_skin_test.h" />
     <ClInclude Include="public\scene\scene_spherecollision_test.h" />
     <ClInclude Include="public\scene\scene_sprite_test.h" />
     <ClInclude Include="public\scene\scene_table.h" />

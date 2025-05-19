@@ -104,52 +104,6 @@ void SceneCollisionTest::execute()
 		gridAxisActive = !gridAxisActive;
 	}
 
-
-	// カメラの回転
-	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
-	{
-		radius += radiusRoll;
-	}
-	else if (sanMouse::getR() <= -0.1)
-	{
-		radius -= radiusRoll;
-	}
-	if (sanMouse::onR() && sanMouse::getDX() >= 10) // ｽｸﾛｰﾙ
-	{
-		theta += scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDX() <= -10)
-	{
-		theta -= scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDY() <= -10)
-	{
-		phi -= scrollMove;
-	}
-	if (sanMouse::onR() && sanMouse::getDY() >= 10)
-	{
-		phi += scrollMove;
-	}
-
-	// カメラ座標の計算
-	// 回転してない基準となる軸ベクトル
-	XMVECTOR v = XMVectorSet(0.0f, 0.0f, -radius, 0.0f);
-	// 回転マトリクスを作成
-	XMMATRIX rotate = XMMatrixRotationRollPitchYaw(phi, theta, 0.0f);
-
-	// 基準軸(v)のベクトルを回転させる(回転マトリクスを乗算する)
-	v = XMVector3TransformNormal(v, rotate);
-
-	// XMVECTORの変数はx,y,z,wの情報が入っている
-	XMVECTOR CamPos = v;
-
-	// 少しだけ上げる
-	XMVECTOR CamBias = XMVectorSet(0.0f, 2.0f, 0.0f, 0.0f);
-	CamPos = XMVectorAdd(CamPos, CamBias);
-
-	// カメラの座標(ポインタな為アドレスを渡す)
-	sanCamera::setPosition(&CamPos);
-
 	// 直線の情報を作る
 	linePos = point[0];
 	lineDir = point[1] - point[0];
@@ -208,6 +162,7 @@ void SceneCollisionTest::execute()
 		pPoint->setDiffuse(1, 1, 1, 1);	//白にする
 	}
 
+	operateCamera();
 	sanScene::execute();
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
 	sanDebugDraw::Axis(5.0f, gridAxisActive);
@@ -239,4 +194,53 @@ void SceneCollisionTest::execute()
 void SceneCollisionTest::render()
 {
 	sanScene::render();
+}
+
+// カメラ処理
+void SceneCollisionTest::operateCamera()
+{
+	// カメラの回転
+	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
+	{
+		radius += radiusRoll;
+	}
+	else if (sanMouse::getR() <= -0.1)
+	{
+		radius -= radiusRoll;
+	}
+	if (sanMouse::onR() && sanMouse::getDX() >= 10) // ｽｸﾛｰﾙ
+	{
+		theta += scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDX() <= -10)
+	{
+		theta -= scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDY() <= -10)
+	{
+		phi -= scrollMove;
+	}
+	if (sanMouse::onR() && sanMouse::getDY() >= 10)
+	{
+		phi += scrollMove;
+	}
+
+	// カメラ座標の計算
+	// 回転してない基準となる軸ベクトル
+	XMVECTOR v = XMVectorSet(0.0f, 0.0f, -radius, 0.0f);
+	// 回転マトリクスを作成
+	XMMATRIX rotate = XMMatrixRotationRollPitchYaw(phi, theta, 0.0f);
+
+	// 基準軸(v)のベクトルを回転させる(回転マトリクスを乗算する)
+	v = XMVector3TransformNormal(v, rotate);
+
+	// XMVECTORの変数はx,y,z,wの情報が入っている
+	XMVECTOR CamPos = v;
+
+	// 少しだけ上げる
+	XMVECTOR CamBias = XMVectorSet(0.0f, 2.0f, 0.0f, 0.0f);
+	CamPos = XMVectorAdd(CamPos, CamBias);
+
+	// カメラの座標(ポインタな為アドレスを渡す)
+	sanCamera::setPosition(&CamPos);
 }

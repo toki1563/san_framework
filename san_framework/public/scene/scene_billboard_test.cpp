@@ -35,6 +35,36 @@ void SceneBillBoardTest::terminate()
 // 処理関数
 void SceneBillBoardTest::execute()
 {
+	if (sanKeyboard::trg(DIK_SPACE))
+	{
+		isActiveBillboard = !isActiveBillboard;
+		pBillboard->setRenderEnable(isActiveBillboard);
+	}
+	if (sanKeyboard::trg(DIK_L)) // グリッド・軸の表示/非表示
+	{
+		gridAxisActive = !gridAxisActive;
+	}
+
+
+	// デバッグ情報
+	sanFont::print(20.0f, 40.0f, L"LキーでGrid&Axis表示・非表示");
+	sanFont::print(20.0f, 60.0f, L"spaceキーでBillBoard表示・非表示");
+	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
+	sanDebugDraw::Axis(5.0f, gridAxisActive);
+
+	operateCamera(); // カメラ処理
+	sanScene::execute();
+}
+
+// 描画関数
+void SceneBillBoardTest::render()
+{
+	sanScene::render();
+}
+
+// カメラ処理
+void SceneBillBoardTest::operateCamera()
+{
 	// カメラの回転
 	if (sanMouse::getR() >= 0.1) // ﾏｳｽホイール値取得
 	{
@@ -60,15 +90,6 @@ void SceneBillBoardTest::execute()
 	{
 		phi += scrollMove;
 	}
-	if (sanKeyboard::trg(DIK_SPACE))
-	{
-		isActiveBillboard = !isActiveBillboard;
-		pBillboard->setRenderEnable(isActiveBillboard);
-	}
-	if (sanKeyboard::trg(DIK_L)) // グリッド・軸の表示/非表示
-	{
-		gridAxisActive = !gridAxisActive;
-	}
 
 	// カメラ座標の計算
 	// 回転してない基準となる軸ベクトル
@@ -87,17 +108,4 @@ void SceneBillBoardTest::execute()
 	// カメラ座標(ポインタな為アドレスを渡す)
 	sanCamera::setPosition(&CamPos);
 
-	// デバッグ情報
-	sanFont::print(20.0f, 40.0f, L"LキーでGrid&Axis表示・非表示");
-	sanFont::print(20.0f, 60.0f, L"spaceキーでBillBoard表示・非表示");
-	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
-	sanDebugDraw::Axis(5.0f, gridAxisActive);
-
-	sanScene::execute();
-}
-
-// 描画関数
-void SceneBillBoardTest::render()
-{
-	sanScene::render();
 }

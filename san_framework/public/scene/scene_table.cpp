@@ -19,9 +19,11 @@ WCHAR SceneName[(int)eSceneTable::SceneMax][32] =
 	L"Motion Test",
 	L"Effect Test",
 	L"BillBoard Test",
+	L"Async Test",
 	L"Ground Test",
 	L"Model Test",
 	L"Cube Test",
+	L"Skin Test",
 	L"Pick Test",
 	L"SphereCollision Test",
 	L"Collision Test",
@@ -60,9 +62,11 @@ void switchScene()
 		case MotionTest:	      pScene = new SceneMotionTest();		   break;
 		case EffectTest:		  pScene = new SceneEffectTest();		   break;
 		case BillBoardTest:		  pScene = new SceneBillBoardTest();	   break;
+		case AsyncTest:			  pScene = new SceneAsyncTest ();		   break;
 		case GroundTest:		  pScene = new SceneGroundTest;			   break;
 		case ModelTest:			  pScene = new SceneModelTest();           break;
 		case CubeTest:			  pScene = new SceneCubeTest();		       break;
+		case SkinTest:			  pScene = new SceneSkinTest();			   break;
 		case PickTest:			  pScene = new ScenePickTest();		       break;
 		case SphereCollisionTest: pScene = new SceneSphereCollisionTest(); break;
 		case CollisionTest:	      pScene = new SceneCollisionTest();	   break;

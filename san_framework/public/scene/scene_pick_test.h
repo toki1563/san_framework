@@ -34,6 +34,7 @@ public:
 	void terminate();
 	void execute();
 	void render();
+	void operateCamera(); // カメラ処理
 
 	// 操作の種類
 	enum eOperation

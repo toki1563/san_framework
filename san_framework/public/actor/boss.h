@@ -21,10 +21,10 @@ enum class handleActionState
 	MAX,		// 最大値
 };
 
-class boss : public sanModel
+class boss : public cCharacter
 {
 public:
-	boss(const WCHAR* folder, const WCHAR* file);
+	boss(const WCHAR* folder, const WCHAR* boneFile);
 	~boss();
 
 	void DecideNextAction(player* rival); // 次の行動
@@ -53,6 +53,18 @@ private:
 	sanModel* pShadow; // 影のモデル
 	sanSound* pSe[2]; // SE
 
+	//モーションの数
+	int bossMotionNum;
+	//読み込んだモーションデータ
+	sanMotionData** bossMotion;
+
+	//モーションファイル読み込み関数
+	sanMotionData* loadMotionFile(const WCHAR* motFile);
+
+	//回転補正
+	void rotRoll(sanMotionData* p);
+
+	// アクション状態
 	handleActionState handleAction;
 
 	float pi;           // 円周率

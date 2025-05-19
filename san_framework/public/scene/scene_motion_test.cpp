@@ -9,6 +9,7 @@
 WCHAR motionFolder[] = L"data/model/BoxUnityChan/motion/";
 
 
+
 WCHAR motionFile[][FILE_PATH_MAX] =
 {
 	L"DAMAGED00.mot",
@@ -36,6 +37,7 @@ WCHAR motionFile[][FILE_PATH_MAX] =
 	L"WALK00_R.mot",
 	L"WIN00.mot",
 };
+
 
 //初期化
 bool SceneMotionTest::initialize()
@@ -67,6 +69,7 @@ bool SceneMotionTest::initialize()
 
 	//キャラクターの作成
 	pCharacter = new cCharacter(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
+
 	//キャラクターとパーツの登録
 	registerObject(pCharacter);
 	for (int i = 0; i < pCharacter->getPartsNum(); i++)
@@ -74,7 +77,7 @@ bool SceneMotionTest::initialize()
 		registerObject(pCharacter->getParts(i));
 	}
 
-	//pCharacter->setMotion(motion[0]);
+	// pCharacter->setMotion(motion[0]);
 
 	Cursor = 0;
 

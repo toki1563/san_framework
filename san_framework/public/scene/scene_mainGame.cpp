@@ -2,12 +2,11 @@
 #include "../../framework/san_environment.h"
 
 
-
 //初期化関数
 bool SceneMainGame::initialize()
 {
 	pPlayer = new player(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
-	pBoss = new boss(L"data/model/Player_2/", L"DogPBR.vnm");
+	pBoss = new boss(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
 	pGround = new sanModel(L"data/model/stage/", L"stage.vnm");
 	pSky = new sanModel(L"data/model/", L"skydome.vnm");
 	pBgm = new sanSound(L"data/sound/gamebgm.wav");
@@ -25,6 +24,11 @@ bool SceneMainGame::initialize()
 		registerObject(pPlayer->getParts(i));
 	}
 	registerObject(pBoss);
+	for (int i = 0; i < pBoss->getPartsNum(); i++)
+	{ // パーツも読み込み
+		registerObject(pBoss->getParts(i));
+	}
+
 	registerObject(pGround);
 	registerObject(pSky);
 
@@ -139,6 +143,10 @@ void SceneMainGame::render()
 	if (!pBoss->getTakeDamageDisPlay())
 	{
 		pBoss->playerAllRender();
+		for (int i = 0; i < pBoss->getPartsNum(); i++)
+		{ // パーツも読み込み
+			pBoss->getParts(i)->render();
+		}
 	}
 }
 

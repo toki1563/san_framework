@@ -75,6 +75,7 @@ player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, 
 
 	setMotion(playerMotion[16]);
 
+	setAnimSpeed(3.0f);
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());

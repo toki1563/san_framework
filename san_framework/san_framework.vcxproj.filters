@@ -31,6 +31,12 @@
     <Filter Include="shader">
       <UniqueIdentifier>{50a0a003-3d2e-4a0e-8d4b-06b0afa93c1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="public\system">
+      <UniqueIdentifier>{185c5fe0-a35f-41a6-9738-73292a72c3e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\actor">
+      <UniqueIdentifier>{032e250a-c393-4516-837a-2f5d2dc1788b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework\directX\san_Direct2D.cpp">
@@ -150,9 +156,6 @@
     <ClCompile Include="public\scene\scene_effect_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\object\character.cpp">
-      <Filter>public\object</Filter>
-    </ClCompile>
     <ClCompile Include="public\scene\scene_motion_test.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
@@ -164,6 +167,24 @@
     </ClCompile>
     <ClCompile Include="public\scene\scene_async_test.cpp">
       <Filter>public\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\scene_mainGame_Title.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="public\scene\scene_mainGame.cpp">
+      <Filter>public\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="public\actor\gameUI.cpp">
+      <Filter>public\system</Filter>
+    </ClCompile>
+    <ClCompile Include="public\actor\boss.cpp">
+      <Filter>public\actor</Filter>
+    </ClCompile>
+    <ClCompile Include="public\actor\player.cpp">
+      <Filter>public\actor</Filter>
+    </ClCompile>
+    <ClCompile Include="public\object\character.cpp">
+      <Filter>public\actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +317,6 @@
     <ClInclude Include="public\scene\scene_effect_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
-    <ClInclude Include="public\object\character.h">
-      <Filter>public\object</Filter>
-    </ClInclude>
     <ClInclude Include="framework\san_motionData.h">
       <Filter>framework</Filter>
     </ClInclude>
@@ -313,6 +331,24 @@
     </ClInclude>
     <ClInclude Include="public\scene\scene_async_test.h">
       <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\gameUI.h">
+      <Filter>public\system</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_mainGame_Title.h">
+      <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\scene\scene_mainGame.h">
+      <Filter>public\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\boss.h">
+      <Filter>public\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\player.h">
+      <Filter>public\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="public\object\character.h">
+      <Filter>public\actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

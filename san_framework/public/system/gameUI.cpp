@@ -1,6 +1,5 @@
 ﻿#include "../../framework.h"
 #include "../../framework/san_environment.h"
-#include "gameUI.h"
 
 // 初期化関数
 bool gameUI::initialize()
@@ -13,11 +12,13 @@ bool gameUI::initialize()
 
 	// 画像設定
 	pPHpImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/playerHpImg.png");
+	pPHpDamageImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/hpDamageImg.png");
 	pPStaminaImg = new sanSprite(initPStaminaImgPosX, 90.f, 250.0f, 24.0f, L"data/image/game/playerStaminaImg.png");
-	pPHpBackImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/playerBackImg.png");
-	pPStaminaBackImg = new sanSprite(initPStaminaImgPosX, 90.f, 250.0f, 24.0f, L"data/image/game/playerBackImg.png");
+	pPHpBackImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/hpBackImg.png");
+	pPStaminaBackImg = new sanSprite(initPStaminaImgPosX, 90.f, 250.0f, 24.0f, L"data/image/game/hpBackImg.png");
 	pBHpImg = new sanSprite(initBHpImgPosX, 75.0f, 350.0f, 30.0f, L"data/image/game/enemyHpImg.png");
-	pBHPBackImg = new sanSprite(initBHpImgPosX, 75.0f, 350.0f, 30.0f, L"data/image/game/enemyBackImg.png");
+	pBHpDamageImg = new sanSprite(initBHpImgPosX, 75.f, -350.0f, -30.0f, L"data/image/game/hpDamageImg.png"); // 反転させて使用
+	pBHPBackImg = new sanSprite(initBHpImgPosX, 75.0f, -350.0f, -30.0f, L"data/image/game/hpBackImg.png");    // 同上
 	pUIBackGround[0] = new sanSprite(initPHpImgPosX, 60.f, 380.0f, 100.0f, L"data/image/game/UIBackGround.png");
 	pUIBackGround[1] = new sanSprite(initBHpImgPosX, 60.f, 380.0f, 100.0f, L"data/image/game/UIBackGround.png");
 	// 画像透過処理
@@ -35,10 +36,12 @@ void gameUI::terminate()
 	delete pUIBackGround[1];
 	delete pUIBackGround[0];
 	delete pBHPBackImg;
+	delete pBHpDamageImg;
 	delete pBHpImg;
 	delete pPStaminaBackImg;
 	delete pPHpBackImg;
 	delete pPStaminaImg;
+	delete pPHpDamageImg;
 	delete pPHpImg;
 }			
 
@@ -53,46 +56,87 @@ void gameUI::execute(player* pPlayer, boss* pBoss)
 	if (hpRatio <= 0.0f) // HPがなくなったの時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.1f) // HPが1割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.2f) // HPが2割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.3f) // HPが3割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.4f) // HPが4割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.5f) // HPが5割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.6f) // HPが6割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.7f) // HPが7割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.8f) // HPが8割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.9f) // Hが9割以上の時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		if (pPHpDamageImg->posX >= playerHpImgPosX)
+		{
+			pPHpDamageImg->posX -= 0.8f;
+		}
 	}
 	else // HPが満タンの時
 	{
 		pPHpImg->posX = playerHpImgPosX;
+		pPHpDamageImg->posX = playerHpImgPosX;
 	}
 
 	// HP割合に応じたボスのHPバーの位置計算
@@ -102,46 +146,87 @@ void gameUI::execute(player* pPlayer, boss* pBoss)
 	if (hpRatio <= 0.0f) // HPがなくなったの時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.1f) // HPが1割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.2f) // HPが2割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.3f) // HPが3割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.4f) // HPが4割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.5f) // HPが5割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.6f) // HPが6割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.7f) // HPが7割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.8f) // HPが8割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else if (hpRatio <= 0.9f) // Hが9割以上の時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		if (pBHpDamageImg->posX <= bossHpImgPosX)
+		{
+			pBHpDamageImg->posX += 0.8f;
+		}
 	}
 	else // HPが満タンの時
 	{
 		pBHpImg->posX = bossHpImgPosX;
+		pBHpDamageImg->posX = bossHpImgPosX;
 	}
 
 
@@ -217,7 +302,9 @@ void gameUI::render()
 	pBHPBackImg->render();
 
 	// UI表示
+	pPHpDamageImg->render();
+	pBHpDamageImg->render();
 	pPHpImg->render();
-	pPStaminaImg->render();
 	pBHpImg->render();
+	pPStaminaImg->render();
 }

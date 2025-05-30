@@ -61,7 +61,12 @@ public:
 
 	void setAnimSpeed(int speed);
 
+	void setMotionSameIgnore(bool ismotionIgnore);
+
 	// モーション終了フラグ
 	bool isMotionEnded; 
+	
+	// 同じモーションセット時に無視するフラグ
+	bool isMotionSameIgnore;
 
 };

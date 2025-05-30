@@ -9,6 +9,7 @@ private:
 	sanModel* pSky;
 	sanSound* pBgm;
 	gameUI gameUI;
+	gameCamera gameCamera;
 
 
 
@@ -16,8 +17,6 @@ private:
 	float radians;   // ラジアン
 	float fallRange; // 落下距離
 	float playerMoveSpeed; // プレイヤーの移動スピード
-	float cameraDistance;  // カメラの距離
-	float cameraHeight;    // カメラの高さ
 
 public:
 	//初期化

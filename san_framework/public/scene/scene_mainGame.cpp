@@ -12,6 +12,7 @@ bool SceneMainGame::initialize()
 	pBgm = new sanSound(L"data/sound/gamebgm.wav");
 	pSky->setLighting(false); // ライティング無効
 	gameUI.initialize();
+	gameCamera.initialize();
 
 	pPlayer->setScale(1.5f, 1.5f, 1.5f);
 	pBoss->setScale(2.0f, 2.0f, 2.0f);
@@ -42,28 +43,6 @@ bool SceneMainGame::initialize()
 	// BGMを少し小さく
 	pBgm->setVolume(0.2f);
 
-	// プレイヤーからカメラまでの距離と高さ
-	cameraDistance = 4.0f;
-	cameraHeight = 8.0f;
-
-	// プレイヤーとエネミーの位置を取得
-	XMVECTOR playerPosition = *pPlayer->getPosition();
-	XMVECTOR bossPosition = *pBoss->getPosition();
-
-	// プレイヤーの向きを取得
-	XMMATRIX playerWorld = *pPlayer->getWorld();
-	XMVECTOR playerForward = playerWorld.r[2]; // プレイヤーの前方向
-
-	// プレイヤーの後ろの位置を計算
-	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -cameraDistance));
-	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, cameraHeight, 0.0f, 0.0f)); // 高さ調整
-
-	// プレイヤーの後ろの位置にカメラを設定
-	sanCamera::setPosition(&cameraPosition);
-
-	// カメラのターゲットをボスの位置に設定
-	sanCamera::setTarget(&bossPosition);
-
 	return true;
 }
 
@@ -81,27 +60,8 @@ void SceneMainGame::terminate()
 //処理関数
 void SceneMainGame::execute()
 {
-	 // プレイヤーとエネミーの位置を取得
-	XMVECTOR playerPosition = *pPlayer->getPosition();
-	XMVECTOR bossPosition = *pBoss->getPosition();
-
-	// プレイヤーの向きを取得
-	XMMATRIX playerWorld = *pPlayer->getWorld();
-	XMVECTOR playerForward = playerWorld.r[2]; // プレイヤーの前方向
-
-	// プレイヤーの後ろの位置を計算
-	XMVECTOR cameraPosition = XMVectorAdd(playerPosition, XMVectorScale(playerForward, -cameraDistance));
-	cameraPosition = XMVectorAdd(cameraPosition, XMVectorSet(0.0f, cameraHeight, 0.0f, 0.0f)); // 高さ調整
-
-	// プレイヤーの後ろの位置にカメラを設定
-	sanCamera::setPosition(&cameraPosition);
-
-	// カメラのターゲットをボスの位置に設定
-	sanCamera::setTarget(&bossPosition);
-
 	// 登録されたオブジェクト実行
 	sanScene::execute();
-
 
 	// BGM再生
 	//if (pBgm->isPlaying() == false)
@@ -109,20 +69,10 @@ void SceneMainGame::execute()
 	//	pBgm->play();
 	//}
 
-	// ゲームクリア時の処理
-	if (pBoss->getIsDead())
-	{
-		// カメラを上に向けてIsDeadと表示させる
-	}
-	// ゲームオーバー時の処理
-	else if (pPlayer->getIsDead())
-	{
-
-	}
-
 	pPlayer->execute(pBoss);
 	pBoss->execute(pPlayer);
 	gameUI.execute(pPlayer, pBoss);
+	gameCamera.execute(pPlayer, pBoss);
 }
 
 //描画関数

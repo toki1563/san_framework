@@ -92,6 +92,7 @@ cCharacter::cCharacter(const WCHAR* folder, const WCHAR* boneFile)
 	//バインドポーズにする(パーツの姿勢の初期化)
 	bindPose();
 	isMotionEnded = false;
+	isMotionSameIgnore = true;
 	animSpeed = 1.0f;
 
 	pMotion = NULL;
@@ -216,8 +217,12 @@ void cCharacter::bindPose()
 //再生するモーションを設定(NULLで未適用に戻す)
 void cCharacter::setMotion(sanMotionData* p)
 {
-	//同じモーションが来たら無視する
-	if (pMotion == p)return;
+	// 同じモーションが入ってきたときに無視する
+	if (isMotionSameIgnore)
+	{
+		//同じモーションが来たら無視する
+		if (pMotion == p)return;
+	}
 
 	//モーションデータのポインタを代入
 	pMotion = p;
@@ -250,6 +255,11 @@ int cCharacter::getPartsNum(void)
 void cCharacter::setAnimSpeed(int speed)
 {
 	animSpeed = speed;
+}
+
+void cCharacter::setMotionSameIgnore(bool ismotionIgnore)
+{
+	isMotionSameIgnore = ismotionIgnore;
 }
 
 

@@ -73,9 +73,12 @@ player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, 
 		rotRoll(playerMotion[i]);
 	}
 
+	// 同じモーションでもアニメーションさせる
+	setMotionSameIgnore(false);
+
 	setMotion(playerMotion[16]);
 
-	setAnimSpeed(3.0f);
+	setAnimSpeed(2.0f);
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -259,8 +262,7 @@ void player::atk(boss* rival)
 		if ((sanKeyboard::trg(DIK_E) || sanXInput::trg(XINPUT_GAMEPAD_X, 0)))
 		{
 			isCanAtk = false; // 攻撃不可状態
-			setMotion(playerMotion[18]);
-
+			setMotion(playerMotion[18]); // 攻撃アニメ
 
 			// 攻撃範囲なら攻撃する
 			if (dist < atkDist && degree < atkDegree)
@@ -330,6 +332,7 @@ void player::atk(boss* rival)
 				// 攻撃のコンボが3回以下なら
 				if (atkCombo < 2)
 				{
+					setMotion(playerMotion[18]); // 攻撃アニメ
 					atkCombo++;
 					atkProgress = 0.0f; // 攻撃進捗リセット
 
@@ -525,6 +528,9 @@ void player::step(boss* rival)
 			lastLeftTime = currentTime; // 入力時間を記録
 		}
 	}
+
+	// 影の腕と足をプレイヤーに合わせる
+	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
 }
 
 void player::takeDamage(float damage)

@@ -53,7 +53,7 @@ boss::boss(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, bone
 	handleAction = handleActionState::Defending;
 	pi = 3.14f;
 	atkProgress = 0.0f;
-	atkTimeLimit = 12.0f; // (60fpsなので2秒)
+	atkTimeLimit = 8.0f; // (60fps,1秒)
 	isDead = false;
 	isDefense = false;
 	isPlayerAtkRange = false;
@@ -161,6 +161,11 @@ void boss::defense(player* rival)
 
 	isDefense = true; // 防御中にする
 
+	if (defenseProgress == 0.0f)
+	{
+		setMotion(bossMotion[16]); // idleモーション
+	}
+
 	defenseProgress += 0.1f; // 防御が進行する
 
 	// 時間になったら
@@ -191,6 +196,12 @@ void boss::defense(player* rival)
 
 void boss::atk(player* rival)
 {
+	// 攻撃が始まった時
+	if (atkProgress == 0.0f)
+	{
+		setMotion(bossMotion[12]); // 攻撃モーション
+	}
+
 	// プレイヤーがジャスト回避でなければ
 	if (!isPlayerJustStep)
 	{
@@ -253,12 +264,12 @@ void boss::atk(player* rival)
 		XMVECTOR point2 = center + dir2 * atkDist;
 
 		// デバッグラインを描画
-		sanDebugDraw::Line(&center, &point1, 0xffffff00);  // 中心から外へ
-		sanDebugDraw::Line(&point1, &point2, 0xffffff00); // 円弧の外周を繋ぐ
+		sanDebugDraw::Line(&center, &point1, 0xFF00FFFF);  // 中心から外へ
+		sanDebugDraw::Line(&point1, &point2, 0xFF00FFFF); // 円弧の外周を繋ぐ
 		// 右端の点を更新
 		XMVECTOR lastPoint = point2;
 		// 右端の点から中心への線を描画
-		sanDebugDraw::Line(&lastPoint, &center, 0xffffff00);
+		sanDebugDraw::Line(&lastPoint, &center, 0xFF00FFFF);
 	}
 	// 攻撃時のデバッグライン表示終了
 

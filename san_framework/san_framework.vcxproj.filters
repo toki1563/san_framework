@@ -174,9 +174,6 @@
     <ClCompile Include="public\scene\scene_mainGame.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\actor\gameUI.cpp">
-      <Filter>public\system</Filter>
-    </ClCompile>
     <ClCompile Include="public\actor\boss.cpp">
       <Filter>public\actor</Filter>
     </ClCompile>
@@ -185,6 +182,12 @@
     </ClCompile>
     <ClCompile Include="public\object\character.cpp">
       <Filter>public\actor</Filter>
+    </ClCompile>
+    <ClCompile Include="public\system\gameUI.cpp">
+      <Filter>public\system</Filter>
+    </ClCompile>
+    <ClCompile Include="public\system\gameCamera.cpp">
+      <Filter>public\system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +335,6 @@
     <ClInclude Include="public\scene\scene_async_test.h">
       <Filter>public\scene</Filter>
     </ClInclude>
-    <ClInclude Include="public\actor\gameUI.h">
-      <Filter>public\system</Filter>
-    </ClInclude>
     <ClInclude Include="public\scene\scene_mainGame_Title.h">
       <Filter>public\scene</Filter>
     </ClInclude>
@@ -349,6 +349,12 @@
     </ClInclude>
     <ClInclude Include="public\object\character.h">
       <Filter>public\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="public\system\gameUI.h">
+      <Filter>public\system</Filter>
+    </ClInclude>
+    <ClInclude Include="public\system\gameCamera.h">
+      <Filter>public\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,7 @@ class player : public cCharacter
 public:
 	player(const WCHAR* folder, const WCHAR* boneFile);
 	~player();
+	
 
 	void execute(boss* rival); // 全体の処理
 	void move(boss* rival);	   // プレイヤーの動き

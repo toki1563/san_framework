@@ -98,6 +98,7 @@ using namespace DirectX;
 #include "../public/actor/boss.h"
 #include "../public/system/gameUI.h"
 #include "../public/system/gameCamera.h"
+#include "../public/system/gameSystem.h"
 
 
 #include "../public/scene/san_scene.h"

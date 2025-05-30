@@ -10,13 +10,13 @@ bool SceneMainGame::initialize()
 	pGround = new sanModel(L"data/model/stage/", L"stage.vnm");
 	pSky = new sanModel(L"data/model/", L"skydome.vnm");
 	pBgm = new sanSound(L"data/sound/gamebgm.wav");
+	pGameUI = new gameUI();
+	pGameCamera = new gameCamera();
+
 	pSky->setLighting(false); // ライティング無効
-	gameUI.initialize();
-	gameCamera.initialize();
 
 	pPlayer->setScale(1.5f, 1.5f, 1.5f);
 	pBoss->setScale(2.0f, 2.0f, 2.0f);
-
 
 	// シーンの基底クラスへ登録
 	registerObject(pPlayer);
@@ -29,13 +29,8 @@ bool SceneMainGame::initialize()
 	{ // パーツも読み込み
 		registerObject(pBoss->getParts(i));
 	}
-
 	registerObject(pGround);
 	registerObject(pSky);
-
-	radians = 180.0f / 3.141592f;
-	playerMoveSpeed = 0.1f;
-	fallRange = 12.8f;
 
 	// プレイヤーの位置を設定
 	pPlayer->setPositionZ(-5.0f);
@@ -49,7 +44,8 @@ bool SceneMainGame::initialize()
 //終了関数
 void SceneMainGame::terminate()
 {
-	gameUI.terminate();
+	delete pGameCamera;
+	delete pGameUI;
 	delete pBgm;
 	deleteObject(pSky);
 	deleteObject(pGround);
@@ -71,8 +67,8 @@ void SceneMainGame::execute()
 
 	pPlayer->execute(pBoss);
 	pBoss->execute(pPlayer);
-	gameUI.execute(pPlayer, pBoss);
-	gameCamera.execute(pPlayer, pBoss);
+	pGameUI->execute(pPlayer, pBoss);
+	pGameCamera->battleCamera(pPlayer, pBoss);
 }
 
 //描画関数
@@ -80,7 +76,7 @@ void SceneMainGame::render()
 {
 	pGround->render();
 	pSky->render();
-	gameUI.render();
+	pGameUI->render();
 	// ダメージ受け時の表示処理
 	if (!pPlayer->getTakeDamageDisPlay())
 	{

@@ -175,6 +175,7 @@
     <ClCompile Include="public\scene\scene_sprite_test.cpp" />
     <ClCompile Include="public\scene\scene_table.cpp" />
     <ClCompile Include="public\system\gameCamera.cpp" />
+    <ClCompile Include="public\system\gameSystem.cpp" />
     <ClCompile Include="public\system\gameUI.cpp" />
     <ClCompile Include="san_framework.cpp" />
   </ItemGroup>
@@ -231,6 +232,7 @@
     <ClInclude Include="public\scene\scene_sprite_test.h" />
     <ClInclude Include="public\scene\scene_table.h" />
     <ClInclude Include="public\system\gameCamera.h" />
+    <ClInclude Include="public\system\gameSystem.h" />
     <ClInclude Include="public\system\gameUI.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />

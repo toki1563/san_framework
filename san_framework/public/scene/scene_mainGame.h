@@ -8,15 +8,8 @@ private:
 	sanModel* pGround;
 	sanModel* pSky;
 	sanSound* pBgm;
-	gameUI gameUI;
-	gameCamera gameCamera;
-
-
-
-	// 極座標の情報
-	float radians;   // ラジアン
-	float fallRange; // 落下距離
-	float playerMoveSpeed; // プレイヤーの移動スピード
+	gameUI* pGameUI;
+	gameCamera* pGameCamera;
 
 public:
 	//初期化

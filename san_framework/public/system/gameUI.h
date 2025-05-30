@@ -24,8 +24,9 @@ private:
 
 
 public:
-	bool initialize();
-	void terminate();
+	gameUI();
+	~gameUI();
+
 	void execute(player* pPlayer, boss* pBoss);
 	void render();
 };

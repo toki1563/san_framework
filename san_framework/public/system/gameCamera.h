@@ -12,11 +12,12 @@ private:
 	float maxHeight; // カメラの高さ上限
 	float heightFactor; // どのくらい高さを上げるかの係数
 
-
+	XMVECTOR currentCameraPosition; // 前フレーム位置
+	XMVECTOR currentCameraTarget;   // 前フレームターゲット
 
 public:
-	bool initialize();
-	void terminate();
-	void execute(player* pPlayer, boss* pBoss);
-	void render();
+	gameCamera();
+	~gameCamera();
+	void battleCamera(player* pPlayer, boss* pBoss);
+	void justAvoidCamera(player* pPlayer, boss* pBoss);
 };

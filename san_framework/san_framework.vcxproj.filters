@@ -189,6 +189,9 @@
     <ClCompile Include="public\system\gameCamera.cpp">
       <Filter>public\system</Filter>
     </ClCompile>
+    <ClCompile Include="public\system\gameSystem.cpp">
+      <Filter>public\system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\directX\san_Direct2D.h">
@@ -354,6 +357,9 @@
       <Filter>public\system</Filter>
     </ClInclude>
     <ClInclude Include="public\system\gameCamera.h">
+      <Filter>public\system</Filter>
+    </ClInclude>
+    <ClInclude Include="public\system\gameSystem.h">
       <Filter>public\system</Filter>
     </ClInclude>
   </ItemGroup>

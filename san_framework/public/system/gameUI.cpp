@@ -1,8 +1,7 @@
 ﻿#include "../../framework.h"
 #include "../../framework/san_environment.h"
 
-// 初期化関数
-bool gameUI::initialize()
+gameUI::gameUI()
 {
 	// 初期位置設定
 	initPHpImgPosX = 175.0f;
@@ -26,12 +25,9 @@ bool gameUI::initialize()
 	pUIBackGround[0]->vtx[2].a = 0.5f;	pUIBackGround[0]->vtx[3].a = 0.5f;
 	pUIBackGround[1]->vtx[0].a = 0.5f;	pUIBackGround[1]->vtx[1].a = 0.5f;
 	pUIBackGround[1]->vtx[2].a = 0.5f;	pUIBackGround[1]->vtx[3].a = 0.5f;
-
-	return true;
 }
 
-// 終了関数
-void gameUI::terminate()
+gameUI::~gameUI()
 {
 	delete pUIBackGround[1];
 	delete pUIBackGround[0];
@@ -43,7 +39,7 @@ void gameUI::terminate()
 	delete pPStaminaImg;
 	delete pPHpDamageImg;
 	delete pPHpImg;
-}			
+}
 
 // 処理関数
 void gameUI::execute(player* pPlayer, boss* pBoss)
@@ -53,6 +49,7 @@ void gameUI::execute(player* pPlayer, boss* pBoss)
 	float playerHpImgPosX = initPHpImgPosX * 2 * hpRatio - initPHpImgPosX;
 
 	// 大きさは変えずに位置だけ左にずらす
+	// pPHpDamageImgはダメージアニメーション
 	if (hpRatio <= 0.0f) // HPがなくなったの時
 	{
 		pPHpImg->posX = playerHpImgPosX;

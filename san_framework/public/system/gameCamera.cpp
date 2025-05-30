@@ -1,8 +1,7 @@
 #include "../../framework.h"
 #include "../../framework/san_environment.h"
 
-// 初期化関数
-bool gameCamera::initialize()
+gameCamera::gameCamera()
 {
 	// カメラ距離・補間設定
 	cameraDistance = 3.5f; // カメラの距離
@@ -14,36 +13,21 @@ bool gameCamera::initialize()
 	maxHeight = 6.0f; // カメラの高さ上限
 	heightFactor = 0.1f; // どのくらい高さを上げるかの係数
 
-	return true;
+	currentCameraPosition = XMVectorZero(); // 前フレーム位置
+	currentCameraTarget = XMVectorZero();   // 前フレームターゲット
 }
 
-// 終了関数
-void gameCamera::terminate()
+gameCamera::~gameCamera()
 {
 
 }
 
-// 処理関数
-void gameCamera::execute(player* pPlayer, boss* pBoss)
+// ゲーム内でのカメラの処理
+void gameCamera::battleCamera(player* pPlayer, boss* pBoss)
 {
-	// ゲームクリア時の処理
-	if (pBoss->getIsDead())
+	// 両方生きている時
+	if(!pBoss->getIsDead() || !pPlayer->getIsDead())
 	{
-		// カメラを上に向けてIsDeadと表示させる
-
-	}
-	// ゲームオーバー時の処理
-	else if (pPlayer->getIsDead())
-	{
-
-	}
-	else // 両方生きている時
-	{
-		// ゲーム内でのカメラの処理
-
-		// カメラの現在位置(前フレーム)
-		static XMVECTOR currentCameraPosition = XMVectorZero(); // 初期化は1回だけ
-
 		// プレイヤーとボスの位置を取得
 		XMVECTOR playerPosition = *pPlayer->getPosition();
 		XMVECTOR bossPosition = *pBoss->getPosition();
@@ -71,11 +55,12 @@ void gameCamera::execute(player* pPlayer, boss* pBoss)
 		// ターゲット(中間点＋高さ)
 		XMVECTOR midPoint = XMVectorScale(XMVectorAdd(playerPosition, bossPosition), 0.5f);
 		midPoint = XMVectorAdd(midPoint, XMVectorSet(0.0f, 1.5f, 0.0f, 0.0f)); // 少し上を注視
-		sanCamera::setTarget(&midPoint);
+		currentCameraTarget = midPoint;
+		sanCamera::setTarget(&currentCameraTarget);
 	}
 }
 
-// 描画関数
-void gameCamera::render()
+void gameCamera::justAvoidCamera(player* pPlayer, boss* pBoss)
 {
+
 }

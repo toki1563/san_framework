@@ -16,6 +16,29 @@ public:
 
 class player : public cCharacter
 {
+private:
+	sanModel* pShadow; // 影のモデル
+	sanSound* pSe[3];  // SE
+
+	//モーションの数
+	int playerMotionNum;
+	//読み込んだモーションデータ
+	sanMotionData** playerMotion;
+
+	//モーションファイル読み込み関数
+	sanMotionData* loadMotionFile(const WCHAR* motFile);
+
+	//回転補正
+	void rotRoll(sanMotionData* p);
+
+	float moveLimit; // 移動制限・移動とステップで使用
+
+	bool isDead; // 死んだとき
+	bool isCanAtk;	    // 攻撃可能どうか
+	bool isTakeDamage;  // 攻撃を受けたかどうか
+	bool isAtkCoolTime; // 攻撃のクールタイム
+	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
+
 public:
 	player(const WCHAR* folder, const WCHAR* boneFile);
 	~player();
@@ -35,27 +58,4 @@ public:
 
 	// UIで参照できるようにpublic
 	playerStatus status; // プレイヤーのステータス
-
-private:
-	sanModel* pShadow; // 影のモデル
-	sanSound* pSe[3];  // SE
-
-	//モーションの数
-	int playerMotionNum;
-	//読み込んだモーションデータ
-	sanMotionData** playerMotion;
-
-	//モーションファイル読み込み関数
-	sanMotionData* loadMotionFile(const WCHAR* motFile);
-
-	//回転補正
-	void rotRoll(sanMotionData* p);
-
-
-	float pi;    // 円周率
-	bool isDead; // 死んだとき
-	bool isCanAtk;	    // 攻撃可能どうか
-	bool isTakeDamage;  // 攻撃を受けたかどうか
-	bool isAtkCoolTime; // 攻撃のクールタイム
-	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
 };

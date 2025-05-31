@@ -6,6 +6,7 @@ private:
 	player* pPlayer;
 	boss* pBoss;
 	sanModel* pGround;
+	sanModel* pFence;
 	sanModel* pSky;
 	sanSound* pBgm;
 	gameUI* pGameUI;

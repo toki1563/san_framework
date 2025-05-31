@@ -51,9 +51,10 @@ boss::boss(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, bone
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
 	handleAction = handleActionState::Defending;
+	attackAction = attackKinds::NormalAttack;
+	oldAttackAction = attackKinds::Max; // 初めは攻撃を入れない
 	pi = 3.14f;
 	atkProgress = 0.0f;
-	atkTimeLimit = 8.0f; // (60fps,1秒)
 	isDead = false;
 	isDefense = false;
 	isPlayerAtkRange = false;
@@ -118,6 +119,22 @@ void boss::DecideNextAction(player* rival)
 	}
 }
 
+void boss::NextAttackAction(player* rival)
+{
+	int actionIndex;
+	constexpr int AttackKindCount = static_cast<int>(attackKinds::Max);
+
+	// 攻撃をランダムで行う
+	// 一つ前に行った攻撃は行わないようにする
+	do
+	{
+		actionIndex = rand() % AttackKindCount; // 攻撃種類をランダムで行う
+	} while (static_cast<attackKinds>(actionIndex) == oldAttackAction);
+
+	attackAction = static_cast<attackKinds>(actionIndex);
+	oldAttackAction = attackAction;
+}
+
 void boss::execute(player* rival)
 {
 	if (isDead) // 死んだとき
@@ -137,10 +154,35 @@ void boss::execute(player* rival)
 		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		break;
 	case handleActionState::Attacking:
-		atk(rival);
-		sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
-		sanFont::print(20.0f, 350.0f, L"攻撃中");
-		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+
+
+		switch (attackAction)
+		{
+		case attackKinds::NormalAttack:
+			atk(rival);
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+			sanFont::print(20.0f, 350.0f, L"通常攻撃");
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+			break;
+		case attackKinds::ContinuousAttack:
+			atk(rival);
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+			sanFont::print(20.0f, 350.0f, L"連続攻撃");
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+			break;
+		case attackKinds::RangeAttack:
+			atk(rival);
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+			sanFont::print(20.0f, 350.0f, L"範囲攻撃");
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+			break;
+		case attackKinds::HeavyAttack:
+			atk(rival);
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+			sanFont::print(20.0f, 350.0f, L"重い攻撃");
+			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+			break;
+		}
 		break;
 	case handleActionState::Moveing:
 		move(rival);
@@ -173,7 +215,14 @@ void boss::defense(player* rival)
 	{
 		defenseProgress = 0.0f; // 値のリセット
 		isDefense = false;
-		DecideNextAction(rival); // 次の攻撃
+
+		DecideNextAction(rival); // 次の行動
+
+		// 次の行動が攻撃なら攻撃種類設定
+		if (handleAction == handleActionState::Attacking)
+		{
+			NextAttackAction(rival); // 次の攻撃
+		}
 	}
 
 	// 敵とプレイヤーの位置を取得
@@ -196,6 +245,8 @@ void boss::defense(player* rival)
 
 void boss::atk(player* rival)
 {
+	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
+
 	// 攻撃が始まった時
 	if (atkProgress == 0.0f)
 	{
@@ -331,8 +382,8 @@ void boss::move(player* rival)
 	constexpr float moveSpeed = 0.1f; // プレイヤーの移動速度
 	constexpr float stopDistance = 3.0f; // プレイヤーの手前で止まる距離
 
-	static float moveProgress = 0.0f;      // 防御の進行度
-	constexpr float moveTimeLimit = 18.0f; // 防御の時間(60fpsなので3秒)
+	static float moveProgress = 0.0f;      // 移動の進行度
+	constexpr float moveTimeLimit = 18.0f; // 移動の時間(60fpsなので3秒)
 
 	moveProgress += 0.1f;
 
@@ -341,6 +392,12 @@ void boss::move(player* rival)
 	{
 		moveProgress = false;
 		DecideNextAction(rival); // 次の攻撃
+
+		// 次の行動が攻撃なら攻撃種類設定
+		if (handleAction == handleActionState::Attacking)
+		{
+			NextAttackAction(rival); // 次の攻撃
+		}
 	}
 
 
@@ -441,6 +498,11 @@ bool boss::getTakeDamageDisPlay()
 	return isTakeDamageDisPlay;
 }
 
+float boss::getAtkProgress()
+{
+	return atkProgress;
+}
+
 float boss::getCurrentHp()
 {
 	return status.health;
@@ -454,11 +516,6 @@ bool boss::getIsTakeHit()
 bool boss::getIsDefense()
 {
 	return isDefense;
-}
-
-bool boss::getAtkProgress()
-{
-	return atkProgress;
 }
 
 bool boss::getPlayerAtkRange()
@@ -479,6 +536,11 @@ void boss::playerAllRender()
 handleActionState boss::getBossAction()
 {
 	return handleAction;
+}
+
+attackKinds boss::getAttackKinds()
+{
+	return attackAction;
 }
 
 //モーションファイル読み込み関数

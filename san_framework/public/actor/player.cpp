@@ -44,13 +44,15 @@ player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, 
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
 	pSe[1] = new sanSound(L"data/sound/nothitatk.wav");
 	pSe[2] = new sanSound(L"data/sound/roll.wav");
+
+	// 初期化
 	status.atkPower = 10.0f;
 	status.health = 100.0f;
 	status.stamina = 300.0f;
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
 	status.maxStamina = status.stamina;
-	pi = 3.14f;
+	moveLimit = 13.0f; // 移動制限
 	isDead = false;
 	isCanAtk = true;
 	isTakeDamage = false;
@@ -111,6 +113,18 @@ void player::execute(boss* rival)
 	step(rival);
 	atk(rival);
 	damageDisplay();
+
+	// スタミナ回復処理
+	if (status.stamina < status.maxStamina)
+	{
+		status.stamina += 0.7f;
+	}
+	else
+	{
+		// スタミナ上限を入れる
+		status.stamina = status.maxStamina;
+	}
+
 	if (isMotionEnded)
 	{
 		setMotion(playerMotion[16]);
@@ -120,68 +134,72 @@ void player::execute(boss* rival)
 void player::move(boss* rival)
 {
 	if (!isCanAtk) return;
-	static bool isInput = false; // 押されているかどうか
 
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
 
-	// 固定値なのでメモリを削減
-	constexpr float moveSpeed = 0.1f; // プレイヤーの移動速度
-	constexpr float stopDistance = 3.0f;     // 敵の手前で止まる距離
+	constexpr float moveSpeed = 0.1f;
+	constexpr float stopDistance = 3.0f;
 
-	// 敵と自身の位置を取得
-	XMVECTOR rivalPos = *(rival->getPosition());
 	XMVECTOR playerPos = *(getPosition());
+	XMVECTOR rivalPos = *(rival->getPosition());
 
-	// プレイヤーから敵へのベクトルと距離を計算
 	XMVECTOR vToRival = XMVectorSubtract(rivalPos, playerPos);
 	float distToRival = XMVectorGetX(XMVector3Length(vToRival));
-
-	// 敵を中心としたプレイヤーの角度を計算
 	float angleToRival = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
+
+	XMVECTOR moveVec = XMVectorZero(); // 移動値ベクトル
+	static bool isMove = false; // 移動しているかどうか
 
 	if (sanKeyboard::on(DIK_W) || sanXInput::leftY(0) >= 0.5f)
 	{
-		// 敵に向かって前進(距離が一定以上の場合のみ)
-		if (distToRival > stopDistance)
+		if (distToRival - moveSpeed >= stopDistance)
 		{
-			vMove = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化
-			isInput = true;
+			moveVec = XMVectorScale(vToRival, 1.0f / distToRival); // 正規化（前進）
+			isMove = true;
 		}
 	}
-	if (sanKeyboard::on(DIK_S) || sanXInput::leftY(0) <= -0.5f)
+	else if (sanKeyboard::on(DIK_S) || sanXInput::leftY(0) <= -0.5f)
 	{
-		// 敵から後退
-		vMove = XMVectorScale(vToRival, -1.0f / distToRival); // 逆方向
-		isInput = true;
+		moveVec = XMVectorScale(vToRival, -1.0f / distToRival); // 後退
+		isMove = true;
 	}
-	if (sanKeyboard::on(DIK_A) || sanXInput::leftX(0) <= -0.5f)
+	else if (sanKeyboard::on(DIK_A) || sanXInput::leftX(0) <= -0.5f)
 	{
-		// 敵を中心に左移動（時計回り）
-		float leftAngle = angleToRival - XM_PIDIV2; // -90度
-		vMove = XMVectorSet(sinf(leftAngle), 0.0f, cosf(leftAngle), 0.0f);
-		isInput = true;
+		float leftAngle = angleToRival - XM_PIDIV2;
+		moveVec = XMVectorSet(sinf(leftAngle), 0.0f, cosf(leftAngle), 0.0f);
+		isMove = true;
 	}
-	if (sanKeyboard::on(DIK_D) || sanXInput::leftX(0) >= 0.5f)
+	else if (sanKeyboard::on(DIK_D) || sanXInput::leftX(0) >= 0.5f)
 	{
-		// 敵を中心に右移動（反時計回り）
-		float rightAngle = angleToRival + XM_PIDIV2; // +90度
-		vMove = XMVectorSet(sinf(rightAngle), 0.0f, cosf(rightAngle), 0.0f);
-		isInput = true;
+		float rightAngle = angleToRival + XM_PIDIV2;
+		moveVec = XMVectorSet(sinf(rightAngle), 0.0f, cosf(rightAngle), 0.0f);
+		isMove = true;
 	}
 
-	// 移動ベクトルにスピードを適用(長さを変える)
-	vMove = XMVectorScale(vMove, moveSpeed);
-
-	if (isInput)	// 入力があるときのみ
+	if (isMove)
 	{
-		// 敵を正面に向けるよう回転を設定
-		float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
-		setRotationY(rotY);
+		XMVECTOR nextPos = XMVectorAdd(playerPos, XMVectorScale(moveVec, moveSpeed));
+
+		// 中心 (0,0,0) からの距離をチェック
+		float nextDist = XMVectorGetX(XMVector3Length(nextPos));
+
+		float currentDist = XMVectorGetX(XMVector3Length(playerPos));
+
+		// 範囲外に移動しないように&&前進は可能
+		if (nextDist <= moveLimit || nextDist < currentDist)
+		{
+			// 移動ベクトルにスピードを適用(長さを変える)
+			vMove = XMVectorScale(moveVec, moveSpeed);
+		}
 
 		// プレイヤーを移動
 		XMVECTOR newPos = XMVectorAdd(playerPos, vMove);
 		setPosition(&newPos); // 新しい位置を設定
 	}
+
+	// 敵を正面に向けるよう回転を設定
+	float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
+	setRotationY(rotY);
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -416,13 +434,8 @@ void player::step(boss* rival)
 	float stepDuration = 0.1f;             // ステップの持続時間
 	float doubleClickTime = 0.3f;          // ダブルクリック判定時間
 
-	// スタミナ回復処理
-	if (status.stamina < status.maxStamina)
-	{
-		status.stamina++;
-	}
-
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
+	XMVECTOR moveVec = XMVectorZero(); // 移動値ベクトル
 
 	// 敵と自身の位置を取得
 	XMVECTOR rivalPos = *(rival->getPosition());
@@ -438,47 +451,62 @@ void player::step(boss* rival)
 	// ステップ中の処理
 	if (currentTime <= stepEndTime)
 	{
-		if (isStep)
-		{
-			// スタミナを半分減らす
-			status.stamina -= stepValue;
-			isStep = false;
-
-			// SE再生
-			if (pSe[2]->isPlaying() == true)
-			{
-				pSe[2]->stop();
-			}
-
-			if (pSe[2]->isPlaying() == false)
-			{
-				pSe[2]->play();
-			}
-		}
 		if (isRightStep)
 		{
 			// 敵を中心に右移動（反時計回り）
 			float rightAngle = angleToRival + XM_PIDIV2; // +90度
-			vMove = XMVectorSet(sinf(rightAngle), 0.0f, cosf(rightAngle), 0.0f);
+			moveVec = XMVectorSet(sinf(rightAngle), 0.0f, cosf(rightAngle), 0.0f);
 		}
 		else if (isLeftStep)
 		{
 			// 敵を中心に左移動（時計回り）
 			float leftAngle = angleToRival - XM_PIDIV2; // -90度
-			vMove = XMVectorSet(sinf(leftAngle), 0.0f, cosf(leftAngle), 0.0f);
+			moveVec = XMVectorSet(sinf(leftAngle), 0.0f, cosf(leftAngle), 0.0f);
 		}
 
-		// 移動ベクトルにスピードを適用(長さを変える)
-		vMove = XMVectorScale(vMove, stepMoveSpeed);
+		XMVECTOR nextPos = XMVectorAdd(playerPos, XMVectorScale(moveVec, 1.0f));
 
+		// 中心 (0,0,0) からの距離をチェック
+		float nextDist = XMVectorGetX(XMVector3Length(nextPos));
+
+		float currentDist = XMVectorGetX(XMVector3Length(playerPos));
+
+		// 範囲外に移動しないように
+		if (nextDist <= moveLimit + 0.5f)
+		{
+			vMove = moveVec;
+			// 移動ベクトルにスピードを適用(長さを変える)
+			vMove = XMVectorScale(vMove, stepMoveSpeed);
+
+			// プレイヤーを移動
+			XMVECTOR newPos = XMVectorAdd(playerPos, vMove);
+			setPosition(&newPos); // 新しい位置を設定
+
+			// ステップされた時
+			// 画面外には回避無効
+			if (isStep)
+			{
+				// スタミナを半分減らす
+				status.stamina -= stepValue;
+				isStep = false;
+
+				// SE再生
+				if (pSe[2]->isPlaying() == true)
+				{
+					pSe[2]->stop();
+				}
+
+				if (pSe[2]->isPlaying() == false)
+				{
+					pSe[2]->play();
+				}
+			}
+		}
 
 		// 敵を正面に向けるよう回転を設定
 		float rotY = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
 		setRotationY(rotY);
 
-		// プレイヤーを移動
-		XMVECTOR newPos = XMVectorAdd(playerPos, vMove);
-		setPosition(&newPos); // 新しい位置を設定
 		return; // ステップ中は他の処理を無効にする
 	}
 	else
@@ -495,11 +523,40 @@ void player::step(boss* rival)
 		{
 			if (currentTime - lastRightTime <= doubleClickTime)
 			{
-				// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
-				if (rival->getAtkProgress() > 0 && rival->getPlayerAtkRange())
+				// この時に敵の攻撃範囲に入っているかどうか
+				bool enemyAtkRangeInside = rival->getPlayerAtkRange();
+
+				// 敵の攻撃の種類によってジャストステップの数値変更
+				switch (rival->getAttackKinds())
 				{
-					rival->takeJustStep(); // ジャストステップした通知を送る
+				case attackKinds::NormalAttack:
+					// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
+					// 数フレから数フレまでの処理を各アニメに入れる
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
+				case attackKinds::ContinuousAttack:
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
+				case attackKinds::RangeAttack:
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
+				case attackKinds::HeavyAttack:
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
 				}
+
 				// ステップの設定（時計回り）
 				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
 				isRightStep = true;
@@ -514,11 +571,40 @@ void player::step(boss* rival)
 		{
 			if (currentTime - lastLeftTime <= doubleClickTime)
 			{
-				// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
-				if (rival->getAtkProgress() > 0 && rival->getPlayerAtkRange())
+				// この時に敵の攻撃範囲に入っているかどうか
+				bool enemyAtkRangeInside = rival->getPlayerAtkRange();
+
+				// 敵の攻撃の種類によってジャストステップの数値変更
+				switch (rival->getAttackKinds())
 				{
-					rival->takeJustStep(); // ジャストステップした通知を送る
+				case attackKinds::NormalAttack:
+					// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
+					// 数フレから数フレまでの処理を各アニメに入れる
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
+				case attackKinds::ContinuousAttack:
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
+				case attackKinds::RangeAttack:
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
+				case attackKinds::HeavyAttack:
+					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
+					{
+						rival->takeJustStep(); // ジャストステップした通知を送る
+					}
+					break;
 				}
+
 				// ステップの設定（反時計回り）
 				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
 				isLeftStep = true;

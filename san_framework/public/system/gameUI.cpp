@@ -5,26 +5,31 @@ gameUI::gameUI()
 {
 	// 初期位置設定
 	initPHpImgPosX = 175.0f;
-	initPStaminaImgPosX = 125.0f;
+	initPStaminaImgPosX = 640.0f;
+	initStaminaImgWidth = 300.0f;
 	initBHpImgPosX = 1120.0f;
 	minBHpImgPosX = 1460.0;
+	staminaUIState = staminaUI::Large;
 
 	// 画像設定
-	pPHpImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/playerHpImg.png");
-	pPHpDamageImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/hpDamageImg.png");
-	pPStaminaImg = new sanSprite(initPStaminaImgPosX, 90.f, 250.0f, 24.0f, L"data/image/game/playerStaminaImg.png");
-	pPHpBackImg = new sanSprite(initPHpImgPosX, 60.f, 350.0f, 24.0f, L"data/image/game/hpBackImg.png");
-	pPStaminaBackImg = new sanSprite(initPStaminaImgPosX, 90.f, 250.0f, 24.0f, L"data/image/game/hpBackImg.png");
+	pPHpImg = new sanSprite(initPHpImgPosX, 75.f, 350.0f, 30.0f, L"data/image/game/playerHpImg.png");
+	pPHpDamageImg = new sanSprite(initPHpImgPosX, 75.f, 350.0f, 30.0f, L"data/image/game/hpDamageImg.png");
+	pPStaminaImg[Large] = new sanSprite(initPStaminaImgPosX, 680.f, initStaminaImgWidth, 20.0f, L"data/image/game/playerStaminaLargeImg.png");
+	pPStaminaImg[Medium] = new sanSprite(initPStaminaImgPosX, 680.f, initStaminaImgWidth, 20.0f, L"data/image/game/playerStaminaMediumImg.png");
+	pPStaminaImg[Small] = new sanSprite(initPStaminaImgPosX, 680.f, initStaminaImgWidth, 20.0f, L"data/image/game/playerStaminaSmallImg.png");
+	pPHpBackImg = new sanSprite(initPHpImgPosX, 75.f, 350.0f, 30.0f, L"data/image/game/hpBackImg.png");
+	pPStaminaBackImg = new sanSprite(initPStaminaImgPosX, 680.f, initStaminaImgWidth, 20.0f, L"data/image/game/StaminaBackImg.png");
 	pBHpImg = new sanSprite(initBHpImgPosX, 75.0f, 350.0f, 30.0f, L"data/image/game/enemyHpImg.png");
 	pBHpDamageImg = new sanSprite(initBHpImgPosX, 75.f, -350.0f, -30.0f, L"data/image/game/hpDamageImg.png"); // 反転させて使用
 	pBHPBackImg = new sanSprite(initBHpImgPosX, 75.0f, -350.0f, -30.0f, L"data/image/game/hpBackImg.png");    // 同上
-	pUIBackGround[0] = new sanSprite(initPHpImgPosX, 60.f, 380.0f, 100.0f, L"data/image/game/UIBackGround.png");
-	pUIBackGround[1] = new sanSprite(initBHpImgPosX, 60.f, 380.0f, 100.0f, L"data/image/game/UIBackGround.png");
+	pUIBackGround[0] = new sanSprite(initPHpImgPosX, 60.f, 380.0f, 90.0f, L"data/image/game/UIBackGround.png");
+	pUIBackGround[1] = new sanSprite(initBHpImgPosX, 60.f, 380.0f, 90.0f, L"data/image/game/UIBackGround.png");
 	// 画像透過処理
-	pUIBackGround[0]->vtx[0].a = 0.5f;	pUIBackGround[0]->vtx[1].a = 0.5f;
-	pUIBackGround[0]->vtx[2].a = 0.5f;	pUIBackGround[0]->vtx[3].a = 0.5f;
-	pUIBackGround[1]->vtx[0].a = 0.5f;	pUIBackGround[1]->vtx[1].a = 0.5f;
-	pUIBackGround[1]->vtx[2].a = 0.5f;	pUIBackGround[1]->vtx[3].a = 0.5f;
+	pPStaminaBackImg->vtx[0].a = 0.5f;	pPStaminaBackImg->vtx[1].a = 0.5f;
+	pUIBackGround[0]->vtx[0].a = 0.6f;	pUIBackGround[0]->vtx[1].a = 0.6f;
+	pUIBackGround[0]->vtx[2].a = 0.6f;	pUIBackGround[0]->vtx[3].a = 0.6f;
+	pUIBackGround[1]->vtx[0].a = 0.6f;	pUIBackGround[1]->vtx[1].a = 0.6f;
+	pUIBackGround[1]->vtx[2].a = 0.6f;	pUIBackGround[1]->vtx[3].a = 0.6f;
 }
 
 gameUI::~gameUI()
@@ -36,7 +41,10 @@ gameUI::~gameUI()
 	delete pBHpImg;
 	delete pPStaminaBackImg;
 	delete pPHpBackImg;
-	delete pPStaminaImg;
+	for (int i = 0; i < StaminaKindMax; i++)
+	{
+		delete pPStaminaImg[i];
+	}
 	delete pPHpDamageImg;
 	delete pPHpImg;
 }
@@ -227,60 +235,39 @@ void gameUI::execute(player* pPlayer, boss* pBoss)
 	}
 
 
-
-	// スタミナ割合を出してinitPosXから-initPosXまで位置を動的に変更
+	// スタミナの割合表示（0.0f～1.0f）
 	float staminaRatio = pPlayer->status.stamina / pPlayer->status.maxStamina;
-	float imgstaminaPosX = initPStaminaImgPosX * 2 * staminaRatio - initPStaminaImgPosX;
 
-	// 大きさは変えずに位置だけ左にずらす
-	if (staminaRatio <= 0.0f) // スタミナがなくなったの時
+	// スタミナの割合によって現在のスタミナ状況を入れる
+	if (staminaRatio > 0.6f)
 	{
-		pPStaminaImg->posX = imgstaminaPosX;
+		staminaUIState = staminaUI::Large;
 	}
-	else if (staminaRatio <= 0.1f) // スタミナが1割以上の時
+	else if (staminaRatio > 0.3f)
 	{
-		pPStaminaImg->posX = imgstaminaPosX;
+		staminaUIState = staminaUI::Medium;
 	}
-	else if (staminaRatio <= 0.2f) // スタミナが2割以上の時
+	else
 	{
-		pPStaminaImg->posX = imgstaminaPosX;
+		staminaUIState = staminaUI::Small;
 	}
-	else if (staminaRatio <= 0.3f) // スタミナが3割以上の時
+
+	// 元の画像サイズと初期位置（中央表示と仮定）
+	float fullWidth = initStaminaImgWidth;
+	float centerX = initPStaminaImgPosX;
+
+	for (int i = 0; i < StaminaKindMax; i++)
 	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else if (staminaRatio <= 0.4f) // スタミナが4割以上の時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else if (staminaRatio <= 0.5f) // スタミナが5割以上の時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else if (staminaRatio <= 0.6f) // スタミナが6割以上の時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else if (staminaRatio <= 0.7f) // スタミナが7割以上の時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else if (staminaRatio <= 0.8f) // スタミナが8割以上の時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else if (staminaRatio <= 0.9f) // スタミナが9割以上の時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
-	}
-	else // スタミナが満タンの時
-	{
-		pPStaminaImg->posX = imgstaminaPosX;
+		// スプライトの新しい横幅（スケール）
+		pPStaminaImg[i]->scaleX = staminaRatio;
+
+		// スプライトの新しいX座標（左に寄せる）
+		pPStaminaImg[i]->posX = centerX - ((1.0f - staminaRatio) * fullWidth * 0.5f);
 	}
 
 	// 名前表示
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
-	sanFont::print(10.0f, 8.0f, L"-Player-");
+	sanFont::print(10.0f, 15.0f, L"-Player-");
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 35));
 	sanFont::print(970.0f, 15.0f, L"-Boss-");
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
@@ -303,5 +290,17 @@ void gameUI::render()
 	pBHpDamageImg->render();
 	pPHpImg->render();
 	pBHpImg->render();
-	pPStaminaImg->render();
+
+	switch (staminaUIState)
+	{
+	case Large:
+		pPStaminaImg[Large]->render();
+		break;
+	case Medium:
+		pPStaminaImg[Medium]->render();
+		break;
+	case Small:
+		pPStaminaImg[Small]->render();
+		break;
+	}
 }

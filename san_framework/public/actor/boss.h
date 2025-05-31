@@ -21,34 +21,17 @@ enum class handleActionState
 	MAX,		// 最大値
 };
 
+enum class attackKinds
+{
+	NormalAttack,     // 通常攻撃
+	ContinuousAttack, // 連続攻撃
+	RangeAttack,      // 範囲攻撃
+	HeavyAttack,      // 重たい攻撃
+	Max,			  // 最大値
+};
+
 class boss : public cCharacter
 {
-public:
-	boss(const WCHAR* folder, const WCHAR* boneFile);
-	~boss();
-
-	void DecideNextAction(player* rival); // 次の行動
-	void execute(player* rival); // 全体の処理
-	void defense(player* rival); // 防御
-	void atk(player* rival);     // 攻撃
-	void move(player* rival);    // プレイヤーに近づく
-	void takeJustStep();         // ジャストで回避されたとき
-	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
-	void damageDisplay(); // 攻撃受け時の画面表示
-	void playerAllRender(); // プレイヤーの影の表示
-	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
-	bool getIsDead();    // 死んでいるかどうか
-	bool getIsTakeHit(); // 攻撃を受けた時
-	bool getIsDefense(); // 防御
-	bool getAtkProgress(); // 攻撃の進捗度
-	bool getPlayerAtkRange(); // 攻撃がプレイヤーに当たるかどうか
-	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
-	float getCurrentHp(); // 現在のHP取得
-	handleActionState getBossAction(); // ボスの行動の取得
-
-	// UIで参照できるようにpublic
-	bossStatus status;
-
 private:
 	sanModel* pShadow; // 影のモデル
 	sanSound* pSe[2]; // SE
@@ -67,13 +50,44 @@ private:
 	// アクション状態
 	handleActionState handleAction;
 
+	// 攻撃の種類
+	attackKinds attackAction;
+	attackKinds oldAttackAction; // 一つ前の攻撃情報の保持
+
 	float pi;           // 円周率
 	float atkProgress;  // 攻撃の進行度
-	float atkTimeLimit; // 攻撃の時間
 	bool isDead;        // 死んだとき
 	bool isDefense;     // 防御しているかどうか
 	bool isPlayerAtkRange; // プレイヤーに攻撃が当たるかどうか
 	bool isPlayerJustStep; // プレイヤーにジャスト回避されたかどうか
 	bool isTakeDamage;     // 攻撃を受けたかどうか
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
+
+public:
+	boss(const WCHAR* folder, const WCHAR* boneFile);
+	~boss();
+
+	void DecideNextAction(player* rival); // 次の行動
+	void NextAttackAction(player* rival); // 次の攻撃
+	void execute(player* rival); // 全体の処理
+	void defense(player* rival); // 防御
+	void atk(player* rival);     // 攻撃
+	void move(player* rival);    // プレイヤーに近づく
+	void takeJustStep();         // ジャストで回避されたとき
+	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
+	void damageDisplay(); // 攻撃受け時の画面表示
+	void playerAllRender(); // プレイヤーの影の表示
+	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
+	bool getIsDead();    // 死んでいるかどうか
+	bool getIsTakeHit(); // 攻撃を受けた時
+	bool getIsDefense(); // 防御
+	bool getPlayerAtkRange(); // 攻撃がプレイヤーに当たるかどうか
+	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
+	float getAtkProgress(); // 攻撃の進捗度
+	float getCurrentHp(); // 現在のHP取得
+	handleActionState getBossAction(); // ボスの行動の取得
+	attackKinds getAttackKinds(); // 攻撃の種類取得
+
+	// UIで参照できるようにpublic
+	bossStatus status;
 };

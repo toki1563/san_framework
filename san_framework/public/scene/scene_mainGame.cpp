@@ -8,12 +8,14 @@ bool SceneMainGame::initialize()
 	pPlayer = new player(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
 	pBoss = new boss(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
 	pGround = new sanModel(L"data/model/stage/", L"stage.vnm");
+	pFence = new sanModel(L"data/model/stage/", L"fence.vnm");
 	pSky = new sanModel(L"data/model/", L"skydome.vnm");
 	pBgm = new sanSound(L"data/sound/gamebgm.wav");
 	pGameUI = new gameUI();
 	pGameCamera = new gameCamera();
 
-	pSky->setLighting(false); // ライティング無効
+	pGround->setLighting(false); // ライティング無効
+	pSky->setLighting(false);
 
 	pPlayer->setScale(1.5f, 1.5f, 1.5f);
 	pBoss->setScale(2.0f, 2.0f, 2.0f);
@@ -30,13 +32,19 @@ bool SceneMainGame::initialize()
 		registerObject(pBoss->getParts(i));
 	}
 	registerObject(pGround);
+	registerObject(pFence);
 	registerObject(pSky);
+
+	pFence->setScale(40, 14, 40);
 
 	// プレイヤーの位置を設定
 	pPlayer->setPositionZ(-5.0f);
 
 	// BGMを少し小さく
 	pBgm->setVolume(0.2f);
+
+	// ランダム値の初期化
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	return true;
 }
@@ -48,6 +56,7 @@ void SceneMainGame::terminate()
 	delete pGameUI;
 	delete pBgm;
 	deleteObject(pSky);
+	deleteObject(pFence);
 	deleteObject(pGround);
 	deleteObject(pBoss);
 	deleteObject(pPlayer);
@@ -75,8 +84,8 @@ void SceneMainGame::execute()
 void SceneMainGame::render()
 {
 	pGround->render();
+	pFence->render();
 	pSky->render();
-	pGameUI->render();
 	// ダメージ受け時の表示処理
 	if (!pPlayer->getTakeDamageDisPlay())
 	{
@@ -94,5 +103,8 @@ void SceneMainGame::render()
 			pBoss->getParts(i)->render();
 		}
 	}
+
+	// UIは手前に表示
+	pGameUI->render();
 }
 

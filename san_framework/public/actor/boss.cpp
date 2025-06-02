@@ -53,12 +53,15 @@ boss::boss(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, bone
 	handleAction = handleActionState::Defending;
 	attackAction = attackKinds::NormalAttack;
 	oldAttackAction = attackKinds::Max; // 初めは攻撃を入れない
-	pi = 3.14f;
+
+	slowRate = 1.0f;
+	oldSlowRate = 1.0f;
 	atkProgress = 0.0f;
 	isDead = false;
 	isDefense = false;
 	isPlayerAtkRange = false;
 	isPlayerJustStep = false;
+	isPlayerJustStepPossible = false;
 	isTakeDamage = false;
 	isTakeDamageDisPlay = false;
 	pShadow->setTransparent(true); // 半透明有無
@@ -192,6 +195,14 @@ void boss::execute(player* rival)
 		break;
 	}
 
+	// ゲーム内でスロー倍率が変化した際に付与
+	if (SceneMainGame::slowRate != oldSlowRate)
+	{
+		slowRate = SceneMainGame::slowRate; // 現在のスロー倍率取得
+		oldSlowRate = slowRate; // スロー倍率を保存
+		setAnimSpeed(slowRate); // アニメーションに適応
+	}
+
 	// ダメージを受けた時
 	damageDisplay();
 }
@@ -252,15 +263,19 @@ void boss::atk(player* rival)
 	{
 		setMotion(bossMotion[12]); // 攻撃モーション
 	}
+	else if (atkProgress  >= atkTimeLimit / 3)
+	{
+		isPlayerJustStepPossible = true;
+	}
 
 	// プレイヤーがジャスト回避でなければ
 	if (!isPlayerJustStep)
 	{
 		atkProgress += 0.1f;
 	}
-	else // プレイヤーがジャスト回避なら
+	else // プレイヤーがジャスト回避なら※スロー効果付与
 	{
-		atkProgress += 0.01f;
+		atkProgress += 0.1f * slowRate;
 	}
 
 	// 時間になったら
@@ -268,6 +283,7 @@ void boss::atk(player* rival)
 	{
 		atkProgress = 0.0f;
 		isPlayerJustStep = false;
+		isPlayerJustStepPossible = false;
 		handleAction = handleActionState::Defending; // 防御にする
 	}
 
@@ -314,13 +330,27 @@ void boss::atk(player* rival)
 		XMVECTOR point1 = center + dir1 * atkDist;
 		XMVECTOR point2 = center + dir2 * atkDist;
 
-		// デバッグラインを描画
-		sanDebugDraw::Line(&center, &point1, 0xFF00FFFF);  // 中心から外へ
-		sanDebugDraw::Line(&point1, &point2, 0xFF00FFFF); // 円弧の外周を繋ぐ
-		// 右端の点を更新
-		XMVECTOR lastPoint = point2;
-		// 右端の点から中心への線を描画
-		sanDebugDraw::Line(&lastPoint, &center, 0xFF00FFFF);
+		// デバッグ表示をジャスト回避できるときできない時で色を変更
+		if (isPlayerJustStepPossible)
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FF00);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FF00); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FF00);
+		}
+		else
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FFFF);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FFFF); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FFFF);
+		}
 	}
 	// 攻撃時のデバッグライン表示終了
 
@@ -433,6 +463,7 @@ void boss::move(player* rival)
 void boss::takeJustStep()
 {
 	isPlayerJustStep = true;
+	SceneMainGame::slowRate = 0.1f; // 処理倍率をスローにする
 }
 
 void boss::takeDamage(float damage)
@@ -518,6 +549,16 @@ bool boss::getIsDefense()
 	return isDefense;
 }
 
+bool boss::getPlayerJustStep()
+{
+	return isPlayerJustStep;
+}
+
+bool boss::getPlayerJustStepPossible()
+{
+	return isPlayerJustStepPossible;
+}
+
 bool boss::getPlayerAtkRange()
 {
 	return isPlayerAtkRange;
@@ -531,16 +572,6 @@ void boss::playerAllRender()
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 	pShadow->render();
 	render();
-}
-
-handleActionState boss::getBossAction()
-{
-	return handleAction;
-}
-
-attackKinds boss::getAttackKinds()
-{
-	return attackAction;
 }
 
 //モーションファイル読み込み関数

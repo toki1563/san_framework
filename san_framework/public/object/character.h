@@ -59,7 +59,7 @@ public:
 	// パーツを名前で取得
 	sanObject* getParts(char* name);
 
-	void setAnimSpeed(int speed);
+	void setAnimSpeed(float speed);
 
 	void setMotionSameIgnore(bool ismotionIgnore);
 

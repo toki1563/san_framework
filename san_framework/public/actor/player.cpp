@@ -53,10 +53,14 @@ player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, 
 	status.maxHealth = status.health;
 	status.maxStamina = status.stamina;
 	moveLimit = 13.0f; // 移動制限
+	slowRate = 1.0f;
+	oldSlowRate = 1.0f;
 	isDead = false;
+	isStep = false;
 	isCanAtk = true;
 	isTakeDamage = false;
 	isAtkCoolTime = false;
+	isJustStepSuccess = false;
 	isTakeDamageDisPlay = false;
 	pShadow->setTransparent(true); // 半透明有無
 
@@ -80,7 +84,7 @@ player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, 
 
 	setMotion(playerMotion[16]);
 
-	setAnimSpeed(2.0f);
+	setAnimSpeed(2.0f); // アニメーションに適応
 
 	// 影の腕と足をプレイヤーに合わせる
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
@@ -112,7 +116,16 @@ void player::execute(boss* rival)
 	move(rival);
 	step(rival);
 	atk(rival);
+	JustStepAttack(rival);
 	damageDisplay();
+
+	// ゲーム内でスロー倍率が変化した際に付与
+	if (SceneMainGame::slowRate != oldSlowRate)
+	{
+		slowRate = SceneMainGame::slowRate; // 現在のスロー倍率取得
+		oldSlowRate = slowRate; // スロー倍率を保存
+		setAnimSpeed(slowRate * 2); // アニメーションに適応
+	}
 
 	// スタミナ回復処理
 	if (status.stamina < status.maxStamina)
@@ -133,7 +146,8 @@ void player::execute(boss* rival)
 
 void player::move(boss* rival)
 {
-	if (!isCanAtk) return;
+	if (!isCanAtk) return; // 攻撃している時は移動しない
+	if(isJustStepSuccess) return; // 回避中は移動しない
 
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
 
@@ -207,6 +221,8 @@ void player::move(boss* rival)
 
 void player::atk(boss* rival)
 {
+	if (isJustStepSuccess) return; // ジャスト回避中は攻撃しない
+
 	static float atkProgress = 0.0f;          // 攻撃の進行度
 	static float atkCoolTimeProgress = 0.0f;  // クールタイムの進行度
 
@@ -423,13 +439,13 @@ void player::step(boss* rival)
 {
 	static float lastLeftTime = -1.0f;
 	static float lastRightTime = -1.0f;
-	static float stepEndTime = -1.0f; // ステップ終了時間
+	static float stepEndTime = -1.0f;    // ステップ終了時間
+	static float justStepEndTime = 5.0f; // ジャストステップ終了時間
 	static bool isRightStep = false;  // 右にステップ回避
 	static bool isLeftStep = false;	  // 左にステップ回避
-	static bool isStep = false;       // ステップしているかどうか
 	static float stepValue = status.maxStamina / 3; // ステップに必要なスタミナの量
 
-	float stepMoveSpeed = 0.6f;			   // ステップの移動速度
+	float stepMoveSpeed = 0.6f;            // ステップの移動速度
 	float currentTime = getCurrentTime();  // 現在の時間を取得
 	float stepDuration = 0.1f;             // ステップの持続時間
 	float doubleClickTime = 0.3f;          // ダブルクリック判定時間
@@ -475,12 +491,15 @@ void player::step(boss* rival)
 		if (nextDist <= moveLimit + 0.5f)
 		{
 			vMove = moveVec;
-			// 移動ベクトルにスピードを適用(長さを変える)
-			vMove = XMVectorScale(vMove, stepMoveSpeed);
+			// 移動ベクトルにスピードを適用※スロー効果付与
+			vMove = XMVectorScale(vMove, stepMoveSpeed * slowRate);
 
 			// プレイヤーを移動
 			XMVECTOR newPos = XMVectorAdd(playerPos, vMove);
 			setPosition(&newPos); // 新しい位置を設定
+
+			// 影の腕と足をプレイヤーに合わせる
+			pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
 
 			// ステップされた時
 			// 画面外には回避無効
@@ -515,8 +534,8 @@ void player::step(boss* rival)
 		isLeftStep = false;
 	}
 
-	// スタミナがある時
-	if (status.stamina >= stepValue)
+	// スタミナがある時とジャスト回避していない時
+	if (status.stamina >= stepValue && !isJustStepSuccess)
 	{
 		// 右ステップ
 		if (sanKeyboard::trg(DIK_D))
@@ -526,39 +545,31 @@ void player::step(boss* rival)
 				// この時に敵の攻撃範囲に入っているかどうか
 				bool enemyAtkRangeInside = rival->getPlayerAtkRange();
 
-				// 敵の攻撃の種類によってジャストステップの数値変更
-				switch (rival->getAttackKinds())
+				// 攻撃範囲内でジャスト回避可能な状態かどうか
+				if (enemyAtkRangeInside && rival->getPlayerJustStepPossible())
 				{
-				case attackKinds::NormalAttack:
-					// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
-					// 数フレから数フレまでの処理を各アニメに入れる
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
-				case attackKinds::ContinuousAttack:
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
-				case attackKinds::RangeAttack:
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
-				case attackKinds::HeavyAttack:
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
+					rival->takeJustStep(); // ジャストステップした通知を送る
+					isJustStepSuccess = true; // ジャスト回避成功フラグ
+				}
+
+				// ジャスト回避直後にスロー倍率が変化するので付与する
+				if (SceneMainGame::slowRate != oldSlowRate)
+				{
+					slowRate = SceneMainGame::slowRate; // 現在のスロー倍率取得
+					oldSlowRate = slowRate; // スロー倍率を保存
+					setAnimSpeed(slowRate * 2); // アニメーションに適応
 				}
 
 				// ステップの設定（時計回り）
-				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
+				// ジャスト回避の際ステップ時間変更
+				if (isJustStepSuccess)
+				{
+					stepEndTime = currentTime + stepDuration * justStepEndTime;  // ステップ終了時間を設定※スロー効果付与
+				}
+				else
+				{
+					stepEndTime = currentTime + stepDuration; // ステップ終了時間を設定
+				}
 				isRightStep = true;
 				isStep = true;
 			}
@@ -574,39 +585,31 @@ void player::step(boss* rival)
 				// この時に敵の攻撃範囲に入っているかどうか
 				bool enemyAtkRangeInside = rival->getPlayerAtkRange();
 
-				// 敵の攻撃の種類によってジャストステップの数値変更
-				switch (rival->getAttackKinds())
+				// 攻撃範囲内でジャスト回避可能な状態かどうか
+				if (enemyAtkRangeInside && rival->getPlayerJustStepPossible())
 				{
-				case attackKinds::NormalAttack:
-					// もし敵の攻撃範囲内で攻撃開始から数フレームで回避を行ったら
-					// 数フレから数フレまでの処理を各アニメに入れる
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
-				case attackKinds::ContinuousAttack:
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
-				case attackKinds::RangeAttack:
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
-				case attackKinds::HeavyAttack:
-					if (rival->getAtkProgress() > 0 && enemyAtkRangeInside)
-					{
-						rival->takeJustStep(); // ジャストステップした通知を送る
-					}
-					break;
+					rival->takeJustStep(); // ジャストステップした通知を送る
+					isJustStepSuccess = true; // ジャスト回避成功フラグ
+				}
+
+				// ジャスト回避直後にスロー倍率が変化するので付与する
+				if (SceneMainGame::slowRate != oldSlowRate)
+				{
+					slowRate = SceneMainGame::slowRate; // 現在のスロー倍率取得
+					oldSlowRate = slowRate; // スロー倍率を保存
+					setAnimSpeed(slowRate * 2); // アニメーションに適応
 				}
 
 				// ステップの設定（反時計回り）
-				stepEndTime = currentTime + stepDuration;  // ステップ終了時間を設定
+				// ジャスト回避の際ステップ時間変更
+				if (isJustStepSuccess)
+				{
+					stepEndTime = currentTime + stepDuration * justStepEndTime;  // ステップ終了時間を設定※スロー効果付与
+				}
+				else
+				{
+					stepEndTime = currentTime + stepDuration; // ステップ終了時間を設定
+				}
 				isLeftStep = true;
 				isStep = true;
 			}
@@ -614,9 +617,138 @@ void player::step(boss* rival)
 			lastLeftTime = currentTime; // 入力時間を記録
 		}
 	}
+}
 
-	// 影の腕と足をプレイヤーに合わせる
-	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
+void player::JustStepAttack(boss* rival)
+{
+	if (isStep) return; // 回避が終わってから
+	if (!isJustStepSuccess) return; // ジャスト回避時以外は処理しない
+
+	static float atkProgress = 0.0f;          // 攻撃の進行度
+
+	// 固定値なのでメモリを削減
+	constexpr float atkDist = 3.5f;			 // 攻撃距離
+	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
+	constexpr float atkDamageFrame = 110.0f; // 攻撃判定が出るフレーム
+
+	// デバッグ用
+	sanFont::print(120.0f, 180.0f, L"攻撃の進捗度 : %.3f", atkProgress);
+	sanFont::print(120.0f, 200.0f, L"slowRate : %.3f", slowRate);
+
+	// NPCの認識範囲
+	XMVECTOR playerToEnemy = *rival->getPosition() - *getPosition();
+	XMVECTOR vDist = XMVector3Length(playerToEnemy);
+	float dist = XMVectorGetX(vDist);
+
+	XMMATRIX playerWorld = *getWorld();
+	XMVECTOR playerFront = playerWorld.r[2]; // プレイヤーの前方向
+	playerFront = XMVector3Normalize(playerFront);
+	playerToEnemy = XMVector3Normalize(playerToEnemy);
+
+	// 内積
+	XMVECTOR vDot = XMVector3Dot(playerFront, playerToEnemy);
+	float dot = XMVectorGetX(vDot); // cosθ
+	float radian = acosf(dot);
+	float degree = XMConvertToDegrees(radian);
+
+	// 攻撃時のデバッグライン表示開始
+	const int segments = 4; // 円弧の分割数
+	float halfAngle = atkDegree / 2.0f;
+
+	// 円弧の中心点
+	XMVECTOR center = *getPosition();
+
+	// 前方向を基準に左右の範囲を計算
+	for (int i = 0; i < segments; ++i)
+	{
+		float theta1 = -halfAngle + (atkDegree / segments) * i;          // 現在の角度
+		float theta2 = -halfAngle + (atkDegree / segments) * (i + 1);    // 次の角度
+
+		// 現在の角度での方向を計算
+		XMVECTOR dir1 = XMVector3Transform(playerFront,
+			XMMatrixRotationY(XMConvertToRadians(theta1)));
+		XMVECTOR dir2 = XMVector3Transform(playerFront,
+			XMMatrixRotationY(XMConvertToRadians(theta2)));
+
+		// 各方向に距離を掛けてポイントを計算
+		XMVECTOR point1 = center + dir1 * atkDist;
+		XMVECTOR point2 = center + dir2 * atkDist;
+
+		// デバッグラインを描画
+		sanDebugDraw::Line(&center, &point1, 0xffffff00);  // 中心から外へ
+		sanDebugDraw::Line(&point1, &point2, 0xffffff00); // 円弧の外周を繋ぐ
+		// 右端の点を更新
+		XMVECTOR lastPoint = point2;
+		// 右端の点から中心への線を描画
+		sanDebugDraw::Line(&lastPoint, &center, 0xffffff00);
+	}
+	// 攻撃時のデバッグライン表示終了
+
+	// 初めの攻撃フレームで攻撃処理
+	if (atkProgress == 0)
+	{
+		setMotion(playerMotion[18]); // 攻撃アニメ
+	}
+	else if (atkProgress == atkDamageFrame)
+	{
+		// 攻撃範囲なら攻撃する
+		if (dist < atkDist && degree < atkDegree)
+		{
+			// 攻撃判定
+			rival->takeDamage(status.atkPower * 2);
+		}
+
+		// 敵に攻撃が当たった時
+		if (rival->getIsTakeHit())
+		{
+			// SE再生
+			// もし再生中なら停止する
+			if (pSe[0]->isPlaying() == true)
+			{
+				pSe[0]->stop();
+			}
+			if (pSe[0]->isPlaying() == false)
+			{
+				pSe[0]->play();
+			}
+		}
+		else
+		{
+			// SE再生
+			if (pSe[1]->isPlaying() == true)
+			{
+				pSe[1]->stop();
+			}
+
+			if (pSe[1]->isPlaying() == false)
+			{
+				pSe[1]->play();
+			}
+		}
+	}
+
+	// 攻撃進捗は常に更新
+	atkProgress++;
+
+	if (atkProgress == 180)
+	{
+		atkProgress = 0;
+		isJustStepSuccess = false;
+		setMotion(playerMotion[16]); // 待機モーション
+	}
+
+	if (slowRate >= 1.0f)
+	{
+		SceneMainGame::slowRate = 1.0f;
+	}
+	else if (slowRate >= 0.5f)
+	{
+		SceneMainGame::slowRate += 0.01f; // レートを上げていく
+	}
+	else
+	{
+		SceneMainGame::slowRate += 0.005f; // レートを上げていく
+	}
 }
 
 void player::takeDamage(float damage)

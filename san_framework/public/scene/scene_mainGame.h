@@ -21,4 +21,6 @@ public:
 	void execute();
 	//描画
 	void render();
+
+	static float slowRate; // スローの際の処理倍率
 };

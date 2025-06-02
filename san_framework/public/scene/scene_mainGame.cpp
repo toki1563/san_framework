@@ -1,6 +1,8 @@
 ﻿#include "../../framework.h"
 #include "../../framework/san_environment.h"
 
+// 静的変数
+float SceneMainGame::slowRate; // スロー時の処理倍率
 
 //初期化関数
 bool SceneMainGame::initialize()
@@ -13,6 +15,7 @@ bool SceneMainGame::initialize()
 	pBgm = new sanSound(L"data/sound/gamebgm.wav");
 	pGameUI = new gameUI();
 	pGameCamera = new gameCamera();
+	slowRate = 1.0f; // スローの際の処理倍率
 
 	pGround->setLighting(false); // ライティング無効
 	pSky->setLighting(false);

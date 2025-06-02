@@ -8,6 +8,7 @@ gameSystem::gameSystem()
 
 gameSystem::~gameSystem()
 {
+	delete pGameCamera;
 }
 
 void gameSystem::gameClear()

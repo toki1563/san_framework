@@ -54,12 +54,15 @@ private:
 	attackKinds attackAction;
 	attackKinds oldAttackAction; // 一つ前の攻撃情報の保持
 
-	float pi;           // 円周率
 	float atkProgress;  // 攻撃の進行度
+	float slowRate; // スローの際の処理倍率
+	float oldSlowRate; // 変化する前のスロー処理倍率
+
 	bool isDead;        // 死んだとき
 	bool isDefense;     // 防御しているかどうか
 	bool isPlayerAtkRange; // プレイヤーに攻撃が当たるかどうか
 	bool isPlayerJustStep; // プレイヤーにジャスト回避されたかどうか
+	bool isPlayerJustStepPossible; // プレイヤーがジャスト回避可能かどうか
 	bool isTakeDamage;     // 攻撃を受けたかどうか
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
 
@@ -81,12 +84,12 @@ public:
 	bool getIsDead();    // 死んでいるかどうか
 	bool getIsTakeHit(); // 攻撃を受けた時
 	bool getIsDefense(); // 防御
+	bool getPlayerJustStep(); // プレイヤーがジャスト回避時
+	bool getPlayerJustStepPossible(); // プレイヤーがジャスト回避可能かどうか
 	bool getPlayerAtkRange(); // 攻撃がプレイヤーに当たるかどうか
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
 	float getAtkProgress(); // 攻撃の進捗度
 	float getCurrentHp(); // 現在のHP取得
-	handleActionState getBossAction(); // ボスの行動の取得
-	attackKinds getAttackKinds(); // 攻撃の種類取得
 
 	// UIで参照できるようにpublic
 	bossStatus status;

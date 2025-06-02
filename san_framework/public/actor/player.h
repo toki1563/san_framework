@@ -32,11 +32,16 @@ private:
 	void rotRoll(sanMotionData* p);
 
 	float moveLimit; // 移動制限・移動とステップで使用
+	float slowRate; // スローの際の処理倍率
+	float oldSlowRate; // 変化する前のスロー処理倍率
+
 
 	bool isDead; // 死んだとき
+	bool isStep; // 回避したかどうか
 	bool isCanAtk;	    // 攻撃可能どうか
 	bool isTakeDamage;  // 攻撃を受けたかどうか
 	bool isAtkCoolTime; // 攻撃のクールタイム
+	bool isJustStepSuccess;   // ジャスト回避
 	bool isTakeDamageDisPlay; // 攻撃受け時のプレイヤー表示
 
 public:
@@ -48,6 +53,7 @@ public:
 	void move(boss* rival);	   // プレイヤーの動き
 	void atk(boss* rival);     // プレイヤーの攻撃
 	void step(boss* rival);    // プレイヤーのステップ
+	void JustStepAttack(boss* rival); // ジャスト回避の特殊攻撃
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示

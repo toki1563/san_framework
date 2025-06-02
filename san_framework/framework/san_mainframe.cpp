@@ -153,7 +153,7 @@ void sanMainFrame::execute()
 	if (performanceCounter)
 	{
 		// フレーム終了時間を取得
-		static float frame_mec = 1.0f / 60.0f;
+		float frame_mec = 1.0f / 60.0f;
 		QueryPerformanceCounter(&finishCount);
 		count = ((float)(finishCount.QuadPart - startCount.QuadPart) / (float)freq.QuadPart);
 

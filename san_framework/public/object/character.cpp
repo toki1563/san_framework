@@ -252,7 +252,7 @@ int cCharacter::getPartsNum(void)
 	return PartsNum;
 }
 
-void cCharacter::setAnimSpeed(int speed)
+void cCharacter::setAnimSpeed(float speed)
 {
 	animSpeed = speed;
 }

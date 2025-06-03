@@ -23,10 +23,10 @@ enum class handleActionState
 
 enum class attackKinds
 {
-	NormalAttack,     // 通常攻撃
-	ContinuousAttack, // 連続攻撃
-	RangeAttack,      // 範囲攻撃
-	HeavyAttack,      // 重たい攻撃
+	NormalAtk,     // 通常攻撃
+	ContinuousAtk, // 連続攻撃
+	RangeAtk,      // 範囲攻撃
+	HeavyAtk,      // 重たい攻撃
 	Max,			  // 最大値
 };
 
@@ -60,6 +60,8 @@ private:
 
 	bool isDead;        // 死んだとき
 	bool isDefense;     // 防御しているかどうか
+	bool hasHitFirst;   // 連続攻撃の初撃が当たったかどうか
+	bool hasHitSecond;  // 連続攻撃の2連撃目が当たったかどうか
 	bool isPlayerAtkRange; // プレイヤーに攻撃が当たるかどうか
 	bool isPlayerJustStep; // プレイヤーにジャスト回避されたかどうか
 	bool isPlayerJustStepPossible; // プレイヤーがジャスト回避可能かどうか
@@ -74,7 +76,10 @@ public:
 	void NextAttackAction(player* rival); // 次の攻撃
 	void execute(player* rival); // 全体の処理
 	void defense(player* rival); // 防御
-	void atk(player* rival);     // 攻撃
+	void normalAtk(player* rival);     // 通常攻撃
+	void continuousAtk(player* rival); // 連続攻撃
+	void rangeAtk(player* rival);      // 範囲攻撃
+	void heavyAtk(player* rival);      // 重い攻撃
 	void move(player* rival);    // プレイヤーに近づく
 	void takeJustStep();         // ジャストで回避されたとき
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示

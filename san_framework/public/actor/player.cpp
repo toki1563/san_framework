@@ -301,11 +301,23 @@ void player::atk(boss* rival)
 			// 攻撃範囲なら攻撃する
 			if (dist < atkDist && degree < atkDegree)
 			{
-				//ノックバック
-				//XMVECTOR knockbackVector = playerFront * 4;
-				//XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-				//rival->setPosition(&newPosition);
-				rival->takeDamage(status.atkPower);
+				// もし敵が防御中なら
+				if (rival->getIsDefense()) 
+				{
+					// 攻撃処理
+					XMVECTOR knockbackVector = playerFront * 1.5f;
+					XMVECTOR newPosition = *getPosition() - knockbackVector;
+					setPosition(&newPosition);
+					setMotion(playerMotion[0]); // ノックバックモーション
+
+					// 影の腕と足をプレイヤーに合わせる
+					pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
+				}
+				else
+				{
+					// 防御中出なければ攻撃可能
+					rival->takeDamage(status.atkPower);
+				}
 			}
 
 			// 敵に攻撃が当たった時
@@ -381,11 +393,44 @@ void player::atk(boss* rival)
 						// 攻撃が3連目の時
 						if (atkCombo == 2)
 						{
-							rival->takeDamage(status.atkPower * 1.5);
+							// もし敵が防御中なら
+							if (rival->getIsDefense())
+							{
+								// 攻撃処理
+								XMVECTOR knockbackVector = playerFront * 2;
+								XMVECTOR newPosition = *getPosition() - knockbackVector;
+								setPosition(&newPosition);
+								setMotion(playerMotion[0]); // ノックバックモーション
+
+								// 影の腕と足をプレイヤーに合わせる
+								pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
+							}
+							else
+							{
+								// 防御中出なければ攻撃可能
+								rival->takeDamage(status.atkPower);
+							}
 						}
 						else // 攻撃が2連目の時
 						{
-							rival->takeDamage(status.atkPower * 1.2);
+							// もし敵が防御中なら
+							if (rival->getIsDefense())
+							{
+								// 攻撃処理
+								XMVECTOR knockbackVector = playerFront * 2;
+								XMVECTOR newPosition = *getPosition() - knockbackVector;
+								setPosition(&newPosition);
+								setMotion(playerMotion[0]); // ノックバックモーション
+
+								// 影の腕と足をプレイヤーに合わせる
+								pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
+
+							}
+							else
+							{
+								// 防御中出なければ攻撃可能
+								rival->takeDamage(status.atkPower);
+							}
 						}
 					}
 
@@ -753,11 +798,14 @@ void player::JustStepAttack(boss* rival)
 
 void player::takeDamage(float damage)
 {
+	if(isJustStepSuccess) return; // ジャスト回避中はダメージ受けない
+
 	if (status.health <= 0)
 	{
 		isDead = true;
 	}
 
+	setMotion(playerMotion[0]); // ダメージモーション
 	isTakeDamage = true;
 	status.health -= damage;
 }

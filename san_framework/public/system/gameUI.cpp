@@ -55,183 +55,26 @@ void gameUI::execute(player* pPlayer, boss* pBoss)
 	// HP割合に応じたプレイヤーのHPバーの位置計算
 	float hpRatio = pPlayer->status.health / pPlayer->status.maxHealth;
 	float playerHpImgPosX = initPHpImgPosX * 2 * hpRatio - initPHpImgPosX;
+	float hpDamageAnimSpeed = 0.4f; // HPのダメージアニメスピード
 
 	// 大きさは変えずに位置だけ左にずらす
 	// pPHpDamageImgはダメージアニメーション
-	if (hpRatio <= 0.0f) // HPがなくなったの時
+	pPHpImg->posX = playerHpImgPosX;
+	if (pPHpDamageImg->posX >= playerHpImgPosX)
 	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.1f) // HPが1割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.2f) // HPが2割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.3f) // HPが3割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.4f) // HPが4割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.5f) // HPが5割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.6f) // HPが6割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.7f) // HPが7割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.8f) // HPが8割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.9f) // Hが9割以上の時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		if (pPHpDamageImg->posX >= playerHpImgPosX)
-		{
-			pPHpDamageImg->posX -= 0.8f;
-		}
-	}
-	else // HPが満タンの時
-	{
-		pPHpImg->posX = playerHpImgPosX;
-		pPHpDamageImg->posX = playerHpImgPosX;
+		pPHpDamageImg->posX -= hpDamageAnimSpeed;
 	}
 
 	// HP割合に応じたボスのHPバーの位置計算
 	hpRatio = pBoss->status.health / pBoss->status.maxHealth;
 	float bossHpImgPosX = initBHpImgPosX + (minBHpImgPosX - initBHpImgPosX) * (1.0f - hpRatio);
-	// 大きさは変えずに位置だけ左にずらす
-	if (hpRatio <= 0.0f) // HPがなくなったの時
+
+	// 大きさは変えずに位置だけ右にずらす
+	// pBHpDamageImgはダメージアニメーション
+	pBHpImg->posX = bossHpImgPosX;
+	if (pBHpDamageImg->posX <= bossHpImgPosX)
 	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.1f) // HPが1割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.2f) // HPが2割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.3f) // HPが3割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.4f) // HPが4割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.5f) // HPが5割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.6f) // HPが6割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.7f) // HPが7割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.8f) // HPが8割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else if (hpRatio <= 0.9f) // Hが9割以上の時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		if (pBHpDamageImg->posX <= bossHpImgPosX)
-		{
-			pBHpDamageImg->posX += 0.8f;
-		}
-	}
-	else // HPが満タンの時
-	{
-		pBHpImg->posX = bossHpImgPosX;
-		pBHpDamageImg->posX = bossHpImgPosX;
+		pBHpDamageImg->posX += hpDamageAnimSpeed;
 	}
 
 

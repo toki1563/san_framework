@@ -51,7 +51,7 @@ boss::boss(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, bone
 	status.maxAtkPower = status.atkPower;
 	status.maxHealth = status.health;
 	handleAction = handleActionState::Defending;
-	attackAction = attackKinds::NormalAttack;
+	attackAction = attackKinds::NormalAtk;
 	oldAttackAction = attackKinds::Max; // 初めは攻撃を入れない
 
 	slowRate = 1.0f;
@@ -59,6 +59,8 @@ boss::boss(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, bone
 	atkProgress = 0.0f;
 	isDead = false;
 	isDefense = false;
+	hasHitFirst = false;  
+	hasHitSecond = false; 
 	isPlayerAtkRange = false;
 	isPlayerJustStep = false;
 	isPlayerJustStepPossible = false;
@@ -157,35 +159,39 @@ void boss::execute(player* rival)
 		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		break;
 	case handleActionState::Attacking:
-
-
-		switch (attackAction)
-		{
-		case attackKinds::NormalAttack:
-			atk(rival);
-			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
-			sanFont::print(20.0f, 350.0f, L"通常攻撃");
-			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
-			break;
-		case attackKinds::ContinuousAttack:
-			atk(rival);
+			heavyAtk(rival);
 			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 			sanFont::print(20.0f, 350.0f, L"連続攻撃");
 			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
-			break;
-		case attackKinds::RangeAttack:
-			atk(rival);
-			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
-			sanFont::print(20.0f, 350.0f, L"範囲攻撃");
-			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
-			break;
-		case attackKinds::HeavyAttack:
-			atk(rival);
-			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
-			sanFont::print(20.0f, 350.0f, L"重い攻撃");
-			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
-			break;
-		}
+
+
+		//switch (attackAction)
+		//{
+		//case attackKinds::NormalAtk:
+		//	normalAtk(rival);
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		//	sanFont::print(20.0f, 350.0f, L"通常攻撃");
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+		//	break;
+		//case attackKinds::ContinuousAtk:
+		//	continuousAtk(rival);
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		//	sanFont::print(20.0f, 350.0f, L"連続攻撃");
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+		//	break;
+		//case attackKinds::RangeAtk:
+		//	rangeAtk(rival);
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		//	sanFont::print(20.0f, 350.0f, L"範囲攻撃");
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+		//	break;
+		//case attackKinds::HeavyAtk:
+		//	heavyAtk(rival);
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
+		//	sanFont::print(20.0f, 350.0f, L"重い攻撃");
+		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
+		//	break;
+		//}
 		break;
 	case handleActionState::Moveing:
 		move(rival);
@@ -254,7 +260,7 @@ void boss::defense(player* rival)
 	setRotationY(newRotY); // 更新
 }
 
-void boss::atk(player* rival)
+void boss::normalAtk(player* rival)
 {
 	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
 
@@ -403,6 +409,466 @@ void boss::atk(player* rival)
 		//}
 	}
 }
+
+void boss::continuousAtk(player* rival)
+{
+	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
+
+	// 攻撃が始まった時
+	if (atkProgress == 0.0f)
+	{
+		setMotion(bossMotion[12]); // 攻撃モーション
+	}
+	else if (atkProgress >= atkTimeLimit / 3)
+	{
+		isPlayerJustStepPossible = true;
+	}
+
+	// プレイヤーがジャスト回避でなければ
+	if (!isPlayerJustStep)
+	{
+		atkProgress += 0.1f;
+	}
+	else // プレイヤーがジャスト回避なら※スロー効果付与
+	{
+		atkProgress += 0.1f * slowRate;
+	}
+
+	// 時間になったら
+	if (atkProgress >= atkTimeLimit)
+	{
+		atkProgress = 0.0f;
+		hasHitFirst = false;
+		hasHitSecond = false;
+		isPlayerJustStep = false;
+		isPlayerJustStepPossible = false;
+		handleAction = handleActionState::Defending; // 防御にする
+	}
+
+	// 固定値なのでメモリを削減
+	constexpr float atkDist = 3.5f;			 // 攻撃距離
+	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
+
+	// NPCの認識範囲
+	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR vDist = XMVector3Length(bossToPlayer);
+	float dist = XMVectorGetX(vDist);
+
+	XMMATRIX bossWorld = *getWorld();
+	XMVECTOR bossrFront = bossWorld.r[2]; // 前方向
+	bossrFront = XMVector3Normalize(bossrFront);
+	bossToPlayer = XMVector3Normalize(bossToPlayer);
+
+	// 内積
+	XMVECTOR vDot = XMVector3Dot(bossrFront, bossToPlayer);
+	float dot = XMVectorGetX(vDot); // cosθ
+	float radian = acosf(dot);
+	float degree = XMConvertToDegrees(radian);
+
+	// 攻撃時のデバッグライン表示開始
+	const int segments = 4; // 円弧の分割数
+	float halfAngle = atkDegree / 2.0f;
+
+	// 円弧の中心点
+	XMVECTOR center = *getPosition();
+
+	// 前方向を基準に左右の範囲を計算
+	for (int i = 0; i < segments; ++i)
+	{
+		float theta1 = -halfAngle + (atkDegree / segments) * i;          // 現在の角度
+		float theta2 = -halfAngle + (atkDegree / segments) * (i + 1);    // 次の角度
+
+		// 現在の角度での方向を計算
+		XMVECTOR dir1 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta1)));
+		XMVECTOR dir2 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta2)));
+
+		// 各方向に距離を掛けてポイントを計算
+		XMVECTOR point1 = center + dir1 * atkDist;
+		XMVECTOR point2 = center + dir2 * atkDist;
+
+		// デバッグ表示をジャスト回避できるときできない時で色を変更
+		if (isPlayerJustStepPossible)
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FF00);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FF00); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FF00);
+		}
+		else
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FFFF);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FFFF); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FFFF);
+		}
+	}
+	// 攻撃時のデバッグライン表示終了
+
+	// 認識範囲に入っているか
+	if (dist < atkDist && degree < atkDegree)
+	{
+		// プレイヤーが攻撃が当たる範囲にいるかどうか
+		isPlayerAtkRange = true;
+
+		// 攻撃が半分以上の時(一度のみ攻撃を与える)
+		if (atkProgress >= atkTimeLimit / 2 && !hasHitFirst)
+		{
+			rival->takeDamage(status.atkPower / 2); // 2分の1ダメージ
+			hasHitFirst = true; // 攻撃を与えた
+		}
+		else if (atkProgress >= atkTimeLimit - 1.0f && !hasHitSecond)
+		{
+			// 攻撃処理
+			XMVECTOR knockbackVector = bossrFront * 4;
+			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
+			rival->setPosition(&newPosition);
+
+			rival->takeDamage(status.atkPower * 2 / 3); // 4分の3ダメージ
+			hasHitSecond = true; // 攻撃を与えた
+		}
+	}
+	else
+	{
+		isPlayerAtkRange = false;
+	}
+
+	// 敵に当たった時
+	if (rival->getIsTakeHit())
+	{
+		// SE再生
+		// もし再生中なら停止する
+		//if (pSe[0]->isPlaying() == true)
+		//{
+		//	pSe[0]->stop();
+		//}
+		//if (pSe[0]->isPlaying() == false)
+		//{
+		//	pSe[0]->play();
+		//}
+	}
+	else
+	{
+		// SE再生
+		// もし再生中なら停止する
+		//if (pSe[1]->isPlaying() == true)
+		//{
+		//	pSe[1]->stop();
+		//}
+		//if (pSe[1]->isPlaying() == false)
+		//{
+		//	pSe[1]->play();
+		//}
+	}
+}
+
+void boss::rangeAtk(player* rival)
+{
+	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
+
+	// 攻撃が始まった時
+	if (atkProgress == 0.0f)
+	{
+		setMotion(bossMotion[12]); // 攻撃モーション
+	}
+	else if (atkProgress >= atkTimeLimit / 3)
+	{
+		isPlayerJustStepPossible = true;
+	}
+
+	// プレイヤーがジャスト回避でなければ
+	if (!isPlayerJustStep)
+	{
+		atkProgress += 0.1f;
+	}
+	else // プレイヤーがジャスト回避なら※スロー効果付与
+	{
+		atkProgress += 0.1f * slowRate;
+	}
+
+	// 時間になったら
+	if (atkProgress >= atkTimeLimit)
+	{
+		atkProgress = 0.0f;
+		isPlayerJustStep = false;
+		isPlayerJustStepPossible = false;
+		handleAction = handleActionState::Defending; // 防御にする
+	}
+
+	// 固定値なのでメモリを削減
+	constexpr float atkDist = 3.5f;			 // 攻撃距離
+	constexpr float atkDegree = 360.0f;		 // 攻撃範囲
+
+	// NPCの認識範囲
+	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR vDist = XMVector3Length(bossToPlayer);
+	float dist = XMVectorGetX(vDist);
+
+	XMMATRIX bossWorld = *getWorld();
+	XMVECTOR bossrFront = bossWorld.r[2]; // 前方向
+	bossrFront = XMVector3Normalize(bossrFront);
+	bossToPlayer = XMVector3Normalize(bossToPlayer);
+
+	// 内積
+	XMVECTOR vDot = XMVector3Dot(bossrFront, bossToPlayer);
+	float dot = XMVectorGetX(vDot); // cosθ
+	float radian = acosf(dot);
+	float degree = XMConvertToDegrees(radian);
+
+	// 攻撃時のデバッグライン表示開始
+	const int segments = 4; // 円弧の分割数
+	float halfAngle = atkDegree / 2.0f;
+
+	// 円弧の中心点
+	XMVECTOR center = *getPosition();
+
+	// 前方向を基準に左右の範囲を計算
+	for (int i = 0; i < segments; ++i)
+	{
+		float theta1 = -halfAngle + (atkDegree / segments) * i;          // 現在の角度
+		float theta2 = -halfAngle + (atkDegree / segments) * (i + 1);    // 次の角度
+
+		// 現在の角度での方向を計算
+		XMVECTOR dir1 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta1)));
+		XMVECTOR dir2 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta2)));
+
+		// 各方向に距離を掛けてポイントを計算
+		XMVECTOR point1 = center + dir1 * atkDist;
+		XMVECTOR point2 = center + dir2 * atkDist;
+
+		// デバッグ表示をジャスト回避できるときできない時で色を変更
+		if (isPlayerJustStepPossible)
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FF00);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FF00); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FF00);
+		}
+		else
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FFFF);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FFFF); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FFFF);
+		}
+	}
+	// 攻撃時のデバッグライン表示終了
+
+	// 認識範囲に入っているか
+	if (dist < atkDist && degree < atkDegree)
+	{
+		// プレイヤーが攻撃が当たる範囲にいるかどうか
+		isPlayerAtkRange = true;
+
+		// 攻撃が半分以上の時
+		if (atkProgress >= atkTimeLimit / 2)
+		{
+			// 攻撃処理
+			XMVECTOR knockbackVector = bossrFront * 4;
+			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
+			rival->setPosition(&newPosition);
+			rival->takeDamage(status.atkPower);
+		}
+	}
+	else
+	{
+		isPlayerAtkRange = false;
+	}
+
+	// 敵に当たった時
+	if (rival->getIsTakeHit())
+	{
+		// SE再生
+		// もし再生中なら停止する
+		//if (pSe[0]->isPlaying() == true)
+		//{
+		//	pSe[0]->stop();
+		//}
+		//if (pSe[0]->isPlaying() == false)
+		//{
+		//	pSe[0]->play();
+		//}
+	}
+	else
+	{
+		// SE再生
+		// もし再生中なら停止する
+		//if (pSe[1]->isPlaying() == true)
+		//{
+		//	pSe[1]->stop();
+		//}
+		//if (pSe[1]->isPlaying() == false)
+		//{
+		//	pSe[1]->play();
+		//}
+	}
+}
+
+void boss::heavyAtk(player* rival)
+{
+	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
+
+	// 攻撃が始まった時
+	if (atkProgress == 0.0f)
+	{
+		setMotion(bossMotion[12]); // 攻撃モーション
+	}
+	else if (atkProgress >= atkTimeLimit / 3)
+	{
+		isPlayerJustStepPossible = true;
+	}
+
+	// プレイヤーがジャスト回避でなければ
+	if (!isPlayerJustStep)
+	{
+		atkProgress += 0.1f;
+	}
+	else // プレイヤーがジャスト回避なら※スロー効果付与
+	{
+		atkProgress += 0.1f * slowRate;
+	}
+
+	// 時間になったら
+	if (atkProgress >= atkTimeLimit)
+	{
+		atkProgress = 0.0f;
+		isPlayerJustStep = false;
+		isPlayerJustStepPossible = false;
+		handleAction = handleActionState::Defending; // 防御にする
+	}
+
+	// 固定値なのでメモリを削減
+	constexpr float atkDist = 3.5f;			 // 攻撃距離
+	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
+
+	// NPCの認識範囲
+	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR vDist = XMVector3Length(bossToPlayer);
+	float dist = XMVectorGetX(vDist);
+
+	XMMATRIX bossWorld = *getWorld();
+	XMVECTOR bossrFront = bossWorld.r[2]; // 前方向
+	bossrFront = XMVector3Normalize(bossrFront);
+	bossToPlayer = XMVector3Normalize(bossToPlayer);
+
+	// 内積
+	XMVECTOR vDot = XMVector3Dot(bossrFront, bossToPlayer);
+	float dot = XMVectorGetX(vDot); // cosθ
+	float radian = acosf(dot);
+	float degree = XMConvertToDegrees(radian);
+
+	// 攻撃時のデバッグライン表示開始
+	const int segments = 4; // 円弧の分割数
+	float halfAngle = atkDegree / 2.0f;
+
+	// 円弧の中心点
+	XMVECTOR center = *getPosition();
+
+	// 前方向を基準に左右の範囲を計算
+	for (int i = 0; i < segments; ++i)
+	{
+		float theta1 = -halfAngle + (atkDegree / segments) * i;          // 現在の角度
+		float theta2 = -halfAngle + (atkDegree / segments) * (i + 1);    // 次の角度
+
+		// 現在の角度での方向を計算
+		XMVECTOR dir1 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta1)));
+		XMVECTOR dir2 = XMVector3Transform(bossrFront,
+			XMMatrixRotationY(XMConvertToRadians(theta2)));
+
+		// 各方向に距離を掛けてポイントを計算
+		XMVECTOR point1 = center + dir1 * atkDist;
+		XMVECTOR point2 = center + dir2 * atkDist;
+
+		// デバッグ表示をジャスト回避できるときできない時で色を変更
+		if (isPlayerJustStepPossible)
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FF00);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FF00); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FF00);
+		}
+		else
+		{
+			// デバッグラインを描画
+			sanDebugDraw::Line(&center, &point1, 0xFF00FFFF);  // 中心から外へ
+			sanDebugDraw::Line(&point1, &point2, 0xFF00FFFF); // 円弧の外周を繋ぐ
+			// 右端の点を更新
+			XMVECTOR lastPoint = point2;
+			// 右端の点から中心への線を描画
+			sanDebugDraw::Line(&lastPoint, &center, 0xFF00FFFF);
+		}
+	}
+	// 攻撃時のデバッグライン表示終了
+
+	// 認識範囲に入っているか
+	if (dist < atkDist && degree < atkDegree)
+	{
+		// プレイヤーが攻撃が当たる範囲にいるかどうか
+		isPlayerAtkRange = true;
+
+		// 攻撃が半分以上の時
+		if (atkProgress >= atkTimeLimit / 2)
+		{
+			// 攻撃処理
+			XMVECTOR knockbackVector = bossrFront * 4;
+			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
+			rival->setPosition(&newPosition);
+			rival->takeDamage(status.atkPower * 2);
+		}
+	}
+	else
+	{
+		isPlayerAtkRange = false;
+	}
+
+	// 敵に当たった時
+	if (rival->getIsTakeHit())
+	{
+		// SE再生
+		// もし再生中なら停止する
+		//if (pSe[0]->isPlaying() == true)
+		//{
+		//	pSe[0]->stop();
+		//}
+		//if (pSe[0]->isPlaying() == false)
+		//{
+		//	pSe[0]->play();
+		//}
+	}
+	else
+	{
+		// SE再生
+		// もし再生中なら停止する
+		//if (pSe[1]->isPlaying() == true)
+		//{
+		//	pSe[1]->stop();
+		//}
+		//if (pSe[1]->isPlaying() == false)
+		//{
+		//	pSe[1]->play();
+		//}
+	}
+}
+
 
 void boss::move(player* rival)
 {

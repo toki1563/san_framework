@@ -81,6 +81,7 @@ void SceneMainGame::execute()
 	pBoss->execute(pPlayer);
 	pGameUI->execute(pPlayer, pBoss);
 	pGameCamera->battleCamera(pPlayer, pBoss);
+	pGameCamera->justAvoidCamera(pPlayer, pBoss);
 }
 
 //描画関数

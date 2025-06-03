@@ -33,8 +33,6 @@ private:
 	float initBHpImgPosX;
 	float minBHpImgPosX;
 
-
-
 public:
 	gameUI();
 	~gameUI();

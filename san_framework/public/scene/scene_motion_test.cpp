@@ -1,12 +1,14 @@
 #include "../../framework.h"
 #include "../../framework/san_environment.h"
 
-#define OUTPUT_MOTION_DATA (1)
+#define OUTPUT_MOTION_DATA (0)
 
 #define FULL_PATH_MAX	(256)
 #define FILE_PATH_MAX	(128)
 
 WCHAR motionFolder[] = L"data/model/BoxUnityChan/motion/";
+
+
 
 WCHAR motionFile[][FILE_PATH_MAX] =
 {
@@ -35,6 +37,7 @@ WCHAR motionFile[][FILE_PATH_MAX] =
 	L"WALK00_R.mot",
 	L"WIN00.mot",
 };
+
 
 //初期化
 bool SceneMotionTest::initialize()
@@ -66,6 +69,7 @@ bool SceneMotionTest::initialize()
 
 	//キャラクターの作成
 	pCharacter = new cCharacter(L"data/model/BoxUnityChan/", L"BoxUnityChan.bone");
+
 	//キャラクターとパーツの登録
 	registerObject(pCharacter);
 	for (int i = 0; i < pCharacter->getPartsNum(); i++)
@@ -73,7 +77,7 @@ bool SceneMotionTest::initialize()
 		registerObject(pCharacter->getParts(i));
 	}
 
-	//pCharacter->setMotion(motion[0]);
+	// pCharacter->setMotion(motion[0]);
 
 	Cursor = 0;
 
@@ -136,6 +140,20 @@ void SceneMotionTest::execute()
 		sanFont::print(30.0f, 130.0f + 20.0f * (float)i, col, &motionFile[i][0]);
 		sanFont::print(200.0f, 130.0f + 20.0f * (float)i, col, L"%d", motion[i]->ChannelNum);
 		sanFont::print(350.0f, 130.0f + 20.0f * (float)i, col, L"%d", motion[i]->KeyFrameNum);
+	}
+
+	// キャラクターのパーツを取得してsanObject* 
+	for (int i = 0; i < pCharacter->getPartsNum(); i++)
+	{
+		sanObject* pChild = pCharacter->getParts(i);
+		if (pChild == NULL) continue;
+		sanObject* pParent = pChild->getParent();
+		if (pParent == NULL) continue;
+
+		XMVECTOR v, m;
+		pChild->getWorldPosition(&v);
+		pParent->getWorldPosition(&m);
+		sanDebugDraw::Line(&v, &m);
 	}
 
 	sanDebugDraw::Grid();

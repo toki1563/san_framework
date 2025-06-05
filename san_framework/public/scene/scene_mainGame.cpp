@@ -20,6 +20,13 @@ bool SceneMainGame::initialize()
 	pGround->setLighting(false); // ライティング無効
 	pSky->setLighting(false);
 
+	// 各クラスでポインタをセット(参照用)
+	pPlayer->setBoss(pBoss); 
+	pBoss->setPlayer(pPlayer); 
+	pGameUI->setCharaPtr(pPlayer, pBoss);
+	pGameCamera->setCharaPtr(pPlayer, pBoss);
+
+
 	pPlayer->setScale(1.5f, 1.5f, 1.5f);
 	pBoss->setScale(2.0f, 2.0f, 2.0f);
 
@@ -77,11 +84,10 @@ void SceneMainGame::execute()
 	//	pBgm->play();
 	//}
 
-	pPlayer->execute(pBoss);
-	pBoss->execute(pPlayer);
-	pGameUI->execute(pPlayer, pBoss);
-	pGameCamera->battleCamera(pPlayer, pBoss);
-	pGameCamera->justAvoidCamera(pPlayer, pBoss);
+	//pPlayer->execute();
+	pGameUI->execute();
+	pGameCamera->battleCamera();
+	pGameCamera->justAvoidCamera();
 }
 
 //描画関数

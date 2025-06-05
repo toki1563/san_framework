@@ -37,6 +37,12 @@
     <Filter Include="public\actor">
       <UniqueIdentifier>{032e250a-c393-4516-837a-2f5d2dc1788b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="public\actor\player">
+      <UniqueIdentifier>{36cad694-9870-4f04-9830-547e81652316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\actor\boss">
+      <UniqueIdentifier>{722c793b-6913-4196-89ad-0096def89592}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework\directX\san_Direct2D.cpp">
@@ -174,12 +180,6 @@
     <ClCompile Include="public\scene\scene_mainGame.cpp">
       <Filter>public\scene</Filter>
     </ClCompile>
-    <ClCompile Include="public\actor\boss.cpp">
-      <Filter>public\actor</Filter>
-    </ClCompile>
-    <ClCompile Include="public\actor\player.cpp">
-      <Filter>public\actor</Filter>
-    </ClCompile>
     <ClCompile Include="public\object\character.cpp">
       <Filter>public\actor</Filter>
     </ClCompile>
@@ -191,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="public\system\gameSystem.cpp">
       <Filter>public\system</Filter>
+    </ClCompile>
+    <ClCompile Include="public\actor\boss\boss.cpp">
+      <Filter>public\actor\boss</Filter>
+    </ClCompile>
+    <ClCompile Include="public\actor\player\player.cpp">
+      <Filter>public\actor\player</Filter>
+    </ClCompile>
+    <ClCompile Include="public\actor\player\playerStatus.cpp">
+      <Filter>public\actor\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,12 +353,6 @@
     <ClInclude Include="public\scene\scene_mainGame.h">
       <Filter>public\scene</Filter>
     </ClInclude>
-    <ClInclude Include="public\actor\boss.h">
-      <Filter>public\actor</Filter>
-    </ClInclude>
-    <ClInclude Include="public\actor\player.h">
-      <Filter>public\actor</Filter>
-    </ClInclude>
     <ClInclude Include="public\object\character.h">
       <Filter>public\actor</Filter>
     </ClInclude>
@@ -361,6 +364,15 @@
     </ClInclude>
     <ClInclude Include="public\system\gameSystem.h">
       <Filter>public\system</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\boss\boss.h">
+      <Filter>public\actor\boss</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\player\player.h">
+      <Filter>public\actor\player</Filter>
+    </ClInclude>
+    <ClInclude Include="public\actor\player\playerStatus.h">
+      <Filter>public\actor\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

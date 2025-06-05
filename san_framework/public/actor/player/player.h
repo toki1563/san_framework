@@ -19,6 +19,7 @@ class player : public cCharacter
 private:
 	sanModel* pShadow; // 影のモデル
 	sanSound* pSe[3];  // SE
+	boss* pBoss;       // ボスのポインタ
 
 	//モーションの数
 	int playerMotionNum;
@@ -49,19 +50,19 @@ public:
 	~player();
 	
 
-	void execute(boss* rival); // 全体の処理
-	void move(boss* rival);	   // プレイヤーの動き
-	void atk(boss* rival);     // プレイヤーの攻撃
-	void step(boss* rival);    // プレイヤーのステップ
-	void JustStepAttack(boss* rival); // ジャスト回避の特殊攻撃
+	void execute(); // 全体の処理
+	void move();	   // プレイヤーの動き
+	void atk();     // プレイヤーの攻撃
+	void step();    // プレイヤーのステップ
+	void JustStepAttack(); // ジャスト回避の特殊攻撃
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
+	void setBoss(boss* pBoss);
 	bool getIsDead();    // 死んでいるかどうか
 	bool getIsTakeHit(); // 攻撃を受けた時
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
 	float getCurrentTime(); // ゲーム開始から現在の時間を取得
 
-	// UIで参照できるようにpublic
 	playerStatus status; // プレイヤーのステータス
 };

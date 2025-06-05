@@ -59,8 +59,10 @@ public:
 	// パーツを名前で取得
 	sanObject* getParts(char* name);
 
+	// アニメスピードの変更
 	void setAnimSpeed(float speed);
 
+	// 同じモーションの際無視するかどうか
 	void setMotionSameIgnore(bool ismotionIgnore);
 
 	// モーション終了フラグ

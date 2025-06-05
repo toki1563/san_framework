@@ -35,6 +35,7 @@ class boss : public cCharacter
 private:
 	sanModel* pShadow; // 影のモデル
 	sanSound* pSe[2]; // SE
+	player* pPlayer;       // プレイヤーのポインタ
 
 	//モーションの数
 	int bossMotionNum;
@@ -72,19 +73,20 @@ public:
 	boss(const WCHAR* folder, const WCHAR* boneFile);
 	~boss();
 
-	void DecideNextAction(player* rival); // 次の行動
-	void NextAttackAction(player* rival); // 次の攻撃
-	void execute(player* rival); // 全体の処理
-	void defense(player* rival); // 防御
-	void normalAtk(player* rival);     // 通常攻撃
-	void continuousAtk(player* rival); // 連続攻撃
-	void rangeAtk(player* rival);      // 範囲攻撃
-	void heavyAtk(player* rival);      // 重い攻撃
-	void move(player* rival);    // プレイヤーに近づく
+	void DecideNextAction(); // 次の行動
+	void NextAttackAction(); // 次の攻撃
+	void execute(); // 全体の処理
+	void defense(); // 防御
+	void normalAtk();     // 通常攻撃
+	void continuousAtk(); // 連続攻撃
+	void rangeAtk();      // 範囲攻撃
+	void heavyAtk();      // 重い攻撃
+	void move();    // プレイヤーに近づく
 	void takeJustStep();         // ジャストで回避されたとき
 	void takeDamage(float damage); // ダメージ受け時のプレイヤー表示
 	void damageDisplay(); // 攻撃受け時の画面表示
 	void playerAllRender(); // プレイヤーの影の表示
+	void setPlayer(player* pPlayer); // プレイヤーを取得
 	bool playerCloseSearch(player* rival); // プレイヤーが近くにいるか判定
 	bool getIsDead();    // 死んでいるかどうか
 	bool getIsTakeHit(); // 攻撃を受けた時

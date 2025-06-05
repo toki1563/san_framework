@@ -3,6 +3,10 @@
 
 gameCamera::gameCamera()
 {
+	// ポインタ初期化
+	pPlayer = nullptr;
+	pBoss = nullptr;
+
 	// カメラ距離・補間設定
 	cameraDistance = 3.5f; // カメラの距離
 	rightOffset = 0.8f;    // 右にずらす値を調整
@@ -25,8 +29,10 @@ gameCamera::~gameCamera()
 }
 
 // ゲーム内でのカメラの処理
-void gameCamera::battleCamera(player* pPlayer, boss* pBoss)
+void gameCamera::battleCamera()
 {
+	if (pPlayer == nullptr || pBoss == nullptr) return; // 値がなければ処理しない
+
 	// ジャスト回避時状態は処理しない
 	if(pBoss->getPlayerJustStep()) return;
 
@@ -65,8 +71,10 @@ void gameCamera::battleCamera(player* pPlayer, boss* pBoss)
 	}
 }
 
-void gameCamera::justAvoidCamera(player* pPlayer, boss* pBoss)
+void gameCamera::justAvoidCamera()
 {
+	if(pPlayer == nullptr || pBoss == nullptr) return; // 値がなければ処理しない
+
 	// ジャスト回避時i以外の状態は処理しない
 	if (!pBoss->getPlayerJustStep()) return;
 
@@ -105,4 +113,10 @@ void gameCamera::justAvoidCamera(player* pPlayer, boss* pBoss)
 	midPoint = XMVectorAdd(midPoint, XMVectorSet(0.0f, 1.5f, 0.0f, 0.0f));
 	currentCameraTarget = midPoint;
 	sanCamera::setTarget(&currentCameraTarget);
+}
+
+void gameCamera::setCharaPtr(player* pPlayer, boss* pBoss)
+{
+	this->pPlayer = pPlayer;
+	this->pBoss = pBoss;
 }

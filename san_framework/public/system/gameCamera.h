@@ -3,6 +3,9 @@
 class gameCamera
 {
 private:
+	player* pPlayer; // プレイヤーのポインタ
+	boss* pBoss;     // ボスのポインタ
+
 	// カメラ距離・補間設定
 	float cameraDistance;
 	float rightOffset;
@@ -20,6 +23,7 @@ private:
 public:
 	gameCamera();
 	~gameCamera();
-	void battleCamera(player* pPlayer, boss* pBoss);
-	void justAvoidCamera(player* pPlayer, boss* pBoss);
+	void battleCamera();
+	void justAvoidCamera();
+	void setCharaPtr(player* pPlayer, boss* pBoss); // キャラのポインタ取得
 };

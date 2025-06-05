@@ -24,6 +24,11 @@ gameUI::gameUI()
 	pBHPBackImg = new sanSprite(initBHpImgPosX, 75.0f, -350.0f, -30.0f, L"data/image/game/hpBackImg.png");    // 同上
 	pUIBackGround[0] = new sanSprite(initPHpImgPosX, 60.f, 380.0f, 90.0f, L"data/image/game/UIBackGround.png");
 	pUIBackGround[1] = new sanSprite(initBHpImgPosX, 60.f, 380.0f, 90.0f, L"data/image/game/UIBackGround.png");
+
+	// ポインタ初期化
+	pPlayer = nullptr;
+	pBoss = nullptr;
+
 	// 画像透過処理
 	pPStaminaBackImg->vtx[0].a = 0.5f;	pPStaminaBackImg->vtx[1].a = 0.5f;
 	pUIBackGround[0]->vtx[0].a = 0.6f;	pUIBackGround[0]->vtx[1].a = 0.6f;
@@ -50,8 +55,10 @@ gameUI::~gameUI()
 }
 
 // 処理関数
-void gameUI::execute(player* pPlayer, boss* pBoss)
+void gameUI::execute()
 {
+	if (pPlayer == nullptr || pBoss == nullptr) return; // 値がなければ処理しない
+
 	// HP割合に応じたプレイヤーのHPバーの位置計算
 	float hpRatio = pPlayer->status.health / pPlayer->status.maxHealth;
 	float playerHpImgPosX = initPHpImgPosX * 2 * hpRatio - initPHpImgPosX;
@@ -114,7 +121,6 @@ void gameUI::execute(player* pPlayer, boss* pBoss)
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 35));
 	sanFont::print(970.0f, 15.0f, L"-Boss-");
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
-
 }
 
 // 描画関数
@@ -146,4 +152,11 @@ void gameUI::render()
 		pPStaminaImg[Small]->render();
 		break;
 	}
+}
+
+// キャラのポインタをセット
+void gameUI::setCharaPtr(player* pPlayer, boss* pBoss)
+{
+	this->pPlayer = pPlayer;
+	this->pBoss = pBoss;
 }

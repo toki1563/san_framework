@@ -12,13 +12,17 @@ enum staminaUI
 class gameUI
 {
 private:
-	// プレイヤーの画像
 	sanSprite* pPHpImg; // HPの画像
 	sanSprite* pPHpDamageImg; // ダメージアニメの画像
 	sanSprite* pPStaminaImg[3]; //スタミナの画像(大・中・小)量によって変更
 	sanSprite* pPHpBackImg;  // HPの画像の背景
 	sanSprite* pPStaminaBackImg; // スタミナの画像の背景
 	sanSprite* pUIBackGround[2]; // UIの背景
+
+	player* pPlayer; // プレイヤーのポインタ
+	boss* pBoss;     // ボスのポインタ
+
+
 	// プレイヤーの画像の初期Xの位置
 	float initPHpImgPosX; 
 	float initPStaminaImgPosX;
@@ -37,6 +41,7 @@ public:
 	gameUI();
 	~gameUI();
 
-	void execute(player* pPlayer, boss* pBoss);
+	void execute();
 	void render();
+	void setCharaPtr(player* pPlayer, boss* pBoss); // キャラのポインタ取得
 };

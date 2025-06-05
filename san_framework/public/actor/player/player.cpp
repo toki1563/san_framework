@@ -1,5 +1,5 @@
-﻿#include "../../framework.h"
-#include "../../framework/san_environment.h"
+﻿#include "../../../framework.h"
+#include "../../../framework/san_environment.h"
 #include "player.h"
 
 #define OUTPUT_MOTION_DATA (0)
@@ -44,6 +44,7 @@ player::player(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, 
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
 	pSe[1] = new sanSound(L"data/sound/nothitatk.wav");
 	pSe[2] = new sanSound(L"data/sound/roll.wav");
+	pBoss = nullptr; // 値を入れない
 
 	// 初期化
 	status.atkPower = 10.0f;
@@ -103,21 +104,29 @@ player::~player()
 		playerMotion[i] = NULL;
 	}
 
+	pBoss = nullptr; // 安全のため
 	delete pShadow;
 }
 
-void player::execute(boss* rival)
+void player::execute()
 {
+	if (pBoss == nullptr) return; // ボスに値がないから処理しない
+
 	if (isDead) // 死んだとき
 	{
 		// 死んだアニメーションさせる
 		return;
 	}
-	move(rival);
-	step(rival);
-	atk(rival);
-	JustStepAttack(rival);
+
+	// 基底クラスを呼び出す
+	cCharacter::execute();
+
+	move();
+	step();
+	atk();
+	JustStepAttack();
 	damageDisplay();
+
 
 	// ゲーム内でスロー倍率が変化した際に付与
 	if (SceneMainGame::slowRate != oldSlowRate)
@@ -144,7 +153,7 @@ void player::execute(boss* rival)
 	}
 }
 
-void player::move(boss* rival)
+void player::move()
 {
 	if (!isCanAtk) return; // 攻撃している時は移動しない
 	if(isJustStepSuccess) return; // 回避中は移動しない
@@ -155,9 +164,9 @@ void player::move(boss* rival)
 	constexpr float stopDistance = 3.0f;
 
 	XMVECTOR playerPos = *(getPosition());
-	XMVECTOR rivalPos = *(rival->getPosition());
+	XMVECTOR bossPos = *(pBoss->getPosition());
 
-	XMVECTOR vToRival = XMVectorSubtract(rivalPos, playerPos);
+	XMVECTOR vToRival = XMVectorSubtract(bossPos, playerPos);
 	float distToRival = XMVectorGetX(XMVector3Length(vToRival));
 	float angleToRival = atan2f(XMVectorGetX(vToRival), XMVectorGetZ(vToRival));
 
@@ -219,7 +228,7 @@ void player::move(boss* rival)
 	pShadow->setPosition(getPositionX(), getPositionY() + 0.01f, getPositionZ());
 }
 
-void player::atk(boss* rival)
+void player::atk()
 {
 	if (isJustStepSuccess) return; // ジャスト回避中は攻撃しない
 
@@ -241,7 +250,7 @@ void player::atk(boss* rival)
 	sanFont::print(20.0f, 220.0f, L"クールタイムの進捗度 : %.3f", atkCoolTimeProgress);
 
 	// NPCの認識範囲
-	XMVECTOR playerToEnemy = *rival->getPosition() - *getPosition();
+	XMVECTOR playerToEnemy = *pBoss->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(playerToEnemy);
 	float dist = XMVectorGetX(vDist);
 
@@ -302,7 +311,7 @@ void player::atk(boss* rival)
 			if (dist < atkDist && degree < atkDegree)
 			{
 				// もし敵が防御中なら
-				if (rival->getIsDefense()) 
+				if (pBoss->getIsDefense()) 
 				{
 					// 攻撃処理
 					XMVECTOR knockbackVector = playerFront * 1.5f;
@@ -316,12 +325,12 @@ void player::atk(boss* rival)
 				else
 				{
 					// 防御中出なければ攻撃可能
-					rival->takeDamage(status.atkPower);
+					pBoss->takeDamage(status.atkPower);
 				}
 			}
 
 			// 敵に攻撃が当たった時
-			if (rival->getIsTakeHit())
+			if (pBoss->getIsTakeHit())
 			{
 				// SE再生
 				// もし再生中なら停止する
@@ -387,14 +396,14 @@ void player::atk(boss* rival)
 					{
 						//ノックバック
 						//XMVECTOR knockbackVector = playerFront * 4;
-						//XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-						//rival->setPosition(&newPosition);
+						//XMVECTOR newPosition = *pBoss->getPosition() + knockbackVector;
+						//pBoss->setPosition(&newPosition);
 
 						// 攻撃が3連目の時
 						if (atkCombo == 2)
 						{
 							// もし敵が防御中なら
-							if (rival->getIsDefense())
+							if (pBoss->getIsDefense())
 							{
 								// 攻撃処理
 								XMVECTOR knockbackVector = playerFront * 2;
@@ -408,13 +417,13 @@ void player::atk(boss* rival)
 							else
 							{
 								// 防御中出なければ攻撃可能
-								rival->takeDamage(status.atkPower);
+								pBoss->takeDamage(status.atkPower);
 							}
 						}
 						else // 攻撃が2連目の時
 						{
 							// もし敵が防御中なら
-							if (rival->getIsDefense())
+							if (pBoss->getIsDefense())
 							{
 								// 攻撃処理
 								XMVECTOR knockbackVector = playerFront * 2;
@@ -429,13 +438,13 @@ void player::atk(boss* rival)
 							else
 							{
 								// 防御中出なければ攻撃可能
-								rival->takeDamage(status.atkPower);
+								pBoss->takeDamage(status.atkPower);
 							}
 						}
 					}
 
 					// 敵に攻撃が当たった時
-					if (rival->getIsTakeHit())
+					if (pBoss->getIsTakeHit())
 					{
 						// SE再生
 						// もし再生中なら停止する
@@ -480,7 +489,7 @@ void player::atk(boss* rival)
 	}
 }
 
-void player::step(boss* rival)
+void player::step()
 {
 	static float lastLeftTime = -1.0f;
 	static float lastRightTime = -1.0f;
@@ -499,11 +508,11 @@ void player::step(boss* rival)
 	XMVECTOR moveVec = XMVectorZero(); // 移動値ベクトル
 
 	// 敵と自身の位置を取得
-	XMVECTOR rivalPos = *(rival->getPosition());
+	XMVECTOR bossPos = *(pBoss->getPosition());
 	XMVECTOR playerPos = *(getPosition());
 
 	// プレイヤーから敵へのベクトルと距離を計算
-	XMVECTOR vToRival = XMVectorSubtract(rivalPos, playerPos);
+	XMVECTOR vToRival = XMVectorSubtract(bossPos, playerPos);
 	float distToRival = XMVectorGetX(XMVector3Length(vToRival));
 
 	// 敵を中心としたプレイヤーの角度を計算
@@ -588,12 +597,12 @@ void player::step(boss* rival)
 			if (currentTime - lastRightTime <= doubleClickTime)
 			{
 				// この時に敵の攻撃範囲に入っているかどうか
-				bool enemyAtkRangeInside = rival->getPlayerAtkRange();
+				bool enemyAtkRangeInside = pBoss->getPlayerAtkRange();
 
 				// 攻撃範囲内でジャスト回避可能な状態かどうか
-				if (enemyAtkRangeInside && rival->getPlayerJustStepPossible())
+				if (enemyAtkRangeInside && pBoss->getPlayerJustStepPossible())
 				{
-					rival->takeJustStep(); // ジャストステップした通知を送る
+					pBoss->takeJustStep(); // ジャストステップした通知を送る
 					isJustStepSuccess = true; // ジャスト回避成功フラグ
 				}
 
@@ -628,12 +637,12 @@ void player::step(boss* rival)
 			if (currentTime - lastLeftTime <= doubleClickTime)
 			{
 				// この時に敵の攻撃範囲に入っているかどうか
-				bool enemyAtkRangeInside = rival->getPlayerAtkRange();
+				bool enemyAtkRangeInside = pBoss->getPlayerAtkRange();
 
 				// 攻撃範囲内でジャスト回避可能な状態かどうか
-				if (enemyAtkRangeInside && rival->getPlayerJustStepPossible())
+				if (enemyAtkRangeInside && pBoss->getPlayerJustStepPossible())
 				{
-					rival->takeJustStep(); // ジャストステップした通知を送る
+					pBoss->takeJustStep(); // ジャストステップした通知を送る
 					isJustStepSuccess = true; // ジャスト回避成功フラグ
 				}
 
@@ -664,7 +673,7 @@ void player::step(boss* rival)
 	}
 }
 
-void player::JustStepAttack(boss* rival)
+void player::JustStepAttack()
 {
 	if (isStep) return; // 回避が終わってから
 	if (!isJustStepSuccess) return; // ジャスト回避時以外は処理しない
@@ -681,7 +690,7 @@ void player::JustStepAttack(boss* rival)
 	sanFont::print(120.0f, 200.0f, L"slowRate : %.3f", slowRate);
 
 	// NPCの認識範囲
-	XMVECTOR playerToEnemy = *rival->getPosition() - *getPosition();
+	XMVECTOR playerToEnemy = *pBoss->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(playerToEnemy);
 	float dist = XMVectorGetX(vDist);
 
@@ -740,11 +749,11 @@ void player::JustStepAttack(boss* rival)
 		if (dist < atkDist && degree < atkDegree)
 		{
 			// 攻撃判定
-			rival->takeDamage(status.atkPower * 2);
+			pBoss->takeDamage(status.atkPower * 2);
 		}
 
 		// 敵に攻撃が当たった時
-		if (rival->getIsTakeHit())
+		if (pBoss->getIsTakeHit())
 		{
 			// SE再生
 			// もし再生中なら停止する
@@ -858,6 +867,12 @@ void player::playerAllRender()
 
 	pShadow->render();
 	render();
+}
+
+void player::setBoss(boss* pBoss)
+{
+	// ボスのポインタを取得
+	this->pBoss = pBoss;
 }
 
 bool player::getIsDead()

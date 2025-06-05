@@ -1,5 +1,5 @@
-﻿#include "../../framework.h"
-#include "../../framework/san_environment.h"
+﻿#include "../../../framework.h"
+#include "../../../framework/san_environment.h"
 #include "boss.h"
 
 
@@ -45,6 +45,7 @@ boss::boss(const WCHAR* folder, const WCHAR* boneFile) : cCharacter(folder, bone
 	pShadow = new sanModel(L"data/model/", L"shadow.vnm");
 	pSe[0] = new sanSound(L"data/sound/hitatk.wav");
 	pSe[1] = new sanSound(L"data/sound/nothitatk.wav");
+	pPlayer = nullptr; // 値を入れない
 	status.atkPower = 10.0f;
 	status.health = 100.0f;
 	status.isDefense = false;
@@ -107,12 +108,12 @@ boss::~boss()
 	delete pShadow;
 }
 
-void boss::DecideNextAction(player* rival)
+void boss::DecideNextAction()
 {
 	// 最終的には残りのHPやプレイヤーの状況によって行動を変える
 	// プレイヤーが近い時は防御と攻撃
 	// プレイヤーが範囲外の時は防御と移動
-	if(playerCloseSearch(rival))
+	if(playerCloseSearch(pPlayer))
 	{
 		int actionIndex = rand() % 2; // 0か1
 		handleAction = static_cast<handleActionState>(actionIndex);
@@ -124,7 +125,7 @@ void boss::DecideNextAction(player* rival)
 	}
 }
 
-void boss::NextAttackAction(player* rival)
+void boss::NextAttackAction()
 {
 	int actionIndex;
 	constexpr int AttackKindCount = static_cast<int>(attackKinds::Max);
@@ -140,26 +141,31 @@ void boss::NextAttackAction(player* rival)
 	oldAttackAction = attackAction;
 }
 
-void boss::execute(player* rival)
+void boss::execute()
 {
+	if (pPlayer == nullptr) return; // プレイヤーに値がないから処理しない
+
 	if (isDead) // 死んだとき
 	{
 		// 死んだアニメーションさせる
 		return;
 	}
 
+	// 基底クラスを呼び出す
+	cCharacter::execute();
+
 	// ここでランダムにする
 	// 各関数で処理の最後にDecideNextActionを呼び出す
 	switch (handleAction)
 	{
 	case handleActionState::Defending:
-		defense(rival);
+		defense();
 		sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 		sanFont::print(20.0f, 350.0f, L"防御中");
 		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		break;
 	case handleActionState::Attacking:
-			heavyAtk(rival);
+			heavyAtk();
 			sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 			sanFont::print(20.0f, 350.0f, L"連続攻撃");
 			sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
@@ -168,25 +174,25 @@ void boss::execute(player* rival)
 		//switch (attackAction)
 		//{
 		//case attackKinds::NormalAtk:
-		//	normalAtk(rival);
+		//	normalAtk(pPlayer);
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 		//	sanFont::print(20.0f, 350.0f, L"通常攻撃");
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		//	break;
 		//case attackKinds::ContinuousAtk:
-		//	continuousAtk(rival);
+		//	continuousAtk(pPlayer);
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 		//	sanFont::print(20.0f, 350.0f, L"連続攻撃");
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		//	break;
 		//case attackKinds::RangeAtk:
-		//	rangeAtk(rival);
+		//	rangeAtk(pPlayer);
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 		//	sanFont::print(20.0f, 350.0f, L"範囲攻撃");
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 		//	break;
 		//case attackKinds::HeavyAtk:
-		//	heavyAtk(rival);
+		//	heavyAtk(pPlayer);
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 		//	sanFont::print(20.0f, 350.0f, L"重い攻撃");
 		//	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
@@ -194,7 +200,7 @@ void boss::execute(player* rival)
 		//}
 		break;
 	case handleActionState::Moveing:
-		move(rival);
+		move();
 		sanFont::setTextFormat(sanFont::create(L"Meiryo", 30));
 		sanFont::print(20.0f, 350.0f, L"移動中");
 		sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
@@ -213,7 +219,7 @@ void boss::execute(player* rival)
 	damageDisplay();
 }
 
-void boss::defense(player* rival)
+void boss::defense()
 {
 	static float defenseProgress = 0.0f;      // 防御の進行度
 	constexpr float defenseTimeLimit = 12.0f; // 防御の時間(60fpsなので2秒)
@@ -233,17 +239,17 @@ void boss::defense(player* rival)
 		defenseProgress = 0.0f; // 値のリセット
 		isDefense = false;
 
-		DecideNextAction(rival); // 次の行動
+		DecideNextAction(); // 次の行動
 
 		// 次の行動が攻撃なら攻撃種類設定
 		if (handleAction == handleActionState::Attacking)
 		{
-			NextAttackAction(rival); // 次の攻撃
+			NextAttackAction(); // 次の攻撃
 		}
 	}
 
 	// 敵とプレイヤーの位置を取得
-	XMVECTOR playerPos = *(rival->getPosition());
+	XMVECTOR playerPos = *(pPlayer->getPosition());
 	XMVECTOR enemyPos = *(getPosition());
 
 	// プレイヤーから敵へのベクトルと距離を計算
@@ -260,7 +266,7 @@ void boss::defense(player* rival)
 	setRotationY(newRotY); // 更新
 }
 
-void boss::normalAtk(player* rival)
+void boss::normalAtk()
 {
 	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
 
@@ -298,7 +304,7 @@ void boss::normalAtk(player* rival)
 	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
 
 	// NPCの認識範囲
-	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR bossToPlayer = *pPlayer->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(bossToPlayer);
 	float dist = XMVectorGetX(vDist);
 
@@ -371,9 +377,9 @@ void boss::normalAtk(player* rival)
 		{
 			// 攻撃処理
 			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-			rival->setPosition(&newPosition);
-			rival->takeDamage(status.atkPower);
+			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+			pPlayer->setPosition(&newPosition);
+			pPlayer->takeDamage(status.atkPower);
 		}
 	}
 	else
@@ -382,7 +388,7 @@ void boss::normalAtk(player* rival)
 	}
 
 	// 敵に当たった時
-	if (rival->getIsTakeHit())
+	if (pPlayer->getIsTakeHit())
 	{
 		// SE再生
 		// もし再生中なら停止する
@@ -410,7 +416,7 @@ void boss::normalAtk(player* rival)
 	}
 }
 
-void boss::continuousAtk(player* rival)
+void boss::continuousAtk()
 {
 	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
 
@@ -450,7 +456,7 @@ void boss::continuousAtk(player* rival)
 	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
 
 	// NPCの認識範囲
-	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR bossToPlayer = *pPlayer->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(bossToPlayer);
 	float dist = XMVectorGetX(vDist);
 
@@ -521,17 +527,17 @@ void boss::continuousAtk(player* rival)
 		// 攻撃が半分以上の時(一度のみ攻撃を与える)
 		if (atkProgress >= atkTimeLimit / 2 && !hasHitFirst)
 		{
-			rival->takeDamage(status.atkPower / 2); // 2分の1ダメージ
+			pPlayer->takeDamage(status.atkPower / 2); // 2分の1ダメージ
 			hasHitFirst = true; // 攻撃を与えた
 		}
 		else if (atkProgress >= atkTimeLimit - 1.0f && !hasHitSecond)
 		{
 			// 攻撃処理
 			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-			rival->setPosition(&newPosition);
+			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+			pPlayer->setPosition(&newPosition);
 
-			rival->takeDamage(status.atkPower * 2 / 3); // 4分の3ダメージ
+			pPlayer->takeDamage(status.atkPower * 2 / 3); // 4分の3ダメージ
 			hasHitSecond = true; // 攻撃を与えた
 		}
 	}
@@ -541,7 +547,7 @@ void boss::continuousAtk(player* rival)
 	}
 
 	// 敵に当たった時
-	if (rival->getIsTakeHit())
+	if (pPlayer->getIsTakeHit())
 	{
 		// SE再生
 		// もし再生中なら停止する
@@ -569,7 +575,7 @@ void boss::continuousAtk(player* rival)
 	}
 }
 
-void boss::rangeAtk(player* rival)
+void boss::rangeAtk()
 {
 	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
 
@@ -607,7 +613,7 @@ void boss::rangeAtk(player* rival)
 	constexpr float atkDegree = 360.0f;		 // 攻撃範囲
 
 	// NPCの認識範囲
-	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR bossToPlayer = *pPlayer->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(bossToPlayer);
 	float dist = XMVectorGetX(vDist);
 
@@ -680,9 +686,9 @@ void boss::rangeAtk(player* rival)
 		{
 			// 攻撃処理
 			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-			rival->setPosition(&newPosition);
-			rival->takeDamage(status.atkPower);
+			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+			pPlayer->setPosition(&newPosition);
+			pPlayer->takeDamage(status.atkPower);
 		}
 	}
 	else
@@ -691,7 +697,7 @@ void boss::rangeAtk(player* rival)
 	}
 
 	// 敵に当たった時
-	if (rival->getIsTakeHit())
+	if (pPlayer->getIsTakeHit())
 	{
 		// SE再生
 		// もし再生中なら停止する
@@ -719,7 +725,7 @@ void boss::rangeAtk(player* rival)
 	}
 }
 
-void boss::heavyAtk(player* rival)
+void boss::heavyAtk()
 {
 	static float atkTimeLimit = 8.0f; // 攻撃の時間(60fps,1秒(6.0f == 1))
 
@@ -757,7 +763,7 @@ void boss::heavyAtk(player* rival)
 	constexpr float atkDegree = 30.0f;		 // 攻撃範囲
 
 	// NPCの認識範囲
-	XMVECTOR bossToPlayer = *rival->getPosition() - *getPosition();
+	XMVECTOR bossToPlayer = *pPlayer->getPosition() - *getPosition();
 	XMVECTOR vDist = XMVector3Length(bossToPlayer);
 	float dist = XMVectorGetX(vDist);
 
@@ -830,9 +836,9 @@ void boss::heavyAtk(player* rival)
 		{
 			// 攻撃処理
 			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *rival->getPosition() + knockbackVector;
-			rival->setPosition(&newPosition);
-			rival->takeDamage(status.atkPower * 2);
+			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+			pPlayer->setPosition(&newPosition);
+			pPlayer->takeDamage(status.atkPower * 2);
 		}
 	}
 	else
@@ -841,7 +847,7 @@ void boss::heavyAtk(player* rival)
 	}
 
 	// 敵に当たった時
-	if (rival->getIsTakeHit())
+	if (pPlayer->getIsTakeHit())
 	{
 		// SE再生
 		// もし再生中なら停止する
@@ -870,7 +876,7 @@ void boss::heavyAtk(player* rival)
 }
 
 
-void boss::move(player* rival)
+void boss::move()
 {
 	XMVECTOR vMove = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // 移動ベクトル
 
@@ -887,18 +893,18 @@ void boss::move(player* rival)
 	if (moveProgress >= moveTimeLimit)
 	{
 		moveProgress = false;
-		DecideNextAction(rival); // 次の攻撃
+		DecideNextAction(); // 次の攻撃
 
 		// 次の行動が攻撃なら攻撃種類設定
 		if (handleAction == handleActionState::Attacking)
 		{
-			NextAttackAction(rival); // 次の攻撃
+			NextAttackAction(); // 次の攻撃
 		}
 	}
 
 
 	// 敵と自身の位置を取得
-	XMVECTOR rivalPos = *(rival->getPosition());
+	XMVECTOR rivalPos = *(pPlayer->getPosition());
 	XMVECTOR playerPos = *(getPosition());
 
 	// プレイヤーから敵へのベクトルと距離を計算
@@ -1038,6 +1044,12 @@ void boss::playerAllRender()
 	sanFont::setTextFormat(sanFont::create(L"Meiryo", 16));
 	pShadow->render();
 	render();
+}
+
+void boss::setPlayer(player* pPlayer)
+{
+	// プレイヤーのポインタを取得
+	this->pPlayer = pPlayer;
 }
 
 //モーションファイル読み込み関数

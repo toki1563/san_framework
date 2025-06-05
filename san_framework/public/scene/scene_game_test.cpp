@@ -310,6 +310,34 @@ void SceneGameTest::execute()
 		pEffectNPC->setEmit(false);
 	}
 
+	// 3Dから2Dへのスクリーン座標変換
+	XMVECTOR world = *pNPC->getPosition();
+	XMVECTOR camera = XMVector3TransformCoord(world, *sanCamera::getView());
+	XMVECTOR viewport = XMVector3Transform(camera, *sanCamera::getProj());
+
+	// w除算(wを1にするために、全成分w要素で割る) 同時座標系
+	float vp_w = XMVectorGetW(viewport);
+	float vp_x = XMVectorGetX(viewport) / vp_w;
+	float vp_y = XMVectorGetY(viewport) / vp_w;
+	float vp_z = XMVectorGetZ(viewport) / vp_w;
+	vp_w = XMVectorGetW(viewport) / vp_w;
+
+	// vp.x :  -1 ~   0 ~ +1
+	// sc.X :   0 ~ 640 ~1280
+	float screen_x = (vp_x * 0.5f + 0.5f) * sanMainFrame::screenWidth;
+
+	// vp.Y :  +1 ~   0    ~ -1
+	// sc.Y :   0   ~360 ~720
+	float screen_y = (-vp_y * 0.5f + 0.5f) * sanMainFrame::screenHeight;
+	sanFont::print(screen_x - 30.0f, screen_y, L"enemy");
+
+
+	sanFont::print(20.0f, 200.0f, L"world : %.3f, %.3f, %.3f, %.3f", XMVectorGetX(world), XMVectorGetY(world), XMVectorGetZ(world), XMVectorGetW(world));
+	sanFont::print(20.0f, 220.0f, L"camera : %.3f, %.3f, %.3f, %.3f", XMVectorGetX(camera), XMVectorGetY(camera), XMVectorGetZ(camera), XMVectorGetW(camera));
+	sanFont::print(20.0f, 240.0f, L"viewproj : %.3f, %.3f, %.3f, %.3f", XMVectorGetX(viewport), XMVectorGetY(viewport), XMVectorGetZ(viewport), XMVectorGetW(viewport));
+	sanFont::print(20.0f, 260.0f, L"viewport(w) : %.3f, %.3f, %.3f, %.3f", vp_w, vp_x, vp_y, vp_z);
+	sanFont::print(20.0f, 280.0f, L"screen : %.3f, %.3f", screen_x, screen_y);
+
 	sanDebugDraw::Grid(5, 1.0f, 2147483647UL, gridAxisActive);
 	sanDebugDraw::Axis(5.0f, gridAxisActive);
 

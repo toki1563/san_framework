@@ -124,6 +124,10 @@ void cCharacter::execute()
 		time = 0.0f;
 		isMotionEnded = true;
 	}
+	//else if (time >= pMotion->Length - 1.0f)
+	//{
+	//	isMotionEnded = true;
+	//}
 	else if (time < 0.0f)
 	{
 		time = pMotion->Length;
@@ -231,7 +235,7 @@ void cCharacter::setMotion(sanMotionData* p)
 	time = 0.0f;
 
 	//ポーズを標準状態に戻す
-	bindPose();
+	//bindPose();
 }
 
 //現在のモーションを取得

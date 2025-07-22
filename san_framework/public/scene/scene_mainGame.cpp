@@ -84,7 +84,6 @@ void SceneMainGame::execute()
 	//	pBgm->play();
 	//}
 
-	//pPlayer->execute();
 	pGameUI->execute();
 	pGameCamera->battleCamera();
 	pGameCamera->justAvoidCamera();

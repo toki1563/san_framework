@@ -860,6 +860,11 @@ bool player::getIsTakeHit()
 	return isTakeDamage;
 }
 
+bool player::getIsJustStep()
+{
+	return isJustStepSuccess;
+}
+
 void player::playerAllRender()
 {
 	sanFont::print(20.0f, 140.0f, L"体力 : %.3f", status.health);

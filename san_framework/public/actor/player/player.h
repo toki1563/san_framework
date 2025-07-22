@@ -61,6 +61,7 @@ public:
 	void setBoss(boss* pBoss);
 	bool getIsDead();    // 死んでいるかどうか
 	bool getIsTakeHit(); // 攻撃を受けた時
+	bool getIsJustStep(); // ジャスト回避かどうか
 	bool getTakeDamageDisPlay(); // 攻撃受けの画面表示取得
 	float getCurrentTime(); // ゲーム開始から現在の時間を取得
 

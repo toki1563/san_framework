@@ -375,11 +375,15 @@ void boss::normalAtk()
 		// 攻撃が半分以上の時
 		if (atkProgress >= atkTimeLimit / 2)
 		{
-			// 攻撃処理
-			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
-			pPlayer->setPosition(&newPosition);
-			pPlayer->takeDamage(status.atkPower);
+			// プレイヤーがジャストと回避時は攻撃処理を入れない
+			if (!pPlayer->getIsJustStep())
+			{
+				// 攻撃処理
+				XMVECTOR knockbackVector = bossrFront * 4;
+				XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+				pPlayer->setPosition(&newPosition);
+				pPlayer->takeDamage(status.atkPower);
+			}
 		}
 	}
 	else
@@ -532,13 +536,17 @@ void boss::continuousAtk()
 		}
 		else if (atkProgress >= atkTimeLimit - 1.0f && !hasHitSecond)
 		{
-			// 攻撃処理
-			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
-			pPlayer->setPosition(&newPosition);
+			// プレイヤーがジャストと回避時は攻撃処理を入れない
+			if (!pPlayer->getIsJustStep())
+			{
+				// 攻撃処理
+				XMVECTOR knockbackVector = bossrFront * 4;
+				XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+				pPlayer->setPosition(&newPosition);
 
-			pPlayer->takeDamage(status.atkPower * 2 / 3); // 4分の3ダメージ
-			hasHitSecond = true; // 攻撃を与えた
+				pPlayer->takeDamage(status.atkPower * 2 / 3); // 4分の3ダメージ
+				hasHitSecond = true; // 攻撃を与えた
+			}
 		}
 	}
 	else
@@ -684,11 +692,15 @@ void boss::rangeAtk()
 		// 攻撃が半分以上の時
 		if (atkProgress >= atkTimeLimit / 2)
 		{
-			// 攻撃処理
-			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
-			pPlayer->setPosition(&newPosition);
-			pPlayer->takeDamage(status.atkPower);
+			// プレイヤーがジャストと回避時は攻撃処理を入れない
+			if (!pPlayer->getIsJustStep())
+			{
+				// 攻撃処理
+				XMVECTOR knockbackVector = bossrFront * 4;
+				XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+				pPlayer->setPosition(&newPosition);
+				pPlayer->takeDamage(status.atkPower);
+			}
 		}
 	}
 	else
@@ -834,11 +846,15 @@ void boss::heavyAtk()
 		// 攻撃が半分以上の時
 		if (atkProgress >= atkTimeLimit / 2)
 		{
-			// 攻撃処理
-			XMVECTOR knockbackVector = bossrFront * 4;
-			XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
-			pPlayer->setPosition(&newPosition);
-			pPlayer->takeDamage(status.atkPower * 2);
+			// プレイヤーがジャストと回避時は攻撃処理を入れない
+			if (!pPlayer->getIsJustStep())
+			{
+				// 攻撃処理
+				XMVECTOR knockbackVector = bossrFront * 4;
+				XMVECTOR newPosition = *pPlayer->getPosition() + knockbackVector;
+				pPlayer->setPosition(&newPosition);
+				pPlayer->takeDamage(status.atkPower * 2);
+			}
 		}
 	}
 	else
